@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { Toaster } from '@/components/ui/toaster'
 import { Toaster as Sonner } from '@/components/ui/sonner'
 import { TooltipProvider } from '@/components/ui/tooltip'
@@ -24,6 +24,8 @@ const App = () => (
             <Route path="/practice" element={<Practice />} />
             <Route path="/flashcards" element={<Flashcards />} />
             <Route path="/settings" element={<Settings />} />
+            {/* Redirect obsolete builder route gracefully */}
+            <Route path="/builder" element={<Navigate to="/practice" replace />} />
           </Route>
           <Route path="*" element={<NotFound />} />
         </Routes>
