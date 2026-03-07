@@ -1,11 +1,11 @@
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { CheckCircle2, XCircle, ArrowRight } from 'lucide-react'
+import { useStore } from '@/store/main'
 
 interface QuickPracticeProps {
-  word: string
-  translation: string
+  words: { word: string; translation: string; sentence: string }[]
   onComplete: () => void
 }
 
@@ -24,14 +24,25 @@ const practiceMocks: Record<string, { pt: string; en: string }> = {
   ubiquitous: { pt: 'A tecnologia é onipresente.', en: 'Technology is ubiquitous' },
 }
 
-export function QuickPractice({ word, translation, onComplete }: QuickPracticeProps) {
+export function QuickPractice({ words, onComplete }: QuickPracticeProps) {
+  const [currentIndex, setCurrentIndex] = useState(0)
   const [answer, setAnswer] = useState('')
   const [status, setStatus] = useState<'idle' | 'correct' | 'incorrect'>('idle')
+  const { addWord, words: globalWords } = useStore()
 
-  const mock = practiceMocks[word] || {
-    pt: `Eu vi um(a) ${translation} hoje.`,
-    en: `I saw a ${word} today`,
-  }
+  const currentItem = words[currentIndex]
+
+  const mock = useMemo(() => {
+    if (!currentItem) return null
+    return (
+      practiceMocks[currentItem.word] || {
+        pt: `Eu vi um(a) ${currentItem.translation} hoje.`,
+        en: `I saw a ${currentItem.word} today`,
+      }
+    )
+  }, [currentItem])
+
+  if (!currentItem || !mock) return null
 
   const checkAnswer = () => {
     const cleanInput = answer
@@ -43,30 +54,56 @@ export function QuickPractice({ word, translation, onComplete }: QuickPracticePr
       .replace(/[^a-z0-9 ]/g, '')
       .trim()
 
-    if (
-      cleanInput === cleanExpected ||
-      (cleanInput.length > 5 && cleanInput.includes(word.toLowerCase()))
-    ) {
+    if (cleanInput === cleanExpected) {
       setStatus('correct')
     } else {
       setStatus('incorrect')
     }
   }
 
+  const handleNext = () => {
+    if (status === 'correct') {
+      const isAlreadySaved = globalWords.some(
+        (w) => w.word.toLowerCase() === currentItem.word.toLowerCase(),
+      )
+      if (!isAlreadySaved) {
+        addWord({
+          word: currentItem.word,
+          translation: currentItem.translation,
+          contextSentence: currentItem.sentence,
+          status: 'learning',
+        })
+      }
+    }
+
+    if (currentIndex < words.length - 1) {
+      setCurrentIndex((prev) => prev + 1)
+      setAnswer('')
+      setStatus('idle')
+    } else {
+      onComplete()
+    }
+  }
+
   return (
-    <div className="space-y-6 animate-fade-in-up flex flex-col h-full">
-      <div className="flex items-center text-primary mb-2">
-        <div className="p-2 bg-primary/10 rounded-full mr-3">
-          <ArrowRight className="w-5 h-5" />
+    <div className="space-y-8 animate-fade-in-up flex flex-col h-full w-full max-w-2xl mx-auto py-4">
+      <div className="flex items-center justify-between text-primary border-b border-border pb-4">
+        <div className="flex items-center gap-3">
+          <div className="p-2.5 bg-primary/10 rounded-xl">
+            <ArrowRight className="w-5 h-5" />
+          </div>
+          <h3 className="font-bold text-2xl tracking-tight">Quick Practice</h3>
         </div>
-        <h3 className="font-bold text-xl">Quick Practice</h3>
+        <div className="text-sm font-bold text-muted-foreground bg-secondary px-4 py-1.5 rounded-full">
+          {currentIndex + 1} / {words.length}
+        </div>
       </div>
 
-      <div className="space-y-2 bg-secondary/30 p-5 rounded-2xl border border-border">
-        <p className="text-sm text-muted-foreground font-medium uppercase tracking-wider">
+      <div className="space-y-3 bg-secondary/20 p-8 rounded-[24px] border border-border shadow-sm">
+        <p className="text-sm text-muted-foreground font-semibold uppercase tracking-wider flex items-center gap-2">
           Traduza para o inglês
         </p>
-        <p className="text-xl font-medium text-foreground">{mock.pt}</p>
+        <p className="text-3xl font-medium text-foreground leading-tight">{mock.pt}</p>
       </div>
 
       <div className="space-y-4 flex-1">
@@ -76,45 +113,58 @@ export function QuickPractice({ word, translation, onComplete }: QuickPracticePr
             setAnswer(e.target.value)
             setStatus('idle')
           }}
-          placeholder="Digite sua tradução aqui..."
-          className={`h-14 text-lg transition-colors ${
+          placeholder="Type your translation here..."
+          className={`h-16 text-xl px-6 transition-all duration-300 rounded-[20px] ${
             status === 'incorrect'
-              ? 'border-destructive focus-visible:ring-destructive'
+              ? 'border-destructive focus-visible:ring-destructive focus-visible:border-destructive bg-destructive/5'
               : status === 'correct'
-                ? 'border-success focus-visible:ring-success'
-                : ''
+                ? 'border-success focus-visible:ring-success focus-visible:border-success bg-success/5'
+                : 'bg-background shadow-inner'
           }`}
-          onKeyDown={(e) => e.key === 'Enter' && checkAnswer()}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') {
+              if (status === 'correct') handleNext()
+              else if (answer.trim()) checkAnswer()
+            }
+          }}
           autoFocus
         />
 
         {status === 'incorrect' && (
-          <div className="text-destructive text-sm flex items-center gap-2 bg-destructive/10 p-3 rounded-lg animate-fade-in">
-            <XCircle className="w-5 h-5 shrink-0" />
-            <span>
-              Tente novamente. Dica: certifique-se de usar a palavra <strong>"{word}"</strong>.
-            </span>
+          <div className="text-destructive text-sm flex items-start gap-3 bg-destructive/10 p-5 rounded-2xl animate-fade-in">
+            <XCircle className="w-6 h-6 shrink-0 mt-0.5" />
+            <div className="space-y-1">
+              <p className="font-semibold text-base">Tradução incorreta</p>
+              <p className="opacity-90 text-sm">
+                A frase esperada era: <strong className="font-bold">"{mock.en}"</strong>
+              </p>
+            </div>
           </div>
         )}
 
         {status === 'correct' && (
-          <div className="text-success text-sm flex items-center gap-2 bg-success/10 p-3 rounded-lg animate-fade-in">
-            <CheckCircle2 className="w-5 h-5 shrink-0" />
-            <span>Correto! Excelente trabalho.</span>
+          <div className="text-success text-sm flex items-center gap-3 bg-success/10 p-5 rounded-2xl animate-fade-in">
+            <CheckCircle2 className="w-6 h-6 shrink-0" />
+            <span className="font-semibold text-base">Excelente! Tradução exata.</span>
           </div>
         )}
       </div>
 
-      <div className="flex flex-col gap-3 pt-4 mt-auto">
+      <div className="pt-6 mt-auto">
         {status === 'correct' ? (
-          <Button onClick={onComplete} size="lg" className="w-full text-lg">
-            Concluir <CheckCircle2 className="w-5 h-5 ml-2" />
+          <Button
+            onClick={handleNext}
+            size="lg"
+            className="w-full h-16 text-lg rounded-2xl shadow-md group"
+          >
+            {currentIndex < words.length - 1 ? 'Próxima Palavra' : 'Concluir Sessão'}{' '}
+            <ArrowRight className="w-6 h-6 ml-2 group-hover:translate-x-1 transition-transform" />
           </Button>
         ) : (
           <Button
             onClick={checkAnswer}
             size="lg"
-            className="w-full text-lg"
+            className="w-full h-16 text-lg rounded-2xl shadow-sm"
             disabled={!answer.trim()}
           >
             Verificar Resposta

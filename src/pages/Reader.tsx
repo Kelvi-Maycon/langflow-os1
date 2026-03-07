@@ -1,8 +1,8 @@
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useCallback } from 'react'
 import { Card } from '@/components/ui/card'
 import { Textarea } from '@/components/ui/textarea'
 import { Button } from '@/components/ui/button'
-import { Play, FileText, CheckCircle2, Settings2 } from 'lucide-react'
+import { Play, FileText, CheckCircle2, Settings2, ArrowRight } from 'lucide-react'
 import { WordInteraction } from '@/components/reader/WordInteraction'
 import {
   Select,
@@ -12,15 +12,31 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { useStore } from '@/store/main'
+import { QuickPractice } from '@/components/reader/QuickPractice'
 
 const defaultText = `The quick brown fox jumps over the lazy dog. 
 This is a serendipity moment where you can learn new words.
 Reading ephemeral texts ubiquitous on the internet helps improve your active vocabulary.`
 
+interface CapturedWord {
+  word: string
+  translation: string
+  sentence: string
+}
+
 export default function Reader() {
   const [inputText, setInputText] = useState(defaultText)
   const [isReadingMode, setIsReadingMode] = useState(false)
+  const [practiceMode, setPracticeMode] = useState(false)
+  const [capturedWords, setCapturedWords] = useState<CapturedWord[]>([])
   const { settings, updateSettings } = useStore()
+
+  const handleCapture = useCallback((word: string, translation: string, sentence: string) => {
+    setCapturedWords((prev) => {
+      if (prev.some((w) => w.word === word)) return prev
+      return [...prev, { word, translation, sentence }]
+    })
+  }, [])
 
   const processedContent = useMemo(() => {
     if (!isReadingMode) return null
@@ -31,17 +47,24 @@ export default function Reader() {
       const tokens = sentence.split(/([\s.,!?;:]+)/)
 
       return (
-        <span key={sIdx} className="mr-1">
+        <span key={sIdx} className="mr-1 leading-[2.2]">
           {tokens.map((token, tIdx) => {
             if (/^[\s.,!?;:]+$/.test(token)) {
               return <span key={tIdx}>{token}</span>
             }
-            return <WordInteraction key={tIdx} word={token} sentence={sentence} />
+            return (
+              <WordInteraction
+                key={`${sIdx}-${tIdx}`}
+                word={token}
+                sentence={sentence}
+                onCapture={handleCapture}
+              />
+            )
           })}
         </span>
       )
     })
-  }, [inputText, isReadingMode])
+  }, [inputText, isReadingMode, handleCapture])
 
   return (
     <div className="space-y-6 animate-fade-in max-w-4xl mx-auto h-full flex flex-col">
@@ -49,11 +72,13 @@ export default function Reader() {
         <div>
           <h1 className="text-3xl font-bold tracking-tight text-foreground">Leitor Imersivo</h1>
           <p className="text-muted-foreground mt-2 text-lg">
-            Cole um texto em inglês, leia e clique nas palavras que não conhece.
+            {practiceMode
+              ? 'Traduza as frases para fixar o vocabulário.'
+              : 'Cole um texto em inglês, leia e clique nas palavras que não conhece.'}
           </p>
         </div>
 
-        {isReadingMode && (
+        {isReadingMode && !practiceMode && (
           <div className="flex items-center gap-2 bg-secondary/40 p-1.5 rounded-xl border border-border animate-fade-in shadow-sm">
             <Settings2 className="w-4 h-4 text-primary ml-2" />
             <Select
@@ -101,6 +126,16 @@ export default function Reader() {
             Iniciar Leitura
           </Button>
         </div>
+      ) : practiceMode ? (
+        <Card className="flex-1 p-8 md:p-12 bg-card text-foreground min-h-[500px] border-t-4 border-t-primary shadow-md relative">
+          <QuickPractice
+            words={capturedWords}
+            onComplete={() => {
+              setPracticeMode(false)
+              setCapturedWords([])
+            }}
+          />
+        </Card>
       ) : (
         <div className="flex-1 flex flex-col gap-6 animate-fade-in-up">
           <Card className="flex-1 p-8 md:p-12 text-lg md:text-xl leading-relaxed font-serif bg-card text-foreground min-h-[400px] overflow-y-auto border-t-4 border-t-primary shadow-md relative">
@@ -108,21 +143,59 @@ export default function Reader() {
             <div className="relative z-10">{processedContent}</div>
           </Card>
 
-          <div className="flex justify-between items-center bg-card/80 backdrop-blur-md p-4 px-6 rounded-2xl border border-border shadow-sm">
-            <div className="text-sm font-medium flex items-center gap-3 text-muted-foreground">
-              <div className="p-1.5 bg-success/20 rounded-full">
-                <CheckCircle2 className="w-4 h-4 text-success" />
+          {capturedWords.length > 0 ? (
+            <div className="bg-card/90 backdrop-blur-md p-6 rounded-[24px] border border-border shadow-md animate-fade-in-up">
+              <h3 className="text-sm font-semibold mb-4 flex items-center gap-2 text-muted-foreground uppercase tracking-wider">
+                <CheckCircle2 className="w-4 h-4 text-primary" />
+                Palavras Capturadas ({capturedWords.length})
+              </h3>
+              <div className="flex flex-wrap gap-2.5 mb-6">
+                {capturedWords.map((cw) => (
+                  <div
+                    key={cw.word}
+                    className="px-3.5 py-1.5 rounded-xl text-sm font-medium bg-secondary text-secondary-foreground border border-border/50 shadow-sm transition-all hover:bg-secondary/80"
+                  >
+                    {cw.word}
+                  </div>
+                ))}
               </div>
-              Clique nas palavras para capturar o contexto
+              <div className="flex flex-col sm:flex-row gap-3">
+                <Button
+                  variant="outline"
+                  className="flex-1 h-14 rounded-2xl border-border"
+                  onClick={() => {
+                    setIsReadingMode(false)
+                    setCapturedWords([])
+                  }}
+                >
+                  Sair do Leitor
+                </Button>
+                <Button
+                  className="flex-1 h-14 rounded-2xl shadow-md group text-base"
+                  onClick={() => setPracticeMode(true)}
+                >
+                  Próxima Fase: Prática{' '}
+                  <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
+                </Button>
+              </div>
             </div>
-            <Button
-              variant="outline"
-              className="rounded-xl bg-background hover:bg-secondary border-border"
-              onClick={() => setIsReadingMode(false)}
-            >
-              Editar Texto
-            </Button>
-          </div>
+          ) : (
+            <div className="flex justify-between items-center bg-card/80 backdrop-blur-md p-5 px-6 rounded-2xl border border-border shadow-sm">
+              <div className="text-sm font-medium flex items-center gap-3 text-muted-foreground">
+                <div className="p-2 bg-primary/10 rounded-full">
+                  <CheckCircle2 className="w-4 h-4 text-primary" />
+                </div>
+                Clique nas palavras para capturar o contexto
+              </div>
+              <Button
+                variant="outline"
+                className="rounded-xl h-11 bg-background hover:bg-secondary border-border"
+                onClick={() => setIsReadingMode(false)}
+              >
+                Editar Texto
+              </Button>
+            </div>
+          )}
         </div>
       )}
     </div>
