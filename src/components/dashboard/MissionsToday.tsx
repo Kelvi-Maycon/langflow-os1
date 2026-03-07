@@ -31,7 +31,7 @@ const missions = [
     xp: '+80 XP',
     icon: Mic,
     iconBg: 'bg-warning/15',
-    iconColor: 'text-warning',
+    iconColor: 'text-warning-foreground',
     completed: false,
   },
 ]
@@ -57,7 +57,7 @@ export function MissionsToday() {
           return (
             <Card
               key={mission.id}
-              className="p-5 flex items-center gap-5 bg-card hover:bg-secondary/50 border-border shadow-sm transition-all duration-250 ease-out hover:scale-[1.02] hover:shadow-md cursor-pointer rounded-[24px]"
+              className="p-5 flex items-center gap-5 bg-card hover:bg-secondary/40 border-border shadow-sm transition-all duration-250 ease-out hover:scale-[1.02] hover:shadow-md cursor-pointer rounded-[24px]"
             >
               <div
                 className={`w-14 h-14 rounded-full flex items-center justify-center shrink-0 ${mission.iconBg}`}
@@ -73,7 +73,7 @@ export function MissionsToday() {
                 )}
               </div>
 
-              <div className="font-bold text-sm text-muted-foreground bg-secondary px-3 py-1.5 rounded-full whitespace-nowrap border border-border/50">
+              <div className="font-bold text-sm text-muted-foreground bg-secondary px-3 py-1.5 rounded-full whitespace-nowrap border border-border/60">
                 {mission.xp}
               </div>
             </Card>

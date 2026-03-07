@@ -24,7 +24,7 @@ export function WeeklyChart() {
     <Card className="p-6 bg-card border-border shadow-sm hover:shadow-md transition-shadow duration-300 rounded-[24px]">
       <div className="flex items-center justify-between mb-8">
         <h4 className="font-bold text-foreground">Atividade Semanal</h4>
-        <span className="text-[10px] font-bold bg-secondary px-2 py-1 rounded-md text-muted-foreground border border-border/50">
+        <span className="text-[10px] font-bold bg-secondary px-2 py-1 rounded-md text-muted-foreground border border-border">
           ESSA SEMANA
         </span>
       </div>
@@ -52,7 +52,7 @@ export function WeeklyChart() {
         {data.map((item, i) => (
           <span
             key={i}
-            className={`text-xs font-bold ${item.isCurrent ? 'text-foreground' : 'text-muted-foreground/60'}`}
+            className={`text-xs font-bold ${item.isCurrent ? 'text-primary' : 'text-muted-foreground/60'}`}
           >
             {item.day.trim()}
           </span>

@@ -45,12 +45,12 @@ export default function Reader() {
 
       {!isReadingMode ? (
         <div className="flex-1 flex flex-col gap-6 animate-fade-in-up">
-          <Card className="flex-1 p-6 flex flex-col border-white/5 bg-card/80 backdrop-blur-sm min-h-[400px]">
+          <Card className="flex-1 p-6 flex flex-col border-border bg-card/80 backdrop-blur-sm min-h-[400px] shadow-sm">
             <div className="flex items-center gap-2 mb-4 text-sm font-medium text-primary">
               <FileText className="w-5 h-5" /> Cole seu texto aqui:
             </div>
             <Textarea
-              className="flex-1 resize-none text-base md:text-lg p-6 font-sans bg-background/50 border-white/10 rounded-[20px] focus-visible:ring-primary shadow-inner"
+              className="flex-1 resize-none text-base md:text-lg p-6 font-sans bg-secondary/30 border-border rounded-[20px] focus-visible:ring-primary shadow-inner"
               placeholder="Paste English text here..."
               value={inputText}
               onChange={(e) => setInputText(e.target.value)}
@@ -58,7 +58,7 @@ export default function Reader() {
           </Card>
           <Button
             size="lg"
-            className="w-full h-16 text-lg shadow-lg group"
+            className="w-full h-16 text-lg shadow-md group"
             onClick={() => {
               if (inputText.trim()) setIsReadingMode(true)
             }}
@@ -72,12 +72,12 @@ export default function Reader() {
         </div>
       ) : (
         <div className="flex-1 flex flex-col gap-6 animate-fade-in-up">
-          <Card className="flex-1 p-8 md:p-12 text-lg md:text-xl leading-relaxed font-serif bg-card text-foreground min-h-[400px] overflow-y-auto border-t-4 border-t-primary shadow-2xl relative">
+          <Card className="flex-1 p-8 md:p-12 text-lg md:text-xl leading-relaxed font-serif bg-card text-foreground min-h-[400px] overflow-y-auto border-t-4 border-t-primary shadow-md relative">
             <div className="absolute inset-0 bg-gradient-to-b from-primary/5 to-transparent pointer-events-none rounded-[24px]" />
             <div className="relative z-10">{processedContent}</div>
           </Card>
 
-          <div className="flex justify-between items-center bg-card/80 backdrop-blur-md p-4 px-6 rounded-full border border-white/10 shadow-lg">
+          <div className="flex justify-between items-center bg-card/80 backdrop-blur-md p-4 px-6 rounded-full border border-border shadow-sm">
             <div className="text-sm font-medium flex items-center gap-3 text-muted-foreground">
               <div className="p-1.5 bg-success/20 rounded-full">
                 <CheckCircle2 className="w-4 h-4 text-success" />
@@ -86,7 +86,7 @@ export default function Reader() {
             </div>
             <Button
               variant="outline"
-              className="rounded-full"
+              className="rounded-full bg-background hover:bg-secondary border-border"
               onClick={() => setIsReadingMode(false)}
             >
               Editar Texto

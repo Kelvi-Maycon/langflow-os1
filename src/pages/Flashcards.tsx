@@ -31,7 +31,7 @@ export default function Flashcards() {
   if (dueCards.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center h-[60vh] text-center animate-fade-in space-y-6">
-        <div className="w-32 h-32 bg-success/10 rounded-full flex items-center justify-center mb-2 shadow-[0_0_40px_rgba(22,163,74,0.2)]">
+        <div className="w-32 h-32 bg-success/10 rounded-full flex items-center justify-center mb-2 shadow-sm border border-success/20">
           <PartyPopper className="w-16 h-16 text-success animate-bounce" />
         </div>
         <h2 className="text-4xl font-bold text-foreground tracking-tight">Tudo Feito!</h2>
@@ -50,7 +50,7 @@ export default function Flashcards() {
       part.toLowerCase() === currentCard.word.toLowerCase() ? (
         <span
           key={i}
-          className="bg-primary/30 text-primary-foreground px-2 py-0.5 rounded-md font-bold shadow-[0_0_10px_rgba(108,63,197,0.3)]"
+          className="bg-primary/20 text-primary px-2 py-0.5 rounded-md font-bold shadow-[0_0_10px_rgba(108,63,197,0.1)] border border-primary/20"
         >
           {part}
         </span>
@@ -70,7 +70,7 @@ export default function Flashcards() {
           </h1>
           <p className="text-muted-foreground mt-2 text-lg">Pense na tradução e no contexto.</p>
         </div>
-        <div className="bg-secondary px-5 py-2.5 rounded-full text-sm font-bold border border-white/5 shadow-sm text-foreground">
+        <div className="bg-card px-5 py-2.5 rounded-full text-sm font-bold border border-border shadow-sm text-foreground">
           {dueCards.length} restantes
         </div>
       </header>
@@ -87,17 +87,17 @@ export default function Flashcards() {
           {/* Front of card */}
           <Card
             className={cn(
-              'w-full h-full absolute top-0 left-0 backface-hidden p-8 flex flex-col items-center justify-center shadow-2xl border-white/5 bg-card/90 backdrop-blur-xl',
+              'w-full h-full absolute top-0 left-0 backface-hidden p-8 flex flex-col items-center justify-center shadow-lg border-border bg-card/90 backdrop-blur-xl',
               isFlipped ? 'pointer-events-none opacity-0' : '',
             )}
           >
-            <span className="text-sm font-bold tracking-widest uppercase text-muted-foreground/60 mb-10 bg-background/50 px-4 py-2 rounded-full">
+            <span className="text-sm font-bold tracking-widest uppercase text-muted-foreground/80 mb-10 bg-secondary px-4 py-2 rounded-full border border-border/50">
               Tradução Alvo
             </span>
             <h2 className="text-4xl md:text-5xl font-bold text-foreground capitalize leading-tight font-sans">
               {currentCard.translation}
             </h2>
-            <p className="mt-16 text-primary/70 animate-pulse font-medium bg-primary/10 px-6 py-2 rounded-full">
+            <p className="mt-16 text-primary/80 animate-pulse font-medium bg-primary/5 px-6 py-2 rounded-full border border-primary/10">
               Toque para revelar o contexto
             </p>
           </Card>
@@ -105,18 +105,18 @@ export default function Flashcards() {
           {/* Back of card */}
           <Card
             className={cn(
-              'w-full h-full absolute top-0 left-0 backface-hidden rotate-y-180 p-8 flex flex-col justify-between shadow-2xl border-2 border-primary/30 bg-card',
+              'w-full h-full absolute top-0 left-0 backface-hidden rotate-y-180 p-8 flex flex-col justify-between shadow-lg border-2 border-primary/20 bg-card',
               !isFlipped ? 'pointer-events-none opacity-0' : '',
             )}
           >
             <div className="text-center flex-1 flex flex-col justify-center max-w-md mx-auto w-full">
-              <span className="text-sm font-bold tracking-widest uppercase text-primary mb-6 bg-primary/10 px-4 py-2 rounded-full self-center mx-auto">
+              <span className="text-sm font-bold tracking-widest uppercase text-primary mb-6 bg-primary/5 px-4 py-2 rounded-full self-center mx-auto border border-primary/10">
                 Inglês
               </span>
               <h2 className="text-4xl md:text-5xl font-extrabold text-foreground mb-8 font-sans">
                 {currentCard.word}
               </h2>
-              <div className="text-xl md:text-2xl text-foreground/80 italic leading-relaxed bg-background/50 p-6 rounded-[20px] border border-white/5 shadow-inner">
+              <div className="text-xl md:text-2xl text-foreground/80 italic leading-relaxed bg-secondary/40 p-6 rounded-[20px] border border-border shadow-inner">
                 "{renderSentence()}"
               </div>
             </div>
@@ -124,7 +124,7 @@ export default function Flashcards() {
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mt-8 pointer-events-auto">
               <Button
                 variant="outline"
-                className="h-14 rounded-full border-destructive/50 hover:bg-destructive hover:text-white transition-all group"
+                className="h-14 rounded-full border-destructive/50 hover:bg-destructive hover:text-white transition-all group bg-background"
                 onClick={(e) => {
                   e.stopPropagation()
                   handleReview(1)
@@ -135,7 +135,7 @@ export default function Flashcards() {
               </Button>
               <Button
                 variant="outline"
-                className="h-14 rounded-full border-warning/50 hover:bg-warning hover:text-white transition-all group"
+                className="h-14 rounded-full border-warning/50 hover:bg-warning hover:text-white transition-all group bg-background"
                 onClick={(e) => {
                   e.stopPropagation()
                   handleReview(3)
@@ -146,7 +146,7 @@ export default function Flashcards() {
               </Button>
               <Button
                 variant="outline"
-                className="h-14 rounded-full border-success/50 hover:bg-success hover:text-white transition-all group"
+                className="h-14 rounded-full border-success/50 hover:bg-success hover:text-white transition-all group bg-background"
                 onClick={(e) => {
                   e.stopPropagation()
                   handleReview(4)
@@ -157,7 +157,7 @@ export default function Flashcards() {
               </Button>
               <Button
                 variant="outline"
-                className="h-14 rounded-full border-primary/50 hover:bg-primary hover:text-white transition-all group shadow-[0_0_15px_rgba(108,63,197,0.1)] hover:shadow-[0_0_20px_rgba(108,63,197,0.4)]"
+                className="h-14 rounded-full border-primary/50 hover:bg-primary hover:text-white transition-all group bg-background shadow-[0_0_15px_rgba(108,63,197,0.1)] hover:shadow-[0_0_20px_rgba(108,63,197,0.4)]"
                 onClick={(e) => {
                   e.stopPropagation()
                   handleReview(5)

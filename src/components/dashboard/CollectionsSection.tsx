@@ -6,7 +6,7 @@ export function CollectionsSection() {
     <section className="space-y-6 pb-8">
       <header className="flex items-center justify-between">
         <h3 className="text-2xl font-bold text-foreground tracking-tight">Suas Coleções</h3>
-        <button className="w-8 h-8 rounded-full border border-border flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-secondary hover:shadow-sm transition-all duration-250 ease-out active:scale-95">
+        <button className="w-8 h-8 rounded-full border border-border bg-card shadow-sm flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-secondary transition-all duration-250 ease-out active:scale-95">
           <Plus className="w-4 h-4" />
         </button>
       </header>
@@ -22,10 +22,10 @@ export function CollectionsSection() {
           <p className="text-sm text-muted-foreground mt-1">124 palavras • 80% retido</p>
         </Card>
 
-        <Card className="p-6 bg-background border-border shadow-sm rounded-[24px] group cursor-pointer transition-all duration-300 ease-out hover:scale-[1.02] hover:shadow-md hover:border-border/80 border-dashed">
+        <Card className="p-6 bg-secondary/30 border-border shadow-sm rounded-[24px] group cursor-pointer transition-all duration-300 ease-out hover:scale-[1.02] hover:shadow-md hover:border-border/80 border-dashed">
           <div className="h-full min-h-[100px] flex flex-col items-center justify-center text-muted-foreground group-hover:text-foreground transition-colors">
-            <div className="w-10 h-10 rounded-full bg-secondary flex items-center justify-center mb-3 group-hover:scale-110 transition-transform duration-300">
-              <Plus className="w-5 h-5 opacity-50 group-hover:opacity-100 transition-opacity" />
+            <div className="w-10 h-10 rounded-full bg-background border border-border shadow-sm flex items-center justify-center mb-3 group-hover:scale-110 transition-transform duration-300">
+              <Plus className="w-5 h-5 opacity-60 group-hover:opacity-100 transition-opacity" />
             </div>
             <span className="font-medium text-sm">Criar nova coleção</span>
           </div>

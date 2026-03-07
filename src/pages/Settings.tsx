@@ -157,10 +157,10 @@ export default function Settings() {
             <div className="space-y-3">
               <Label>Nível de Inglês (CEFR)</Label>
               <Select value={localSettings?.level} onValueChange={handleLevelChange}>
-                <SelectTrigger className="h-12 rounded-xl">
+                <SelectTrigger className="h-12 rounded-xl bg-background">
                   <SelectValue placeholder="Selecione seu nível" />
                 </SelectTrigger>
-                <SelectContent className="rounded-2xl border-white/10 glass">
+                <SelectContent className="rounded-2xl border-border bg-popover shadow-lg">
                   <SelectItem value="A1">A1 - Iniciante</SelectItem>
                   <SelectItem value="A2">A2 - Básico</SelectItem>
                   <SelectItem value="B1">B1 - Intermediário</SelectItem>
@@ -186,7 +186,7 @@ export default function Settings() {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-background/50 p-5 rounded-2xl border border-white/5">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-secondary/50 p-5 rounded-2xl border border-border/50">
             <div className="space-y-1.5">
               <Label className="text-xs text-muted-foreground">
                 Multiplicador de Intervalo (SRS)
@@ -222,7 +222,7 @@ export default function Settings() {
                 variant="secondary"
                 onClick={handleTestConnection}
                 disabled={isTesting}
-                className="h-12 w-12 p-0 rounded-xl md:w-auto md:px-6"
+                className="h-12 w-12 p-0 rounded-xl md:w-auto md:px-6 bg-background border border-border"
               >
                 {isTesting ? (
                   <Loader2 className="w-5 h-5 animate-spin" />
@@ -234,7 +234,7 @@ export default function Settings() {
             </div>
           </div>
         </CardContent>
-        <CardFooter className="bg-background/30 border-t border-white/5 flex justify-end px-6 py-5 rounded-b-[24px]">
+        <CardFooter className="bg-secondary/20 border-t border-border/50 flex justify-end px-6 py-5 rounded-b-[24px]">
           <Button onClick={handleSave} className="gap-2 h-12 px-6">
             <Save className="w-5 h-5" />
             Salvar Configurações
@@ -269,7 +269,11 @@ export default function Settings() {
           </div>
 
           <div className="flex flex-col sm:flex-row gap-4 pt-2">
-            <Button variant="outline" className="flex-1 gap-2 h-12" onClick={handleExport}>
+            <Button
+              variant="outline"
+              className="flex-1 gap-2 h-12 bg-background"
+              onClick={handleExport}
+            >
               <Download className="w-5 h-5" />
               Exportar Dados
             </Button>

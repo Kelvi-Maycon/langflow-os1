@@ -27,14 +27,14 @@ export default function Index() {
             />
           </div>
 
-          <div className="flex items-center gap-2 bg-orange-500/10 border border-orange-500/20 px-4 py-2 rounded-full text-orange-500 font-bold text-sm shadow-[0_0_15px_rgba(249,115,22,0.1)] hover:scale-[1.02] transition-transform duration-300 cursor-default">
-            <Flame className="w-4 h-4 fill-current" />
+          <div className="flex items-center gap-2 bg-orange-500/10 border border-orange-500/20 px-4 py-2 rounded-full text-orange-600 font-bold text-sm shadow-sm hover:scale-[1.02] transition-transform duration-300 cursor-default">
+            <Flame className="w-4 h-4 fill-current text-orange-500" />
             12 Dias
           </div>
 
-          <button className="w-10 h-10 rounded-full border border-border bg-background flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-secondary hover:shadow-md transition-all duration-300 active:scale-95 relative">
+          <button className="w-10 h-10 rounded-full border border-border bg-card flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-secondary hover:shadow-sm transition-all duration-300 active:scale-95 relative">
             <Bell className="w-4 h-4" />
-            <span className="absolute top-2.5 right-2.5 w-2 h-2 rounded-full bg-pink-500 border-2 border-background" />
+            <span className="absolute top-2.5 right-2.5 w-2 h-2 rounded-full bg-pink-500 border-2 border-card" />
           </button>
         </div>
       </header>

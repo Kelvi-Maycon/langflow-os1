@@ -16,7 +16,7 @@ export function StatsSidebar() {
           <div className="absolute inset-0 bg-warning/20 blur-xl rounded-full group-hover:bg-warning/30 transition-colors duration-500" />
           <div className="w-24 h-24 rounded-full border-[4px] border-warning/20 border-t-warning flex items-center justify-center relative bg-card shadow-sm rotate-45 group-hover:rotate-[225deg] transition-transform duration-1000 ease-out">
             <div className="-rotate-45 group-hover:-rotate-[225deg] transition-transform duration-1000 ease-out">
-              <Trophy className="w-10 h-10 text-warning fill-warning/20" />
+              <Trophy className="w-10 h-10 text-warning" />
             </div>
           </div>
         </div>
