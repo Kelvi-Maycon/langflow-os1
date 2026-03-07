@@ -12,7 +12,7 @@ export function CollectionsSection() {
       </header>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <Card className="p-6 bg-gradient-to-br from-card to-card/50 border-white/5 rounded-[24px] group cursor-pointer transition-all duration-[250ms] hover:scale-[1.02] hover:border-white/10">
+        <Card className="p-6 bg-gradient-to-br from-card to-card/50 border-white/5 rounded-[24px] group cursor-pointer transition-all duration-300 hover:scale-[1.02] hover:border-white/10">
           <div className="w-12 h-12 rounded-xl bg-blue-500/20 mb-4 flex items-center justify-center">
             <span className="text-2xl">✈️</span>
           </div>
@@ -22,7 +22,7 @@ export function CollectionsSection() {
           <p className="text-sm text-muted-foreground mt-1">124 palavras • 80% retido</p>
         </Card>
 
-        <Card className="p-6 bg-gradient-to-br from-card to-card/50 border-white/5 rounded-[24px] group cursor-pointer transition-all duration-[250ms] hover:scale-[1.02] hover:border-white/10 border-dashed">
+        <Card className="p-6 bg-gradient-to-br from-card to-card/50 border-white/5 rounded-[24px] group cursor-pointer transition-all duration-300 hover:scale-[1.02] hover:border-white/10 border-dashed">
           <div className="h-full min-h-[100px] flex flex-col items-center justify-center text-muted-foreground group-hover:text-foreground transition-colors">
             <Plus className="w-8 h-8 mb-2 opacity-50" />
             <span className="font-medium text-sm">Criar nova coleção</span>

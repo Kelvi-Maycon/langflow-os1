@@ -57,7 +57,7 @@ export function MissionsToday() {
           return (
             <Card
               key={mission.id}
-              className="p-5 flex items-center gap-5 bg-card/50 hover:bg-card border-white/5 transition-all duration-[250ms] hover:scale-[1.02] cursor-pointer rounded-[24px]"
+              className="p-5 flex items-center gap-5 bg-card/50 hover:bg-card border-white/5 transition-all duration-300 hover:scale-[1.02] cursor-pointer rounded-[24px]"
             >
               <div
                 className={`w-14 h-14 rounded-full flex items-center justify-center shrink-0 ${mission.iconBg}`}

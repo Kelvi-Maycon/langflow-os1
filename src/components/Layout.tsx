@@ -51,7 +51,7 @@ function SidebarContent() {
                   key={item.path}
                   to={item.path}
                   className={cn(
-                    'flex items-center gap-3 px-4 py-3 rounded-2xl transition-all duration-[250ms] group',
+                    'flex items-center gap-3 px-4 py-3 rounded-2xl transition-all duration-300 group',
                     isActive
                       ? 'bg-white/10 text-foreground font-medium shadow-sm'
                       : 'hover:bg-white/5 text-muted-foreground hover:text-foreground hover:scale-[1.02]',
@@ -86,7 +86,7 @@ function SidebarContent() {
                 <Link
                   key={item.path}
                   to="#"
-                  className="flex items-center gap-3 px-4 py-3 rounded-2xl transition-all duration-[250ms] group hover:bg-white/5 text-muted-foreground hover:text-foreground hover:scale-[1.02]"
+                  className="flex items-center gap-3 px-4 py-3 rounded-2xl transition-all duration-300 group hover:bg-white/5 text-muted-foreground hover:text-foreground hover:scale-[1.02]"
                 >
                   <Icon className="w-5 h-5 transition-transform group-hover:scale-110" />
                   <span className="text-sm font-medium">{item.label}</span>

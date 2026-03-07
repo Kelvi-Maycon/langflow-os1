@@ -40,7 +40,7 @@ export function StatsSidebar() {
 
       {/* Mini Stats */}
       <div className="grid grid-cols-2 gap-4">
-        <Card className="p-5 bg-card/50 border-white/5 rounded-[24px] flex flex-col items-center text-center justify-center gap-3 transition-all duration-[250ms] hover:scale-[1.04]">
+        <Card className="p-5 bg-card/50 border-white/5 rounded-[24px] flex flex-col items-center text-center justify-center gap-3 transition-all duration-300 hover:scale-[1.04]">
           <div className="w-10 h-10 rounded-full bg-blue-500/10 flex items-center justify-center">
             <BookOpen className="w-5 h-5 text-blue-400" />
           </div>
@@ -52,7 +52,7 @@ export function StatsSidebar() {
           </div>
         </Card>
 
-        <Card className="p-5 bg-card/50 border-white/5 rounded-[24px] flex flex-col items-center text-center justify-center gap-3 transition-all duration-[250ms] hover:scale-[1.04]">
+        <Card className="p-5 bg-card/50 border-white/5 rounded-[24px] flex flex-col items-center text-center justify-center gap-3 transition-all duration-300 hover:scale-[1.04]">
           <div className="w-10 h-10 rounded-full bg-pink-500/10 flex items-center justify-center">
             <Mic className="w-5 h-5 text-pink-400" />
           </div>

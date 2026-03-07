@@ -29,14 +29,14 @@ export function HeroWelcome() {
         <div className="flex flex-wrap gap-4">
           <Button
             size="lg"
-            className="rounded-full bg-pink-500 hover:bg-pink-600 text-white border-0 h-14 px-8 text-base font-bold shadow-[0_0_20px_rgba(236,72,153,0.3)] transition-all duration-[250ms] hover:scale-[1.04] active:scale-[0.98]"
+            className="rounded-full bg-pink-500 hover:bg-pink-600 text-white border-0 h-14 px-8 text-base font-bold shadow-[0_0_20px_rgba(236,72,153,0.3)] transition-all duration-300 hover:scale-[1.04] active:scale-[0.98]"
           >
             <Play className="w-5 h-5 mr-2 fill-current" /> Continuar Jornada
           </Button>
           <Button
             size="lg"
             variant="outline"
-            className="rounded-full bg-white/5 border-white/10 hover:bg-white/10 hover:text-white h-14 px-8 text-base font-bold transition-all duration-[250ms] hover:scale-[1.04] active:scale-[0.98]"
+            className="rounded-full bg-white/5 border-white/10 hover:bg-white/10 hover:text-white h-14 px-8 text-base font-bold transition-all duration-300 hover:scale-[1.04] active:scale-[0.98]"
           >
             <Map className="w-5 h-5 mr-2" /> Ver Caminho
           </Button>
