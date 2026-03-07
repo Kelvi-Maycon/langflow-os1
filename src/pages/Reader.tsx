@@ -12,7 +12,7 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { useStore } from '@/store/main'
-import { QuickPractice } from '@/components/reader/QuickPractice'
+import { useNavigate } from 'react-router-dom'
 
 const defaultText = `The quick brown fox jumps over the lazy dog. 
 This is a serendipity moment where you can learn new words.
@@ -27,9 +27,10 @@ interface CapturedWord {
 export default function Reader() {
   const [inputText, setInputText] = useState(defaultText)
   const [isReadingMode, setIsReadingMode] = useState(false)
-  const [practiceMode, setPracticeMode] = useState(false)
   const [capturedWords, setCapturedWords] = useState<CapturedWord[]>([])
-  const { settings, updateSettings } = useStore()
+
+  const { settings, updateSettings, words: globalWords, addWord } = useStore()
+  const navigate = useNavigate()
 
   const handleCapture = useCallback((word: string, translation: string, sentence: string) => {
     setCapturedWords((prev) => {
@@ -37,6 +38,21 @@ export default function Reader() {
       return [...prev, { word, translation, sentence }]
     })
   }, [])
+
+  const handleNextPhase = () => {
+    capturedWords.forEach((cw) => {
+      const exists = globalWords.some((w) => w.word.toLowerCase() === cw.word.toLowerCase())
+      if (!exists) {
+        addWord({
+          word: cw.word,
+          translation: cw.translation,
+          contextSentence: cw.sentence,
+          status: 'builder',
+        })
+      }
+    })
+    navigate('/practice')
+  }
 
   const processedContent = useMemo(() => {
     if (!isReadingMode) return null
@@ -72,13 +88,11 @@ export default function Reader() {
         <div>
           <h1 className="text-3xl font-bold tracking-tight text-foreground">Leitor Imersivo</h1>
           <p className="text-muted-foreground mt-2 text-lg">
-            {practiceMode
-              ? 'Traduza as frases para fixar o vocabulário.'
-              : 'Cole um texto em inglês, leia e clique nas palavras que não conhece.'}
+            Cole um texto em inglês, leia e clique nas palavras que não conhece.
           </p>
         </div>
 
-        {isReadingMode && !practiceMode && (
+        {isReadingMode && (
           <div className="flex items-center gap-2 bg-secondary/40 p-1.5 rounded-xl border border-border animate-fade-in shadow-sm shrink-0">
             <Settings2 className="w-4 h-4 text-primary ml-2" />
             <Select
@@ -126,18 +140,6 @@ export default function Reader() {
             Iniciar Leitura
           </Button>
         </div>
-      ) : practiceMode ? (
-        <div className="flex-1 flex flex-col items-center justify-start pt-4 md:pt-10 animate-fade-in-up">
-          <div className="w-full max-w-3xl bg-card rounded-[24px] shadow-sm border border-border p-6 md:p-10 relative">
-            <QuickPractice
-              words={capturedWords}
-              onComplete={() => {
-                setPracticeMode(false)
-                setCapturedWords([])
-              }}
-            />
-          </div>
-        </div>
       ) : (
         <div className="flex-1 flex flex-col gap-6 animate-fade-in-up overflow-hidden">
           <Card className="flex-1 p-8 md:p-12 text-lg md:text-xl leading-relaxed font-serif bg-card text-foreground overflow-y-auto border-t-4 border-t-primary shadow-md relative">
@@ -177,7 +179,7 @@ export default function Reader() {
                   </Button>
                   <Button
                     className="h-12 rounded-xl shadow-md group text-base px-6 w-full sm:w-auto"
-                    onClick={() => setPracticeMode(true)}
+                    onClick={handleNextPhase}
                   >
                     Próxima Fase{' '}
                     <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />

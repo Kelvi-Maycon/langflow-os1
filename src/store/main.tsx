@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react'
-import { AppState, WordEntry, UserSettings, WordStatus } from '@/lib/types'
+import { AppState, WordEntry, UserSettings, WordStatus, UserStats } from '@/lib/types'
 import { calculateSM2, getNextReviewDate } from '@/lib/sm2'
 
 interface StoreContextType extends AppState {
@@ -13,6 +13,7 @@ interface StoreContextType extends AppState {
   reviewWord: (id: string, quality: number) => void
   updateSettings: (settings: Partial<UserSettings>) => void
   removeWord: (id: string) => void
+  recordPracticeAttempt: (correct: boolean) => void
 }
 
 const defaultSettings: UserSettings = {
@@ -79,12 +80,22 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     return defaultSettings
   })
 
+  const [stats, setStats] = useState<UserStats>(() => {
+    const saved = localStorage.getItem('langflow_stats')
+    return saved ? JSON.parse(saved) : { practiceAttempts: 0, practiceCorrect: 0 }
+  })
+
   useEffect(() => {
     localStorage.setItem('langflow_words', JSON.stringify(words))
   }, [words])
+
   useEffect(() => {
     localStorage.setItem('langflow_config', JSON.stringify(settings))
   }, [settings])
+
+  useEffect(() => {
+    localStorage.setItem('langflow_stats', JSON.stringify(stats))
+  }, [stats])
 
   const addWord = (data: Parameters<StoreContextType['addWord']>[0]) => {
     const newWord: WordEntry = {
@@ -122,13 +133,31 @@ export function StoreProvider({ children }: { children: ReactNode }) {
   }
 
   const removeWord = (id: string) => setWords((prev) => prev.filter((w) => w.id !== id))
+
   const updateSettings = (newSettings: Partial<UserSettings>) =>
     setSettings((prev) => ({ ...prev, ...newSettings }))
+
+  const recordPracticeAttempt = (correct: boolean) => {
+    setStats((prev) => ({
+      practiceAttempts: prev.practiceAttempts + 1,
+      practiceCorrect: prev.practiceCorrect + (correct ? 1 : 0),
+    }))
+  }
 
   return React.createElement(
     StoreContext.Provider,
     {
-      value: { words, settings, addWord, updateWordStatus, reviewWord, updateSettings, removeWord },
+      value: {
+        words,
+        settings,
+        stats,
+        addWord,
+        updateWordStatus,
+        reviewWord,
+        updateSettings,
+        removeWord,
+        recordPracticeAttempt,
+      },
     },
     children,
   )

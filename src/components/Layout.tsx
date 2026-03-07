@@ -16,7 +16,7 @@ import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar'
 const mainNav = [
   { path: '/', label: 'Dashboard', icon: LayoutDashboard },
   { path: '/reader', label: 'Biblioteca', icon: BookOpen },
-  { path: '/builder', label: 'Prática Rápida', icon: Zap, badge: 'HOT' },
+  { path: '/practice', label: 'Prática Rápida', icon: Zap, badge: 'HOT' },
   { path: '/flashcards', label: 'Estatísticas', icon: BarChart2 },
 ]
 

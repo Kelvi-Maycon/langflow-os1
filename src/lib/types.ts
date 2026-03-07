@@ -22,7 +22,13 @@ export interface UserSettings {
   aiModel?: string
 }
 
+export interface UserStats {
+  practiceAttempts: number
+  practiceCorrect: number
+}
+
 export interface AppState {
   words: WordEntry[]
   settings: UserSettings
+  stats: UserStats
 }
