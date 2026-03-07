@@ -25,6 +25,8 @@ export interface UserSettings {
 export interface UserStats {
   practiceAttempts: number
   practiceCorrect: number
+  flashcardAttempts: number
+  flashcardCorrect: number
 }
 
 export interface AppState {

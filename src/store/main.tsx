@@ -14,6 +14,7 @@ interface StoreContextType extends AppState {
   updateSettings: (settings: Partial<UserSettings>) => void
   removeWord: (id: string) => void
   recordPracticeAttempt: (correct: boolean) => void
+  recordFlashcardAttempt: (correct: boolean) => void
 }
 
 const defaultSettings: UserSettings = {
@@ -23,6 +24,13 @@ const defaultSettings: UserSettings = {
   srsMultiplier: 1.2,
   complexity: 'intermediate',
   aiModel: 'gpt-4o-mini',
+}
+
+const defaultStats: UserStats = {
+  practiceAttempts: 0,
+  practiceCorrect: 0,
+  flashcardAttempts: 0,
+  flashcardCorrect: 0,
 }
 
 const mockWords: WordEntry[] = [
@@ -82,7 +90,8 @@ export function StoreProvider({ children }: { children: ReactNode }) {
 
   const [stats, setStats] = useState<UserStats>(() => {
     const saved = localStorage.getItem('langflow_stats')
-    return saved ? JSON.parse(saved) : { practiceAttempts: 0, practiceCorrect: 0 }
+    if (saved) return { ...defaultStats, ...JSON.parse(saved) }
+    return defaultStats
   })
 
   useEffect(() => {
@@ -139,8 +148,17 @@ export function StoreProvider({ children }: { children: ReactNode }) {
 
   const recordPracticeAttempt = (correct: boolean) => {
     setStats((prev) => ({
-      practiceAttempts: prev.practiceAttempts + 1,
-      practiceCorrect: prev.practiceCorrect + (correct ? 1 : 0),
+      ...prev,
+      practiceAttempts: (prev.practiceAttempts || 0) + 1,
+      practiceCorrect: (prev.practiceCorrect || 0) + (correct ? 1 : 0),
+    }))
+  }
+
+  const recordFlashcardAttempt = (correct: boolean) => {
+    setStats((prev) => ({
+      ...prev,
+      flashcardAttempts: (prev.flashcardAttempts || 0) + 1,
+      flashcardCorrect: (prev.flashcardCorrect || 0) + (correct ? 1 : 0),
     }))
   }
 
@@ -157,6 +175,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
         updateSettings,
         removeWord,
         recordPracticeAttempt,
+        recordFlashcardAttempt,
       },
     },
     children,

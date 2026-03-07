@@ -1,6 +1,6 @@
 import { Card } from '@/components/ui/card'
 import { Progress } from '@/components/ui/progress'
-import { Trophy, BookOpen, Zap } from 'lucide-react'
+import { Trophy, BookOpen, Zap, BrainCircuit } from 'lucide-react'
 import { WeeklyChart } from './WeeklyChart'
 import { useToast } from '@/hooks/use-toast'
 import { useStore } from '@/store/main'
@@ -13,9 +13,14 @@ export function StatsSidebar() {
   const goal = 3000
   const progress = Math.min((totalWords / goal) * 100, 100)
 
-  const accuracy =
+  const practiceAccuracy =
     stats.practiceAttempts > 0
       ? Math.round((stats.practiceCorrect / stats.practiceAttempts) * 100)
+      : 0
+
+  const flashcardAccuracy =
+    stats.flashcardAttempts > 0
+      ? Math.round((stats.flashcardCorrect / stats.flashcardAttempts) * 100)
       : 0
 
   return (
@@ -62,7 +67,7 @@ export function StatsSidebar() {
         </div>
       </Card>
 
-      {/* Mini Stats */}
+      {/* Mini Stats Grid */}
       <div className="grid grid-cols-2 gap-4">
         <Card
           onClick={() =>
@@ -87,8 +92,8 @@ export function StatsSidebar() {
         <Card
           onClick={() =>
             toast({
-              title: 'Estatísticas',
-              description: `Você acertou ${stats.practiceCorrect} de ${stats.practiceAttempts} tentativas na prática rápida.`,
+              title: 'Prática Rápida',
+              description: `Você acertou ${stats.practiceCorrect} de ${stats.practiceAttempts} tentativas na prática.`,
             })
           }
           className="p-5 bg-card border-border shadow-sm flex flex-col items-center text-center justify-center gap-3 transition-all duration-300 ease-out hover:scale-[1.04] hover:shadow-md active:scale-[0.98] cursor-pointer rounded-[24px]"
@@ -97,9 +102,38 @@ export function StatsSidebar() {
             <Zap className="w-5 h-5 text-pink-500" />
           </div>
           <div>
-            <div className="text-xl font-bold text-foreground">{accuracy}%</div>
+            <div className="text-xl font-bold text-foreground">{practiceAccuracy}%</div>
             <div className="text-[10px] font-bold tracking-wider text-muted-foreground mt-0.5">
-              PRECISÃO
+              PRECISÃO PRÁTICA
+            </div>
+          </div>
+        </Card>
+
+        {/* Flashcard Stats */}
+        <Card
+          onClick={() =>
+            toast({
+              title: 'Revisões Concluídas',
+              description: `Você lembrou corretamente de ${stats.flashcardCorrect} cartões em ${stats.flashcardAttempts} revisões.`,
+            })
+          }
+          className="col-span-2 p-5 bg-card border-border shadow-sm flex items-center justify-between gap-3 transition-all duration-300 ease-out hover:scale-[1.02] hover:shadow-md active:scale-[0.98] cursor-pointer rounded-[24px]"
+        >
+          <div className="flex items-center gap-4">
+            <div className="w-10 h-10 rounded-full bg-purple-500/10 flex items-center justify-center">
+              <BrainCircuit className="w-5 h-5 text-purple-500" />
+            </div>
+            <div className="text-left">
+              <div className="text-xl font-bold text-foreground">{flashcardAccuracy}%</div>
+              <div className="text-[10px] font-bold tracking-wider text-muted-foreground mt-0.5">
+                TAXA DE LEMBRANÇA
+              </div>
+            </div>
+          </div>
+          <div className="text-right">
+            <div className="text-lg font-bold text-foreground">{stats.flashcardAttempts}</div>
+            <div className="text-[10px] font-bold tracking-wider text-muted-foreground mt-0.5">
+              REVISÕES FEITAS
             </div>
           </div>
         </Card>

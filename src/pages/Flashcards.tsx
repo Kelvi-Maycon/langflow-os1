@@ -6,7 +6,7 @@ import { BrainCircuit, Check, X, Frown, Smile, PartyPopper } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 export default function Flashcards() {
-  const { words, reviewWord } = useStore()
+  const { words, reviewWord, recordFlashcardAttempt } = useStore()
 
   const dueCards = useMemo(
     () =>
@@ -23,6 +23,10 @@ export default function Flashcards() {
 
   const handleReview = (quality: number) => {
     if (!currentCard) return
+
+    // Register the result in stats: 3, 4, 5 are considered correct/successful
+    recordFlashcardAttempt(quality >= 3)
+
     reviewWord(currentCard.id, quality)
     setIsFlipped(false)
     setCurrentIndex(0)
@@ -45,7 +49,10 @@ export default function Flashcards() {
 
   const renderSentence = () => {
     if (!currentCard) return null
-    const parts = currentCard.contextSentence.split(new RegExp(`(${currentCard.word})`, 'gi'))
+    // Escape regex characters in the word safely to prevent runtime errors
+    const escapedWord = currentCard.word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+    const parts = currentCard.contextSentence.split(new RegExp(`(${escapedWord})`, 'gi'))
+
     return parts.map((part, i) =>
       part.toLowerCase() === currentCard.word.toLowerCase() ? (
         <span
@@ -94,7 +101,7 @@ export default function Flashcards() {
             <span className="text-sm font-bold tracking-widest uppercase text-muted-foreground/80 mb-10 bg-secondary px-4 py-2 rounded-full border border-border/50">
               Tradução Alvo
             </span>
-            <h2 className="text-4xl md:text-5xl font-bold text-foreground capitalize leading-tight font-sans">
+            <h2 className="text-4xl md:text-5xl font-bold text-foreground capitalize leading-tight font-sans text-center">
               {currentCard.translation}
             </h2>
             <p className="mt-16 text-primary/80 animate-pulse font-medium bg-primary/5 px-6 py-2 rounded-full border border-primary/10">

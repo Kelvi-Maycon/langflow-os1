@@ -1,13 +1,5 @@
 import { Outlet, Link, useLocation } from 'react-router-dom'
-import {
-  LayoutDashboard,
-  BookOpen,
-  Zap,
-  BarChart2,
-  Trophy,
-  MessageSquare,
-  Menu,
-} from 'lucide-react'
+import { LayoutDashboard, BookOpen, Zap, BrainCircuit, Menu } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useState } from 'react'
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from '@/components/ui/sheet'
@@ -17,12 +9,7 @@ const mainNav = [
   { path: '/', label: 'Dashboard', icon: LayoutDashboard },
   { path: '/reader', label: 'Biblioteca', icon: BookOpen },
   { path: '/practice', label: 'Prática Rápida', icon: Zap, badge: 'HOT' },
-  { path: '/flashcards', label: 'Estatísticas', icon: BarChart2 },
-]
-
-const communityNav = [
-  { path: '/ranking', label: 'Ranking', icon: Trophy },
-  { path: '/forum', label: 'Fórum', icon: MessageSquare, badge: '3' },
+  { path: '/flashcards', label: 'Revisão', icon: BrainCircuit },
 ]
 
 function SidebarContent() {
@@ -66,32 +53,6 @@ function SidebarContent() {
                   <span className="text-sm">{item.label}</span>
                   {item.badge && (
                     <span className="ml-auto bg-pink-500 text-white text-[9px] px-2 py-0.5 rounded-sm font-bold shadow-[0_0_10px_rgba(236,72,153,0.3)]">
-                      {item.badge}
-                    </span>
-                  )}
-                </Link>
-              )
-            })}
-          </nav>
-        </div>
-
-        <div>
-          <h4 className="text-[10px] font-bold text-sidebar-foreground/50 tracking-widest uppercase mb-3 px-4">
-            Comunidade
-          </h4>
-          <nav className="space-y-1">
-            {communityNav.map((item) => {
-              const Icon = item.icon
-              return (
-                <Link
-                  key={item.path}
-                  to="#"
-                  className="flex items-center gap-3 px-4 py-3 rounded-2xl transition-all duration-300 group hover:bg-sidebar-accent/50 text-sidebar-foreground/70 hover:text-sidebar-foreground hover:scale-[1.02]"
-                >
-                  <Icon className="w-5 h-5 transition-transform group-hover:scale-110" />
-                  <span className="text-sm font-medium">{item.label}</span>
-                  {item.badge && (
-                    <span className="ml-auto bg-secondary border border-border text-secondary-foreground text-[10px] w-5 h-5 flex items-center justify-center rounded-full font-bold">
                       {item.badge}
                     </span>
                   )}

@@ -104,6 +104,7 @@ export default function Settings() {
         'langflow_settings',
         'langflow_sentences',
         'langflow_flashcards',
+        'langflow_stats',
       ]
       keysToRemove.forEach((k) => localStorage.removeItem(k))
       window.location.reload()
@@ -116,6 +117,7 @@ export default function Settings() {
       langflow_config: JSON.parse(localStorage.getItem('langflow_config') || '{}'),
       langflow_sentences: JSON.parse(localStorage.getItem('langflow_sentences') || '[]'),
       langflow_flashcards: JSON.parse(localStorage.getItem('langflow_flashcards') || '[]'),
+      langflow_stats: JSON.parse(localStorage.getItem('langflow_stats') || '{}'),
     }
     const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' })
     const url = URL.createObjectURL(blob)
