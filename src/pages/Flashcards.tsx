@@ -8,7 +8,6 @@ import { cn } from '@/lib/utils'
 export default function Flashcards() {
   const { words, reviewWord } = useStore()
 
-  // Filter cards due for review
   const dueCards = useMemo(
     () =>
       words
@@ -26,20 +25,17 @@ export default function Flashcards() {
     if (!currentCard) return
     reviewWord(currentCard.id, quality)
     setIsFlipped(false)
-    // We don't increment index because the array length shrinks due to useMemo recalculation
-    // But actually, useMemo updates on render, so index 0 will be the next card automatically.
-    // Let's reset to 0 just in case.
     setCurrentIndex(0)
   }
 
   if (dueCards.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center h-[60vh] text-center animate-fade-in space-y-4">
-        <div className="w-24 h-24 bg-success/10 rounded-full flex items-center justify-center mb-4">
-          <PartyPopper className="w-12 h-12 text-success" />
+      <div className="flex flex-col items-center justify-center h-[60vh] text-center animate-fade-in space-y-6">
+        <div className="w-32 h-32 bg-success/10 rounded-full flex items-center justify-center mb-2 shadow-[0_0_40px_rgba(22,163,74,0.2)]">
+          <PartyPopper className="w-16 h-16 text-success animate-bounce" />
         </div>
-        <h2 className="text-3xl font-bold text-foreground">Tudo Feito!</h2>
-        <p className="text-muted-foreground max-w-md text-lg">
+        <h2 className="text-4xl font-bold text-foreground tracking-tight">Tudo Feito!</h2>
+        <p className="text-muted-foreground max-w-md text-xl">
           Você não tem revisões pendentes para hoje. Excelente trabalho mantendo seu vocabulário
           afiado.
         </p>
@@ -47,13 +43,15 @@ export default function Flashcards() {
     )
   }
 
-  // Highlight the target word in the sentence
   const renderSentence = () => {
     if (!currentCard) return null
     const parts = currentCard.contextSentence.split(new RegExp(`(${currentCard.word})`, 'gi'))
     return parts.map((part, i) =>
       part.toLowerCase() === currentCard.word.toLowerCase() ? (
-        <span key={i} className="bg-primary/20 text-primary font-bold px-1 rounded">
+        <span
+          key={i}
+          className="bg-primary/30 text-primary-foreground px-2 py-0.5 rounded-md font-bold shadow-[0_0_10px_rgba(108,63,197,0.3)]"
+        >
           {part}
         </span>
       ) : (
@@ -70,18 +68,18 @@ export default function Flashcards() {
             <BrainCircuit className="w-8 h-8 text-primary" />
             Revisão
           </h1>
-          <p className="text-muted-foreground mt-2">Pense na tradução e no contexto.</p>
+          <p className="text-muted-foreground mt-2 text-lg">Pense na tradução e no contexto.</p>
         </div>
-        <div className="bg-muted px-4 py-2 rounded-full text-sm font-medium border shadow-sm">
+        <div className="bg-secondary px-5 py-2.5 rounded-full text-sm font-bold border border-white/5 shadow-sm text-foreground">
           {dueCards.length} restantes
         </div>
       </header>
 
       {/* Perspective wrapper for 3D flip effect */}
-      <div className="flex-1 perspective-1000 relative min-h-[400px]">
+      <div className="flex-1 perspective-1000 relative min-h-[450px]">
         <div
           className={cn(
-            'w-full h-full absolute top-0 left-0 transition-all duration-500 preserve-3d cursor-pointer',
+            'w-full h-full absolute top-0 left-0 transition-all duration-700 preserve-3d cursor-pointer',
             isFlipped ? 'rotate-y-180' : '',
           )}
           onClick={() => !isFlipped && setIsFlipped(true)}
@@ -89,89 +87,92 @@ export default function Flashcards() {
           {/* Front of card */}
           <Card
             className={cn(
-              'w-full h-full absolute top-0 left-0 backface-hidden p-8 flex flex-col items-center justify-center shadow-hover border-2 text-center bg-white',
+              'w-full h-full absolute top-0 left-0 backface-hidden p-8 flex flex-col items-center justify-center shadow-2xl border-white/5 bg-card/90 backdrop-blur-xl',
               isFlipped ? 'pointer-events-none opacity-0' : '',
             )}
           >
-            <span className="text-sm font-semibold tracking-wider uppercase text-muted-foreground mb-8">
-              Tradução
+            <span className="text-sm font-bold tracking-widest uppercase text-muted-foreground/60 mb-10 bg-background/50 px-4 py-2 rounded-full">
+              Tradução Alvo
             </span>
-            <h2 className="text-4xl md:text-5xl font-bold text-foreground capitalize leading-tight">
+            <h2 className="text-4xl md:text-5xl font-bold text-foreground capitalize leading-tight font-sans">
               {currentCard.translation}
             </h2>
-            <p className="mt-12 text-muted-foreground animate-pulse">Toque para revelar</p>
+            <p className="mt-16 text-primary/70 animate-pulse font-medium bg-primary/10 px-6 py-2 rounded-full">
+              Toque para revelar o contexto
+            </p>
           </Card>
 
           {/* Back of card */}
           <Card
             className={cn(
-              'w-full h-full absolute top-0 left-0 backface-hidden rotate-y-180 p-8 flex flex-col justify-between shadow-hover border-2 border-primary/20 bg-white',
+              'w-full h-full absolute top-0 left-0 backface-hidden rotate-y-180 p-8 flex flex-col justify-between shadow-2xl border-2 border-primary/30 bg-card',
               !isFlipped ? 'pointer-events-none opacity-0' : '',
             )}
           >
-            <div className="text-center flex-1 flex flex-col justify-center">
-              <span className="text-sm font-semibold tracking-wider uppercase text-primary mb-4">
+            <div className="text-center flex-1 flex flex-col justify-center max-w-md mx-auto w-full">
+              <span className="text-sm font-bold tracking-widest uppercase text-primary mb-6 bg-primary/10 px-4 py-2 rounded-full self-center mx-auto">
                 Inglês
               </span>
-              <h2 className="text-4xl font-bold text-foreground mb-6">{currentCard.word}</h2>
-              <div className="text-xl md:text-2xl text-muted-foreground italic leading-relaxed bg-muted/50 p-6 rounded-xl border">
+              <h2 className="text-4xl md:text-5xl font-extrabold text-foreground mb-8 font-sans">
+                {currentCard.word}
+              </h2>
+              <div className="text-xl md:text-2xl text-foreground/80 italic leading-relaxed bg-background/50 p-6 rounded-[20px] border border-white/5 shadow-inner">
                 "{renderSentence()}"
               </div>
             </div>
 
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-2 mt-8 pointer-events-auto">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mt-8 pointer-events-auto">
               <Button
                 variant="outline"
-                className="h-16 flex flex-col gap-1 border-destructive/30 hover:bg-destructive/10 hover:text-destructive"
+                className="h-14 rounded-full border-destructive/50 hover:bg-destructive hover:text-white transition-all group"
                 onClick={(e) => {
                   e.stopPropagation()
                   handleReview(1)
                 }}
               >
-                <X className="w-5 h-5" />
-                <span className="text-xs">Errei</span>
+                <X className="w-5 h-5 mr-1 group-hover:scale-110 transition-transform" />
+                <span className="font-bold">Errei</span>
               </Button>
               <Button
                 variant="outline"
-                className="h-16 flex flex-col gap-1 border-orange-500/30 hover:bg-orange-500/10 hover:text-orange-500"
+                className="h-14 rounded-full border-warning/50 hover:bg-warning hover:text-white transition-all group"
                 onClick={(e) => {
                   e.stopPropagation()
                   handleReview(3)
                 }}
               >
-                <Frown className="w-5 h-5" />
-                <span className="text-xs">Difícil</span>
+                <Frown className="w-5 h-5 mr-1 group-hover:scale-110 transition-transform" />
+                <span className="font-bold">Difícil</span>
               </Button>
               <Button
                 variant="outline"
-                className="h-16 flex flex-col gap-1 border-success/30 hover:bg-success/10 hover:text-success"
+                className="h-14 rounded-full border-success/50 hover:bg-success hover:text-white transition-all group"
                 onClick={(e) => {
                   e.stopPropagation()
                   handleReview(4)
                 }}
               >
-                <Check className="w-5 h-5" />
-                <span className="text-xs">Bom</span>
+                <Check className="w-5 h-5 mr-1 group-hover:scale-110 transition-transform" />
+                <span className="font-bold">Bom</span>
               </Button>
               <Button
                 variant="outline"
-                className="h-16 flex flex-col gap-1 border-primary/30 hover:bg-primary/10 hover:text-primary"
+                className="h-14 rounded-full border-primary/50 hover:bg-primary hover:text-white transition-all group shadow-[0_0_15px_rgba(108,63,197,0.1)] hover:shadow-[0_0_20px_rgba(108,63,197,0.4)]"
                 onClick={(e) => {
                   e.stopPropagation()
                   handleReview(5)
                 }}
               >
-                <Smile className="w-5 h-5" />
-                <span className="text-xs">Fácil</span>
+                <Smile className="w-5 h-5 mr-1 group-hover:scale-110 transition-transform" />
+                <span className="font-bold">Fácil</span>
               </Button>
             </div>
           </Card>
         </div>
       </div>
 
-      {/* Required CSS additions for 3D flip within component to keep it self-contained */}
       <style>{`
-        .perspective-1000 { perspective: 1000px; }
+        .perspective-1000 { perspective: 1200px; }
         .preserve-3d { transform-style: preserve-3d; }
         .backface-hidden { backface-visibility: hidden; }
         .rotate-y-180 { transform: rotateY(180deg); }

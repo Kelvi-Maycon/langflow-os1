@@ -15,70 +15,67 @@ export default function Index() {
   const learning = words.filter((w) => w.status !== 'mastered').length
 
   return (
-    <div className="space-y-6 animate-fade-in-up">
-      <header className="mb-8">
-        <h1 className="text-3xl font-bold tracking-tight text-foreground">Bem-vindo de volta!</h1>
-        <p className="text-muted-foreground mt-2">
+    <div className="space-y-8 animate-fade-in-up">
+      <header className="mb-2">
+        <h1 className="text-4xl font-bold tracking-tight text-foreground">Bem-vindo de volta!</h1>
+        <p className="text-muted-foreground mt-2 text-lg">
           Pronto para transformar seu vocabulário passivo em ativo?
         </p>
       </header>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <Card className="shadow-soft border-none bg-primary/5">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+        <Card className="bg-primary/10 border-primary/20 relative overflow-hidden group">
+          <div className="absolute -right-6 -top-6 w-24 h-24 bg-primary/20 rounded-full blur-2xl group-hover:scale-150 transition-transform duration-500" />
           <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground flex items-center gap-2">
-              <BrainCircuit className="w-4 h-4 text-primary" />
+            <CardTitle className="text-sm font-medium text-primary flex items-center gap-2">
+              <BrainCircuit className="w-5 h-5" />
               Revisão Diária
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold text-foreground">{srsPending}</div>
-            <p className="text-xs text-muted-foreground mt-1">Cards aguardando revisão</p>
+            <div className="text-4xl font-bold text-foreground">{srsPending}</div>
+            <p className="text-sm text-primary/80 mt-1 font-medium">Cards aguardando revisão</p>
           </CardContent>
         </Card>
 
-        <Card className="shadow-soft border-none">
+        <Card>
           <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground flex items-center gap-2">
-              <Hammer className="w-4 h-4 text-orange-500" />
+            <CardTitle className="text-sm font-medium text-warning flex items-center gap-2">
+              <Hammer className="w-5 h-5" />
               Na Oficina
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold text-foreground">{builderPending}</div>
-            <p className="text-xs text-muted-foreground mt-1">Palavras para construir</p>
+            <div className="text-4xl font-bold text-foreground">{builderPending}</div>
+            <p className="text-sm text-muted-foreground mt-1">Palavras para construir</p>
           </CardContent>
         </Card>
 
-        <Card className="shadow-soft border-none">
+        <Card>
           <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground flex items-center gap-2">
-              <CheckCircle2 className="w-4 h-4 text-success" />
+            <CardTitle className="text-sm font-medium text-success flex items-center gap-2">
+              <CheckCircle2 className="w-5 h-5" />
               Vocabulário Ativo
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-bold text-foreground">{mastered}</div>
-            <p className="text-xs text-muted-foreground mt-1">
+            <div className="text-4xl font-bold text-foreground">{mastered}</div>
+            <p className="text-sm text-muted-foreground mt-1">
               De {learning + mastered} palavras totais
             </p>
           </CardContent>
         </Card>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
-        <div className="space-y-4">
-          <h2 className="text-xl font-semibold flex items-center gap-2">
-            <TrendingUp className="w-5 h-5" /> Ações Rápidas
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-4">
+        <div className="space-y-5">
+          <h2 className="text-xl font-semibold flex items-center gap-2 text-foreground/90">
+            <TrendingUp className="w-5 h-5 text-primary" /> Ações Rápidas
           </h2>
-          <div className="grid gap-3">
-            <Button
-              asChild
-              size="lg"
-              className="w-full justify-start h-14 shadow-soft hover:shadow-hover transition-all"
-            >
+          <div className="grid gap-4">
+            <Button asChild size="lg" className="w-full justify-start h-16 text-base group">
               <Link to="/reader">
-                <BookOpen className="w-5 h-5 mr-3" />
+                <BookOpen className="w-5 h-5 mr-3 text-primary-foreground/80 group-hover:text-primary-foreground transition-colors" />
                 Ler Novo Texto
               </Link>
             </Button>
@@ -87,13 +84,13 @@ export default function Index() {
               asChild
               size="lg"
               variant={srsPending > 0 ? 'default' : 'outline'}
-              className="w-full justify-start h-14 shadow-soft hover:shadow-hover transition-all relative overflow-hidden group"
+              className="w-full justify-start h-16 text-base relative overflow-hidden group"
             >
               <Link to="/flashcards">
                 <BrainCircuit className="w-5 h-5 mr-3 relative z-10" />
                 <span className="relative z-10">Revisar Flashcards</span>
                 {srsPending > 0 && (
-                  <span className="absolute right-4 bg-background/20 text-white text-xs px-2 py-1 rounded-full z-10">
+                  <span className="absolute right-4 bg-background/30 text-primary-foreground text-xs px-3 py-1 rounded-full z-10 font-bold backdrop-blur-sm">
                     {srsPending} pendentes
                   </span>
                 )}
@@ -102,38 +99,38 @@ export default function Index() {
           </div>
         </div>
 
-        <div className="bg-card rounded-xl p-6 shadow-soft border">
-          <h3 className="font-semibold mb-4">Como o LangFlow funciona?</h3>
-          <ul className="space-y-4 text-sm text-muted-foreground">
-            <li className="flex gap-3">
-              <span className="flex-shrink-0 w-6 h-6 rounded-full bg-primary/10 text-primary flex items-center justify-center font-bold">
+        <Card className="p-8 border-white/5 bg-card/50">
+          <h3 className="font-semibold text-lg mb-6">Como o LangFlow funciona?</h3>
+          <ul className="space-y-6 text-sm text-muted-foreground">
+            <li className="flex gap-4 items-start">
+              <span className="flex-shrink-0 w-8 h-8 rounded-full bg-primary/20 text-primary flex items-center justify-center font-bold text-base shadow-[0_0_15px_rgba(108,63,197,0.2)]">
                 1
               </span>
-              <p>
-                <strong>Leitor:</strong> Leia textos reais, clique nas palavras desconhecidas para
-                capturá-las com contexto.
+              <p className="pt-1 leading-relaxed">
+                <strong className="text-foreground">Leitor:</strong> Leia textos reais, clique nas
+                palavras desconhecidas para capturá-las com contexto.
               </p>
             </li>
-            <li className="flex gap-3">
-              <span className="flex-shrink-0 w-6 h-6 rounded-full bg-orange-500/10 text-orange-500 flex items-center justify-center font-bold">
+            <li className="flex gap-4 items-start">
+              <span className="flex-shrink-0 w-8 h-8 rounded-full bg-warning/20 text-warning flex items-center justify-center font-bold text-base shadow-[0_0_15px_rgba(245,158,11,0.2)]">
                 2
               </span>
-              <p>
-                <strong>Construtor:</strong> Force a produção ativa montando as frases originais
-                como um quebra-cabeça.
+              <p className="pt-1 leading-relaxed">
+                <strong className="text-foreground">Construtor:</strong> Force a produção ativa
+                montando as frases originais como um quebra-cabeça.
               </p>
             </li>
-            <li className="flex gap-3">
-              <span className="flex-shrink-0 w-6 h-6 rounded-full bg-success/10 text-success flex items-center justify-center font-bold">
+            <li className="flex gap-4 items-start">
+              <span className="flex-shrink-0 w-8 h-8 rounded-full bg-success/20 text-success flex items-center justify-center font-bold text-base shadow-[0_0_15px_rgba(22,163,74,0.2)]">
                 3
               </span>
-              <p>
-                <strong>Revisão:</strong> Mantenha o vocabulário fresco na memória com nosso sistema
-                de repetição espaçada.
+              <p className="pt-1 leading-relaxed">
+                <strong className="text-foreground">Revisão:</strong> Mantenha o vocabulário fresco
+                na memória com nosso sistema de repetição espaçada.
               </p>
             </li>
           </ul>
-        </div>
+        </Card>
       </div>
     </div>
   )

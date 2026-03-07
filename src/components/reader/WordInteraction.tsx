@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import { Button } from '@/components/ui/button'
-import { Plus, BookOpen } from 'lucide-react'
+import { Plus, BookOpen, Check } from 'lucide-react'
 import { useStore } from '@/store/main'
 import { useToast } from '@/hooks/use-toast'
 
@@ -10,7 +10,6 @@ interface WordInteractionProps {
   sentence: string
 }
 
-// A simple mock dictionary for demonstration
 const mockDictionary: Record<string, string> = {
   the: 'o, a, os, as',
   is: 'é, está',
@@ -22,6 +21,8 @@ const mockDictionary: Record<string, string> = {
   lazy: 'preguiçoso',
   dog: 'cachorro',
   serendipity: 'serendipidade (descoberta feliz por acaso)',
+  ephemeral: 'efêmero',
+  ubiquitous: 'onipresente',
 }
 
 export function WordInteraction({ word, sentence }: WordInteractionProps) {
@@ -32,7 +33,6 @@ export function WordInteraction({ word, sentence }: WordInteractionProps) {
   const cleanWord = word.replace(/[^\w-]/g, '').toLowerCase()
   const isAlreadySaved = words.some((w) => w.word.toLowerCase() === cleanWord)
 
-  // Mock translation - in a real app, this would call an API
   const mockTranslation = mockDictionary[cleanWord] || `tradução de "${cleanWord}"`
 
   const handleSave = () => {
@@ -52,7 +52,6 @@ export function WordInteraction({ word, sentence }: WordInteractionProps) {
     setOpen(false)
   }
 
-  // If it's not a word character, just render it normally
   if (!cleanWord) {
     return <span>{word}</span>
   }
@@ -60,31 +59,44 @@ export function WordInteraction({ word, sentence }: WordInteractionProps) {
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
-        <span className="cursor-pointer hover:bg-primary/20 hover:text-primary transition-colors rounded px-0.5">
+        <span className="cursor-pointer hover:bg-primary/30 hover:text-primary-foreground hover:shadow-[0_0_10px_rgba(108,63,197,0.5)] transition-all rounded-md px-1 py-0.5 mx-0.5 inline-block">
           {word}
         </span>
       </PopoverTrigger>
-      <PopoverContent className="w-64 p-4 shadow-hover z-50 animate-fade-in-up" sideOffset={5}>
-        <div className="space-y-3">
-          <div className="flex items-start gap-2">
-            <BookOpen className="w-5 h-5 text-primary mt-0.5" />
+      <PopoverContent
+        className="w-80 p-5 glass z-50 animate-fade-in-up rounded-[24px] border-white/10"
+        sideOffset={8}
+      >
+        <div className="space-y-4">
+          <div className="flex items-start gap-3">
+            <div className="p-2 bg-primary/20 rounded-xl">
+              <BookOpen className="w-5 h-5 text-primary" />
+            </div>
             <div>
-              <h4 className="font-bold text-lg leading-none">{cleanWord}</h4>
-              <p className="text-sm text-muted-foreground mt-1">{mockTranslation}</p>
+              <h4 className="font-bold text-xl leading-none text-foreground font-sans">
+                {cleanWord}
+              </h4>
+              <p className="text-sm text-primary/80 font-medium mt-1.5">{mockTranslation}</p>
             </div>
           </div>
 
-          <div className="text-xs bg-muted p-2 rounded italic text-muted-foreground border-l-2 border-primary">
+          <div className="text-sm bg-background/40 p-4 rounded-xl italic text-muted-foreground border-l-2 border-primary font-sans leading-relaxed">
             "{sentence.trim()}"
           </div>
 
-          <Button className="w-full mt-2" size="sm" onClick={handleSave} disabled={isAlreadySaved}>
+          <Button
+            className="w-full mt-2 h-12"
+            onClick={handleSave}
+            disabled={isAlreadySaved}
+            variant={isAlreadySaved ? 'secondary' : 'default'}
+          >
             {isAlreadySaved ? (
-              'Já está na sua lista'
+              <>
+                <Check className="w-4 h-4 mr-2 text-success" /> Já está na sua lista
+              </>
             ) : (
               <>
-                <Plus className="w-4 h-4 mr-2" />
-                Adicionar ao Construtor
+                <Plus className="w-4 h-4 mr-2" /> Adicionar ao Construtor
               </>
             )}
           </Button>

@@ -13,15 +13,12 @@ export default function Reader() {
   const [inputText, setInputText] = useState(defaultText)
   const [isReadingMode, setIsReadingMode] = useState(false)
 
-  // Split text into sentences, then words, keeping punctuation
   const processedContent = useMemo(() => {
     if (!isReadingMode) return null
 
-    // Simple sentence splitter (rough approximation)
     const sentences = inputText.match(/[^.!?]+[.!?]+/g) || [inputText]
 
     return sentences.map((sentence, sIdx) => {
-      // Split by words and punctuation, keeping both
       const tokens = sentence.split(/([\s.,!?;:]+)/)
 
       return (
@@ -38,22 +35,22 @@ export default function Reader() {
   }, [inputText, isReadingMode])
 
   return (
-    <div className="space-y-6 animate-fade-in max-w-3xl mx-auto h-full flex flex-col">
+    <div className="space-y-6 animate-fade-in max-w-4xl mx-auto h-full flex flex-col">
       <header>
         <h1 className="text-3xl font-bold tracking-tight text-foreground">Leitor Imersivo</h1>
-        <p className="text-muted-foreground mt-2">
+        <p className="text-muted-foreground mt-2 text-lg">
           Cole um texto em inglês, leia e clique nas palavras que não conhece.
         </p>
       </header>
 
       {!isReadingMode ? (
-        <div className="flex-1 flex flex-col gap-4 animate-fade-in-up">
-          <Card className="flex-1 p-4 shadow-soft min-h-[400px] flex flex-col">
-            <div className="flex items-center gap-2 mb-2 text-sm font-medium text-muted-foreground">
-              <FileText className="w-4 h-4" /> Cole seu texto aqui:
+        <div className="flex-1 flex flex-col gap-6 animate-fade-in-up">
+          <Card className="flex-1 p-6 flex flex-col border-white/5 bg-card/80 backdrop-blur-sm min-h-[400px]">
+            <div className="flex items-center gap-2 mb-4 text-sm font-medium text-primary">
+              <FileText className="w-5 h-5" /> Cole seu texto aqui:
             </div>
             <Textarea
-              className="flex-1 resize-none text-base md:text-lg p-4 font-sans focus-visible:ring-primary/50"
+              className="flex-1 resize-none text-base md:text-lg p-6 font-sans bg-background/50 border-white/10 rounded-[20px] focus-visible:ring-primary shadow-inner"
               placeholder="Paste English text here..."
               value={inputText}
               onChange={(e) => setInputText(e.target.value)}
@@ -61,27 +58,37 @@ export default function Reader() {
           </Card>
           <Button
             size="lg"
-            className="w-full h-14 text-lg shadow-soft hover:shadow-hover transition-all"
+            className="w-full h-16 text-lg shadow-lg group"
             onClick={() => {
               if (inputText.trim()) setIsReadingMode(true)
             }}
           >
-            <Play className="w-5 h-5 mr-2" fill="currentColor" />
+            <Play
+              className="w-5 h-5 mr-2 group-hover:scale-110 transition-transform"
+              fill="currentColor"
+            />
             Iniciar Leitura
           </Button>
         </div>
       ) : (
-        <div className="flex-1 flex flex-col gap-4 animate-fade-in-up">
-          <Card className="flex-1 p-6 md:p-8 shadow-soft text-lg md:text-xl leading-relaxed font-serif bg-[#fdfdfc] text-[#2d3748] min-h-[400px] overflow-y-auto border-t-4 border-t-primary">
-            {processedContent}
+        <div className="flex-1 flex flex-col gap-6 animate-fade-in-up">
+          <Card className="flex-1 p-8 md:p-12 text-lg md:text-xl leading-relaxed font-serif bg-card text-foreground min-h-[400px] overflow-y-auto border-t-4 border-t-primary shadow-2xl relative">
+            <div className="absolute inset-0 bg-gradient-to-b from-primary/5 to-transparent pointer-events-none rounded-[24px]" />
+            <div className="relative z-10">{processedContent}</div>
           </Card>
 
-          <div className="flex justify-between items-center bg-card p-4 rounded-xl border shadow-sm">
-            <div className="text-sm text-muted-foreground flex items-center gap-2">
-              <CheckCircle2 className="w-4 h-4 text-success" />
-              Clique nas palavras para salvar
+          <div className="flex justify-between items-center bg-card/80 backdrop-blur-md p-4 px-6 rounded-full border border-white/10 shadow-lg">
+            <div className="text-sm font-medium flex items-center gap-3 text-muted-foreground">
+              <div className="p-1.5 bg-success/20 rounded-full">
+                <CheckCircle2 className="w-4 h-4 text-success" />
+              </div>
+              Clique nas palavras para capturar o contexto
             </div>
-            <Button variant="outline" onClick={() => setIsReadingMode(false)}>
+            <Button
+              variant="outline"
+              className="rounded-full"
+              onClick={() => setIsReadingMode(false)}
+            >
               Editar Texto
             </Button>
           </div>

@@ -27,6 +27,7 @@ export default {
     extend: {
       fontFamily: {
         sans: ['Inter', 'sans-serif'],
+        mono: ['"Fira Code"', 'monospace'],
       },
       colors: {
         border: 'hsl(var(--border))',
@@ -49,6 +50,10 @@ export default {
         success: {
           DEFAULT: 'hsl(var(--success))',
           foreground: 'hsl(var(--success-foreground))',
+        },
+        warning: {
+          DEFAULT: 'hsl(var(--warning))',
+          foreground: 'hsl(var(--warning-foreground))',
         },
         muted: {
           DEFAULT: 'hsl(var(--muted))',
@@ -83,7 +88,8 @@ export default {
         sm: 'calc(var(--radius) - 4px)',
       },
       boxShadow: {
-        soft: '0 2px 12px rgba(0, 0, 0, 0.06)',
+        soft: '0 4px 20px rgba(0, 0, 0, 0.4)',
+        hover: '0 8px 30px rgba(108, 63, 197, 0.15)',
       },
     },
   },

@@ -37,7 +37,7 @@ export default function Settings() {
         total += (localStorage[key].length + key.length) * 2
       }
     }
-    const maxStorage = 5 * 1024 * 1024 // 5MB limit approximation
+    const maxStorage = 5 * 1024 * 1024
     setStorageUsage({ bytes: total, percentage: Math.min((total / maxStorage) * 100, 100) })
   }, [words, settings])
 
@@ -68,14 +68,13 @@ export default function Settings() {
     toast({
       title: 'Configurações salvas',
       description: 'Suas preferências foram atualizadas com sucesso.',
-      className: 'bg-green-600 text-white border-green-700',
+      className: 'bg-success text-success-foreground border-success',
     })
   }
 
   const handleTestConnection = async () => {
     setIsTesting(true)
     try {
-      // Mock API latency
       await new Promise((r) => setTimeout(r, 1500))
       if (!localSettings?.apiKey) {
         throw new Error('A Chave de API é obrigatória.')
@@ -87,8 +86,8 @@ export default function Settings() {
       }
       toast({
         title: 'Conexão bem-sucedida',
-        description: 'API Key validada com sucesso e provedor alcançável.',
-        className: 'bg-green-600 text-white border-green-700',
+        description: 'API Key validada com sucesso.',
+        className: 'bg-success text-success-foreground border-success',
       })
     } catch (error: any) {
       toast({ title: 'Falha na conexão', description: error.message, variant: 'destructive' })
@@ -140,13 +139,13 @@ export default function Settings() {
   return (
     <div className="space-y-8 animate-fade-in-up max-w-2xl mx-auto pb-12">
       <header>
-        <h1 className="text-3xl font-bold tracking-tight text-foreground">Configurações</h1>
-        <p className="text-muted-foreground mt-2">
+        <h1 className="text-4xl font-bold tracking-tight text-foreground">Configurações</h1>
+        <p className="text-muted-foreground mt-2 text-lg">
           Personalize sua experiência de aprendizado e gerencie seus dados.
         </p>
       </header>
 
-      <Card className="shadow-soft">
+      <Card>
         <CardHeader>
           <CardTitle>Preferências e IA</CardTitle>
           <CardDescription>
@@ -154,14 +153,14 @@ export default function Settings() {
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="space-y-2">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="space-y-3">
               <Label>Nível de Inglês (CEFR)</Label>
               <Select value={localSettings?.level} onValueChange={handleLevelChange}>
-                <SelectTrigger>
+                <SelectTrigger className="h-12 rounded-xl">
                   <SelectValue placeholder="Selecione seu nível" />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className="rounded-2xl border-white/10 glass">
                   <SelectItem value="A1">A1 - Iniciante</SelectItem>
                   <SelectItem value="A2">A2 - Básico</SelectItem>
                   <SelectItem value="B1">B1 - Intermediário</SelectItem>
@@ -172,7 +171,7 @@ export default function Settings() {
               </Select>
             </div>
 
-            <div className="space-y-2">
+            <div className="space-y-3">
               <Label>Meta Diária (Novas Palavras)</Label>
               <Input
                 type="number"
@@ -187,90 +186,96 @@ export default function Settings() {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-muted/50 p-4 rounded-lg border">
-            <div className="space-y-1">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-background/50 p-5 rounded-2xl border border-white/5">
+            <div className="space-y-1.5">
               <Label className="text-xs text-muted-foreground">
                 Multiplicador de Intervalo (SRS)
               </Label>
-              <p className="text-sm font-medium">
+              <p className="text-base font-bold text-foreground">
                 {(localSettings?.srsMultiplier ?? 1.2).toFixed(1)}x
               </p>
             </div>
-            <div className="space-y-1">
+            <div className="space-y-1.5">
               <Label className="text-xs text-muted-foreground">Complexidade (Builder)</Label>
-              <p className="text-sm font-medium capitalize">
+              <p className="text-base font-bold text-foreground capitalize">
                 {localSettings?.complexity ?? 'intermediate'}
               </p>
             </div>
-            <div className="col-span-full">
-              <p className="text-xs text-muted-foreground mt-1">
+            <div className="col-span-full pt-2">
+              <p className="text-xs text-muted-foreground">
                 Estes valores são ajustados automaticamente com base no seu nível de inglês.
               </p>
             </div>
           </div>
 
-          <div className="space-y-2 pt-2">
+          <div className="space-y-3 pt-2">
             <Label>Chave de API (OpenAI / Anthropic)</Label>
-            <div className="flex gap-2">
+            <div className="flex gap-3">
               <Input
                 type="password"
                 placeholder="sk-..."
                 value={localSettings?.apiKey ?? ''}
                 onChange={(e) => setLocalSettings((prev) => ({ ...prev, apiKey: e.target.value }))}
-                className="flex-1"
+                className="flex-1 font-mono"
               />
-              <Button variant="secondary" onClick={handleTestConnection} disabled={isTesting}>
+              <Button
+                variant="secondary"
+                onClick={handleTestConnection}
+                disabled={isTesting}
+                className="h-12 w-12 p-0 rounded-xl md:w-auto md:px-6"
+              >
                 {isTesting ? (
-                  <Loader2 className="w-4 h-4 animate-spin" />
+                  <Loader2 className="w-5 h-5 animate-spin" />
                 ) : (
-                  <PlugZap className="w-4 h-4" />
+                  <PlugZap className="w-5 h-5" />
                 )}
                 <span className="ml-2 sr-only md:not-sr-only">Testar</span>
               </Button>
             </div>
           </div>
         </CardContent>
-        <CardFooter className="bg-muted/30 border-t flex justify-end px-6 py-4">
-          <Button onClick={handleSave} className="gap-2">
-            <Save className="w-4 h-4" />
+        <CardFooter className="bg-background/30 border-t border-white/5 flex justify-end px-6 py-5 rounded-b-[24px]">
+          <Button onClick={handleSave} className="gap-2 h-12 px-6">
+            <Save className="w-5 h-5" />
             Salvar Configurações
           </Button>
         </CardFooter>
       </Card>
 
-      <Card className="shadow-soft border-destructive/20">
+      <Card className="border-destructive/30 bg-destructive/5 relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-64 h-64 bg-destructive/10 blur-[80px] rounded-full" />
         <CardHeader>
           <CardTitle className="text-destructive flex items-center gap-2">
-            <HardDrive className="w-5 h-5" />
+            <HardDrive className="w-6 h-6" />
             Dados e Armazenamento
           </CardTitle>
-          <CardDescription>
+          <CardDescription className="text-destructive/80">
             Monitore e exporte os dados armazenados localmente no seu navegador.
           </CardDescription>
         </CardHeader>
-        <CardContent className="space-y-6">
-          <div className="space-y-2">
+        <CardContent className="space-y-8 relative z-10">
+          <div className="space-y-3">
             <div className="flex justify-between text-sm">
-              <span className="font-medium">Uso de Armazenamento Local</span>
-              <span className="text-muted-foreground">
+              <span className="font-bold text-foreground">Uso de Armazenamento Local</span>
+              <span className="text-muted-foreground font-mono">
                 {formatBytes(storageUsage?.bytes)} / 5 MB
               </span>
             </div>
-            <Progress value={storageUsage?.percentage ?? 0} className="h-2" />
+            <Progress value={storageUsage?.percentage ?? 0} className="h-3" />
             <p className="text-xs text-muted-foreground">
               {(storageUsage?.percentage ?? 0).toFixed(1)}% utilizado. Todos os dados são salvos com
               segurança de forma offline.
             </p>
           </div>
 
-          <div className="flex flex-col sm:flex-row gap-3 pt-2">
-            <Button variant="outline" className="flex-1 gap-2" onClick={handleExport}>
-              <Download className="w-4 h-4" />
-              Exportar Dados (JSON)
+          <div className="flex flex-col sm:flex-row gap-4 pt-2">
+            <Button variant="outline" className="flex-1 gap-2 h-12" onClick={handleExport}>
+              <Download className="w-5 h-5" />
+              Exportar Dados
             </Button>
-            <Button variant="destructive" className="flex-1 gap-2" onClick={handleClearData}>
-              <Trash2 className="w-4 h-4" />
-              Apagar Todo o Progresso
+            <Button variant="destructive" className="flex-1 gap-2 h-12" onClick={handleClearData}>
+              <Trash2 className="w-5 h-5" />
+              Apagar Progresso
             </Button>
           </div>
         </CardContent>

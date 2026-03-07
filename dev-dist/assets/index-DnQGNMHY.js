@@ -24189,21 +24189,21 @@ function Layout() {
 		className: "flex h-screen w-full bg-background overflow-hidden flex-col md:flex-row",
 		children: [
 			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("header", {
-				className: "md:hidden flex items-center justify-between p-4 bg-sidebar text-sidebar-foreground shrink-0 shadow-soft z-10",
+				className: "md:hidden flex items-center justify-between p-4 bg-sidebar text-sidebar-foreground shrink-0 border-b border-white/5 z-10",
 				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-					className: "flex items-center gap-2 font-bold text-lg",
-					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(BookOpen, { className: "w-5 h-5 text-sidebar-primary" }), " LangFlow"]
+					className: "flex items-center gap-2 font-bold text-lg tracking-tight",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(BookOpen, { className: "w-5 h-5 text-primary" }), " LangFlow"]
 				}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-					className: "flex items-center gap-2 text-sm text-sidebar-foreground/70",
-					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(RefreshCcw, { className: "w-4 h-4" }), " Sincronizado"]
+					className: "flex items-center gap-2 text-xs text-sidebar-foreground/50 bg-white/5 px-3 py-1.5 rounded-full",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(RefreshCcw, { className: "w-3 h-3" }), " Sincronizado"]
 				})]
 			}),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("aside", {
-				className: "hidden md:flex flex-col w-64 bg-sidebar text-sidebar-foreground shrink-0 shadow-soft z-10 transition-all",
+				className: "hidden md:flex flex-col w-64 bg-sidebar text-sidebar-foreground shrink-0 border-r border-white/5 z-10 transition-all",
 				children: [
 					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-						className: "p-6 flex items-center gap-3 font-bold text-xl border-b border-sidebar-border",
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(BookOpen, { className: "w-6 h-6 text-sidebar-primary" }), "LangFlow"]
+						className: "p-6 flex items-center gap-3 font-bold text-xl border-b border-white/5 tracking-tight",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(BookOpen, { className: "w-6 h-6 text-primary" }), "LangFlow"]
 					}),
 					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("nav", {
 						className: "flex-1 p-4 space-y-2",
@@ -24212,12 +24212,12 @@ function Layout() {
 							const isActive = location.pathname === item.path;
 							return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Link, {
 								to: item.path,
-								className: cn("flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200", isActive ? "bg-sidebar-primary text-sidebar-primary-foreground font-medium" : "hover:bg-sidebar-accent hover:text-sidebar-accent-foreground text-sidebar-foreground/80"),
+								className: cn("flex items-center gap-3 px-4 py-3.5 rounded-2xl transition-all duration-200 group", isActive ? "bg-primary/10 text-primary font-medium border border-primary/20 shadow-inner" : "hover:bg-white/5 hover:text-foreground text-sidebar-foreground/70"),
 								children: [
-									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Icon$2, { className: "w-5 h-5" }),
+									/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Icon$2, { className: cn("w-5 h-5 transition-transform group-hover:scale-110", isActive && "text-primary") }),
 									item.label,
 									item.path === "/flashcards" && srsCount > 0 && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-										className: "ml-auto bg-destructive text-destructive-foreground text-xs px-2 py-0.5 rounded-full",
+										className: "ml-auto bg-primary text-primary-foreground text-[10px] px-2 py-0.5 rounded-full font-bold shadow-[0_0_10px_rgba(108,63,197,0.5)]",
 										children: srsCount
 									})
 								]
@@ -24225,33 +24225,33 @@ function Layout() {
 						})
 					}),
 					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-						className: "p-4 border-t border-sidebar-border text-xs text-sidebar-foreground/50 flex items-center gap-2",
+						className: "p-6 border-t border-white/5 text-xs text-sidebar-foreground/40 flex items-center justify-center gap-2",
 						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(RefreshCcw, { className: "w-3 h-3" }), " Salvo localmente"]
 					})
 				]
 			}),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("main", {
-				className: "flex-1 overflow-y-auto relative animate-fade-in",
+				className: "flex-1 overflow-y-auto relative animate-fade-in bg-background",
 				children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-					className: "max-w-4xl mx-auto w-full p-4 md:p-8 pb-24 md:pb-8",
+					className: "max-w-5xl mx-auto w-full p-4 md:p-8 pb-24 md:pb-8",
 					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Outlet, {})
 				})
 			}),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("nav", {
-				className: "md:hidden fixed bottom-0 left-0 right-0 bg-card border-t flex justify-around p-2 z-50 shadow-[0_-4px_20px_rgba(0,0,0,0.05)]",
+				className: "md:hidden fixed bottom-0 left-0 right-0 bg-card/80 backdrop-blur-xl border-t border-white/5 flex justify-around p-2 z-50 pb-safe",
 				children: navItems.map((item) => {
 					const Icon$2 = item.icon;
 					const isActive = location.pathname === item.path;
 					return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Link, {
 						to: item.path,
-						className: cn("flex flex-col items-center p-2 rounded-lg min-w-[64px] transition-colors relative", isActive ? "text-primary" : "text-muted-foreground hover:text-foreground"),
+						className: cn("flex flex-col items-center p-2 rounded-xl min-w-[64px] transition-all relative", isActive ? "text-primary bg-primary/10" : "text-muted-foreground hover:text-foreground"),
 						children: [
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Icon$2, { className: "w-6 h-6 mb-1" }),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Icon$2, { className: "w-5 h-5 mb-1" }),
 							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
 								className: "text-[10px] font-medium",
 								children: item.label
 							}),
-							item.path === "/flashcards" && srsCount > 0 && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { className: "absolute top-1 right-2 w-2 h-2 rounded-full bg-destructive animate-pulse" })
+							item.path === "/flashcards" && srsCount > 0 && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", { className: "absolute top-1.5 right-3 w-2 h-2 rounded-full bg-primary shadow-[0_0_8px_rgba(108,63,197,0.8)]" })
 						]
 					}, item.path);
 				})
@@ -24261,7 +24261,7 @@ function Layout() {
 }
 var Card = import_react.forwardRef(({ className, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
 	ref,
-	className: cn("rounded-lg border bg-card text-card-foreground shadow-sm", className),
+	className: cn("rounded-[24px] border border-white/5 bg-card text-card-foreground shadow-lg", className),
 	...props
 }));
 Card.displayName = "Card";
@@ -24387,20 +24387,20 @@ function getElementRef(element) {
 	if (mayWarn) return element.props.ref;
 	return element.props.ref || element.ref;
 }
-var buttonVariants = cva("inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0", {
+var buttonVariants = cva("inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full text-sm font-medium ring-offset-background transition-all active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0", {
 	variants: {
 		variant: {
-			default: "bg-primary text-primary-foreground hover:bg-primary/90",
-			destructive: "bg-destructive text-destructive-foreground hover:bg-destructive/90",
-			outline: "border border-input bg-transparent text-foreground hover:bg-accent hover:text-accent-foreground",
-			secondary: "bg-secondary text-secondary-foreground hover:bg-secondary/80",
+			default: "bg-primary text-primary-foreground shadow hover:bg-primary/90 hover:shadow-hover",
+			destructive: "bg-destructive text-destructive-foreground shadow-sm hover:bg-destructive/90",
+			outline: "border border-input bg-transparent text-foreground shadow-sm hover:bg-accent hover:text-accent-foreground hover:border-accent",
+			secondary: "bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80",
 			ghost: "text-foreground hover:bg-accent hover:text-accent-foreground",
-			link: "text-foreground underline-offset-4 hover:underline"
+			link: "text-primary underline-offset-4 hover:underline"
 		},
 		size: {
 			default: "h-10 px-4 py-2",
-			sm: "h-9 rounded-md px-3",
-			lg: "h-11 rounded-md px-8",
+			sm: "h-9 px-3 text-xs",
+			lg: "h-12 px-8 text-base",
 			icon: "h-10 w-10"
 		}
 	},
@@ -24428,97 +24428,95 @@ function Index() {
 	const mastered = words.filter((w) => w.status === "mastered").length;
 	const learning = words.filter((w) => w.status !== "mastered").length;
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-		className: "space-y-6 animate-fade-in-up",
+		className: "space-y-8 animate-fade-in-up",
 		children: [
 			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("header", {
-				className: "mb-8",
+				className: "mb-2",
 				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h1", {
-					className: "text-3xl font-bold tracking-tight text-foreground",
+					className: "text-4xl font-bold tracking-tight text-foreground",
 					children: "Bem-vindo de volta!"
 				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-					className: "text-muted-foreground mt-2",
+					className: "text-muted-foreground mt-2 text-lg",
 					children: "Pronto para transformar seu vocabulário passivo em ativo?"
 				})]
 			}),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-				className: "grid grid-cols-1 md:grid-cols-3 gap-4",
+				className: "grid grid-cols-1 md:grid-cols-3 gap-5",
 				children: [
 					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
-						className: "shadow-soft border-none bg-primary/5",
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardHeader, {
-							className: "pb-2",
-							children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardTitle, {
-								className: "text-sm font-medium text-muted-foreground flex items-center gap-2",
-								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(BrainCircuit, { className: "w-4 h-4 text-primary" }), "Revisão Diária"]
-							})
-						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardContent, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-							className: "text-3xl font-bold text-foreground",
-							children: srsPending
-						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-							className: "text-xs text-muted-foreground mt-1",
-							children: "Cards aguardando revisão"
-						})] })]
+						className: "bg-primary/10 border-primary/20 relative overflow-hidden group",
+						children: [
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "absolute -right-6 -top-6 w-24 h-24 bg-primary/20 rounded-full blur-2xl group-hover:scale-150 transition-transform duration-500" }),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardHeader, {
+								className: "pb-2",
+								children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardTitle, {
+									className: "text-sm font-medium text-primary flex items-center gap-2",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(BrainCircuit, { className: "w-5 h-5" }), "Revisão Diária"]
+								})
+							}),
+							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardContent, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+								className: "text-4xl font-bold text-foreground",
+								children: srsPending
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+								className: "text-sm text-primary/80 mt-1 font-medium",
+								children: "Cards aguardando revisão"
+							})] })
+						]
 					}),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
-						className: "shadow-soft border-none",
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardHeader, {
-							className: "pb-2",
-							children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardTitle, {
-								className: "text-sm font-medium text-muted-foreground flex items-center gap-2",
-								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Hammer, { className: "w-4 h-4 text-orange-500" }), "Na Oficina"]
-							})
-						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardContent, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-							className: "text-3xl font-bold text-foreground",
-							children: builderPending
-						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-							className: "text-xs text-muted-foreground mt-1",
-							children: "Palavras para construir"
-						})] })]
-					}),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
-						className: "shadow-soft border-none",
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardHeader, {
-							className: "pb-2",
-							children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardTitle, {
-								className: "text-sm font-medium text-muted-foreground flex items-center gap-2",
-								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CircleCheck, { className: "w-4 h-4 text-success" }), "Vocabulário Ativo"]
-							})
-						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardContent, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-							className: "text-3xl font-bold text-foreground",
-							children: mastered
-						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
-							className: "text-xs text-muted-foreground mt-1",
-							children: [
-								"De ",
-								learning + mastered,
-								" palavras totais"
-							]
-						})] })]
-					})
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardHeader, {
+						className: "pb-2",
+						children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardTitle, {
+							className: "text-sm font-medium text-warning flex items-center gap-2",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Hammer, { className: "w-5 h-5" }), "Na Oficina"]
+						})
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardContent, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+						className: "text-4xl font-bold text-foreground",
+						children: builderPending
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+						className: "text-sm text-muted-foreground mt-1",
+						children: "Palavras para construir"
+					})] })] }),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardHeader, {
+						className: "pb-2",
+						children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardTitle, {
+							className: "text-sm font-medium text-success flex items-center gap-2",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CircleCheck, { className: "w-5 h-5" }), "Vocabulário Ativo"]
+						})
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardContent, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+						className: "text-4xl font-bold text-foreground",
+						children: mastered
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
+						className: "text-sm text-muted-foreground mt-1",
+						children: [
+							"De ",
+							learning + mastered,
+							" palavras totais"
+						]
+					})] })] })
 				]
 			}),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-				className: "grid grid-cols-1 md:grid-cols-2 gap-6 mt-8",
+				className: "grid grid-cols-1 md:grid-cols-2 gap-8 mt-4",
 				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-					className: "space-y-4",
+					className: "space-y-5",
 					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("h2", {
-						className: "text-xl font-semibold flex items-center gap-2",
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TrendingUp, { className: "w-5 h-5" }), " Ações Rápidas"]
+						className: "text-xl font-semibold flex items-center gap-2 text-foreground/90",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(TrendingUp, { className: "w-5 h-5 text-primary" }), " Ações Rápidas"]
 					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-						className: "grid gap-3",
+						className: "grid gap-4",
 						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
 							asChild: true,
 							size: "lg",
-							className: "w-full justify-start h-14 shadow-soft hover:shadow-hover transition-all",
+							className: "w-full justify-start h-16 text-base group",
 							children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Link, {
 								to: "/reader",
-								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(BookOpen, { className: "w-5 h-5 mr-3" }), "Ler Novo Texto"]
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(BookOpen, { className: "w-5 h-5 mr-3 text-primary-foreground/80 group-hover:text-primary-foreground transition-colors" }), "Ler Novo Texto"]
 							})
 						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
 							asChild: true,
 							size: "lg",
 							variant: srsPending > 0 ? "default" : "outline",
-							className: "w-full justify-start h-14 shadow-soft hover:shadow-hover transition-all relative overflow-hidden group",
+							className: "w-full justify-start h-16 text-base relative overflow-hidden group",
 							children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Link, {
 								to: "/flashcards",
 								children: [
@@ -24528,41 +24526,59 @@ function Index() {
 										children: "Revisar Flashcards"
 									}),
 									srsPending > 0 && /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
-										className: "absolute right-4 bg-background/20 text-white text-xs px-2 py-1 rounded-full z-10",
+										className: "absolute right-4 bg-background/30 text-primary-foreground text-xs px-3 py-1 rounded-full z-10 font-bold backdrop-blur-sm",
 										children: [srsPending, " pendentes"]
 									})
 								]
 							})
 						})]
 					})]
-				}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-					className: "bg-card rounded-xl p-6 shadow-soft border",
+				}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
+					className: "p-8 border-white/5 bg-card/50",
 					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h3", {
-						className: "font-semibold mb-4",
+						className: "font-semibold text-lg mb-6",
 						children: "Como o LangFlow funciona?"
 					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("ul", {
-						className: "space-y-4 text-sm text-muted-foreground",
+						className: "space-y-6 text-sm text-muted-foreground",
 						children: [
 							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("li", {
-								className: "flex gap-3",
+								className: "flex gap-4 items-start",
 								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-									className: "flex-shrink-0 w-6 h-6 rounded-full bg-primary/10 text-primary flex items-center justify-center font-bold",
+									className: "flex-shrink-0 w-8 h-8 rounded-full bg-primary/20 text-primary flex items-center justify-center font-bold text-base shadow-[0_0_15px_rgba(108,63,197,0.2)]",
 									children: "1"
-								}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("strong", { children: "Leitor:" }), " Leia textos reais, clique nas palavras desconhecidas para capturá-las com contexto."] })]
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
+									className: "pt-1 leading-relaxed",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("strong", {
+										className: "text-foreground",
+										children: "Leitor:"
+									}), " Leia textos reais, clique nas palavras desconhecidas para capturá-las com contexto."]
+								})]
 							}),
 							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("li", {
-								className: "flex gap-3",
+								className: "flex gap-4 items-start",
 								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-									className: "flex-shrink-0 w-6 h-6 rounded-full bg-orange-500/10 text-orange-500 flex items-center justify-center font-bold",
+									className: "flex-shrink-0 w-8 h-8 rounded-full bg-warning/20 text-warning flex items-center justify-center font-bold text-base shadow-[0_0_15px_rgba(245,158,11,0.2)]",
 									children: "2"
-								}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("strong", { children: "Construtor:" }), " Force a produção ativa montando as frases originais como um quebra-cabeça."] })]
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
+									className: "pt-1 leading-relaxed",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("strong", {
+										className: "text-foreground",
+										children: "Construtor:"
+									}), " Force a produção ativa montando as frases originais como um quebra-cabeça."]
+								})]
 							}),
 							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("li", {
-								className: "flex gap-3",
+								className: "flex gap-4 items-start",
 								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-									className: "flex-shrink-0 w-6 h-6 rounded-full bg-success/10 text-success flex items-center justify-center font-bold",
+									className: "flex-shrink-0 w-8 h-8 rounded-full bg-success/20 text-success flex items-center justify-center font-bold text-base shadow-[0_0_15px_rgba(22,163,74,0.2)]",
 									children: "3"
-								}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("strong", { children: "Revisão:" }), " Mantenha o vocabulário fresco na memória com nosso sistema de repetição espaçada."] })]
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
+									className: "pt-1 leading-relaxed",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("strong", {
+										className: "text-foreground",
+										children: "Revisão:"
+									}), " Mantenha o vocabulário fresco na memória com nosso sistema de repetição espaçada."]
+								})]
 							})
 						]
 					})]
@@ -25725,7 +25741,7 @@ var PopoverContent = import_react.forwardRef(({ className, align = "center", sid
 	ref,
 	align,
 	sideOffset,
-	className: cn("z-50 w-72 rounded-md border bg-popover p-4 text-popover-foreground shadow-md outline-none data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 origin-[--radix-popover-content-transform-origin]", className),
+	className: cn("z-50 w-72 rounded-3xl border border-white/10 bg-popover p-4 text-popover-foreground shadow-2xl outline-none data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 origin-[--radix-popover-content-transform-origin]", className),
 	...props
 }) }));
 PopoverContent.displayName = Content2$1.displayName;
@@ -25739,7 +25755,9 @@ var mockDictionary = {
 	over: "sobre",
 	lazy: "preguiçoso",
 	dog: "cachorro",
-	serendipity: "serendipidade (descoberta feliz por acaso)"
+	serendipity: "serendipidade (descoberta feliz por acaso)",
+	ephemeral: "efêmero",
+	ubiquitous: "onipresente"
 };
 function WordInteraction({ word, sentence }) {
 	const [open, setOpen] = (0, import_react.useState)(false);
@@ -25769,27 +25787,30 @@ function WordInteraction({ word, sentence }) {
 		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(PopoverTrigger, {
 			asChild: true,
 			children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-				className: "cursor-pointer hover:bg-primary/20 hover:text-primary transition-colors rounded px-0.5",
+				className: "cursor-pointer hover:bg-primary/30 hover:text-primary-foreground hover:shadow-[0_0_10px_rgba(108,63,197,0.5)] transition-all rounded-md px-1 py-0.5 mx-0.5 inline-block",
 				children: word
 			})
 		}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(PopoverContent, {
-			className: "w-64 p-4 shadow-hover z-50 animate-fade-in-up",
-			sideOffset: 5,
+			className: "w-80 p-5 glass z-50 animate-fade-in-up rounded-[24px] border-white/10",
+			sideOffset: 8,
 			children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-				className: "space-y-3",
+				className: "space-y-4",
 				children: [
 					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-						className: "flex items-start gap-2",
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(BookOpen, { className: "w-5 h-5 text-primary mt-0.5" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h4", {
-							className: "font-bold text-lg leading-none",
+						className: "flex items-start gap-3",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+							className: "p-2 bg-primary/20 rounded-xl",
+							children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(BookOpen, { className: "w-5 h-5 text-primary" })
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h4", {
+							className: "font-bold text-xl leading-none text-foreground font-sans",
 							children: cleanWord
 						}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-							className: "text-sm text-muted-foreground mt-1",
+							className: "text-sm text-primary/80 font-medium mt-1.5",
 							children: mockTranslation
 						})] })]
 					}),
 					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-						className: "text-xs bg-muted p-2 rounded italic text-muted-foreground border-l-2 border-primary",
+						className: "text-sm bg-background/40 p-4 rounded-xl italic text-muted-foreground border-l-2 border-primary font-sans leading-relaxed",
 						children: [
 							"\"",
 							sentence.trim(),
@@ -25797,11 +25818,11 @@ function WordInteraction({ word, sentence }) {
 						]
 					}),
 					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
-						className: "w-full mt-2",
-						size: "sm",
+						className: "w-full mt-2 h-12",
 						onClick: handleSave,
 						disabled: isAlreadySaved,
-						children: isAlreadySaved ? "Já está na sua lista" : /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Plus, { className: "w-4 h-4 mr-2" }), "Adicionar ao Construtor"] })
+						variant: isAlreadySaved ? "secondary" : "default",
+						children: isAlreadySaved ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Check, { className: "w-4 h-4 mr-2 text-success" }), " Já está na sua lista"] }) : /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Plus, { className: "w-4 h-4 mr-2" }), " Adicionar ao Construtor"] })
 					})
 				]
 			})
@@ -25830,49 +25851,56 @@ function Reader() {
 		});
 	}, [inputText, isReadingMode]);
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-		className: "space-y-6 animate-fade-in max-w-3xl mx-auto h-full flex flex-col",
+		className: "space-y-6 animate-fade-in max-w-4xl mx-auto h-full flex flex-col",
 		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("header", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h1", {
 			className: "text-3xl font-bold tracking-tight text-foreground",
 			children: "Leitor Imersivo"
 		}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-			className: "text-muted-foreground mt-2",
+			className: "text-muted-foreground mt-2 text-lg",
 			children: "Cole um texto em inglês, leia e clique nas palavras que não conhece."
 		})] }), !isReadingMode ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-			className: "flex-1 flex flex-col gap-4 animate-fade-in-up",
+			className: "flex-1 flex flex-col gap-6 animate-fade-in-up",
 			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
-				className: "flex-1 p-4 shadow-soft min-h-[400px] flex flex-col",
+				className: "flex-1 p-6 flex flex-col border-white/5 bg-card/80 backdrop-blur-sm min-h-[400px]",
 				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-					className: "flex items-center gap-2 mb-2 text-sm font-medium text-muted-foreground",
-					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FileText, { className: "w-4 h-4" }), " Cole seu texto aqui:"]
+					className: "flex items-center gap-2 mb-4 text-sm font-medium text-primary",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(FileText, { className: "w-5 h-5" }), " Cole seu texto aqui:"]
 				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Textarea, {
-					className: "flex-1 resize-none text-base md:text-lg p-4 font-sans focus-visible:ring-primary/50",
+					className: "flex-1 resize-none text-base md:text-lg p-6 font-sans bg-background/50 border-white/10 rounded-[20px] focus-visible:ring-primary shadow-inner",
 					placeholder: "Paste English text here...",
 					value: inputText,
 					onChange: (e) => setInputText(e.target.value)
 				})]
 			}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
 				size: "lg",
-				className: "w-full h-14 text-lg shadow-soft hover:shadow-hover transition-all",
+				className: "w-full h-16 text-lg shadow-lg group",
 				onClick: () => {
 					if (inputText.trim()) setIsReadingMode(true);
 				},
 				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Play, {
-					className: "w-5 h-5 mr-2",
+					className: "w-5 h-5 mr-2 group-hover:scale-110 transition-transform",
 					fill: "currentColor"
 				}), "Iniciar Leitura"]
 			})]
 		}) : /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-			className: "flex-1 flex flex-col gap-4 animate-fade-in-up",
-			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Card, {
-				className: "flex-1 p-6 md:p-8 shadow-soft text-lg md:text-xl leading-relaxed font-serif bg-[#fdfdfc] text-[#2d3748] min-h-[400px] overflow-y-auto border-t-4 border-t-primary",
-				children: processedContent
+			className: "flex-1 flex flex-col gap-6 animate-fade-in-up",
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
+				className: "flex-1 p-8 md:p-12 text-lg md:text-xl leading-relaxed font-serif bg-card text-foreground min-h-[400px] overflow-y-auto border-t-4 border-t-primary shadow-2xl relative",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "absolute inset-0 bg-gradient-to-b from-primary/5 to-transparent pointer-events-none rounded-[24px]" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+					className: "relative z-10",
+					children: processedContent
+				})]
 			}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-				className: "flex justify-between items-center bg-card p-4 rounded-xl border shadow-sm",
+				className: "flex justify-between items-center bg-card/80 backdrop-blur-md p-4 px-6 rounded-full border border-white/10 shadow-lg",
 				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-					className: "text-sm text-muted-foreground flex items-center gap-2",
-					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CircleCheck, { className: "w-4 h-4 text-success" }), "Clique nas palavras para salvar"]
+					className: "text-sm font-medium flex items-center gap-3 text-muted-foreground",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+						className: "p-1.5 bg-success/20 rounded-full",
+						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CircleCheck, { className: "w-4 h-4 text-success" })
+					}), "Clique nas palavras para capturar o contexto"]
 				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
 					variant: "outline",
+					className: "rounded-full",
 					onClick: () => setIsReadingMode(false),
 					children: "Editar Texto"
 				})]
@@ -25910,14 +25938,8 @@ function Builder() {
 		setIsCorrect(null);
 	};
 	const checkAnswer = () => {
-		if (constructed.map((i) => i.text).join(" ") === currentWord.contextSentence.split(/(\s+)/).filter((t) => t.trim() !== "").join(" ")) {
-			setIsCorrect(true);
-			toast$2({
-				title: "Excelente!",
-				description: "Frase construída corretamente.",
-				className: "bg-success text-success-foreground border-success"
-			});
-		} else setIsCorrect(false);
+		if (constructed.map((i) => i.text).join(" ") === currentWord.contextSentence.split(/(\s+)/).filter((t) => t.trim() !== "").join(" ")) setIsCorrect(true);
+		else setIsCorrect(false);
 	};
 	const handleNext = () => {
 		updateWordStatus(currentWord.id, "srs");
@@ -25927,94 +25949,97 @@ function Builder() {
 		className: "flex flex-col items-center justify-center h-[60vh] text-center animate-fade-in space-y-4",
 		children: [
 			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-				className: "w-20 h-20 bg-muted rounded-full flex items-center justify-center mb-4",
+				className: "w-24 h-24 bg-secondary rounded-full flex items-center justify-center mb-4 border border-white/5",
 				children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Hammer, { className: "w-10 h-10 text-muted-foreground" })
 			}),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h2", {
-				className: "text-2xl font-bold",
+				className: "text-3xl font-bold",
 				children: "Oficina Vazia"
 			}),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-				className: "text-muted-foreground max-w-md",
+				className: "text-muted-foreground max-w-md text-lg",
 				children: "Você não tem palavras na fila de construção. Vá para o Leitor e capture novas palavras!"
 			})
 		]
 	});
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-		className: "space-y-6 animate-fade-in max-w-2xl mx-auto h-full flex flex-col",
-		children: [
-			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("header", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("h1", {
+		className: "space-y-6 animate-fade-in max-w-3xl mx-auto h-full flex flex-col",
+		children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("header", {
+			className: "flex justify-between items-end",
+			children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("h1", {
 				className: "text-3xl font-bold tracking-tight text-foreground flex items-center gap-3",
-				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Hammer, { className: "w-8 h-8 text-orange-500" }), "Construtor"]
-			}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
-				className: "text-muted-foreground mt-2",
+				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Hammer, { className: "w-8 h-8 text-warning" }), "Construtor"]
+			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+				className: "text-muted-foreground mt-2 text-lg",
+				children: "Reconstrua a frase para interiorizar a estrutura."
+			})] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+				className: "text-sm font-medium bg-secondary px-4 py-2 rounded-full border border-white/5",
 				children: [
-					"Reconstrua a frase original para transformar \"",
-					currentWord.word,
-					"\" em vocabulário ativo."
+					currentIndex + 1,
+					" de ",
+					builderWords.length
 				]
-			})] }),
-			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-				className: "flex justify-between items-center text-sm font-medium",
-				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
-					className: "bg-primary/10 text-primary px-3 py-1 rounded-full",
-					children: ["Alvo: ", /* @__PURE__ */ (0, import_jsx_runtime.jsx)("strong", { children: currentWord.word })]
-				}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
-					className: "text-muted-foreground",
-					children: [
-						currentIndex + 1,
-						" de ",
-						builderWords.length
-					]
-				})]
-			}),
-			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
-				className: cn("p-6 shadow-soft flex-1 flex flex-col min-h-[400px] border-2 transition-colors duration-300", isCorrect === true ? "border-success bg-success/5" : isCorrect === false ? "border-destructive bg-destructive/5" : "border-border"),
-				children: [
-					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-						className: "text-sm text-muted-foreground mb-4 font-medium flex items-center justify-between",
-						children: ["Tradução: ", currentWord.translation]
-					}),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-						className: "min-h-[120px] p-4 bg-background rounded-xl border-2 border-dashed border-border flex flex-wrap gap-2 content-start mb-8 transition-all shadow-inner",
-						children: [constructed.length === 0 && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-							className: "text-muted-foreground/50 m-auto mt-8",
-							children: "Toque nas palavras abaixo para montar a frase"
-						}), constructed.map((item) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
-							onClick: () => handleConstructedClick(item),
-							className: "px-4 py-2 bg-card border shadow-sm rounded-lg hover:bg-destructive/10 hover:border-destructive/30 hover:text-destructive transition-all active:scale-95 text-lg font-medium",
+			})]
+		}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
+			className: cn("p-8 flex-1 flex flex-col min-h-[400px] border-2 transition-all duration-500", isCorrect === true ? "border-success bg-success/5 shadow-[0_0_30px_rgba(22,163,74,0.1)]" : isCorrect === false ? "border-destructive bg-destructive/5 shadow-[0_0_30px_rgba(220,38,38,0.1)]" : "border-white/5 bg-card/80 backdrop-blur-sm"),
+			children: [
+				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: "flex items-center justify-between mb-8",
+					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+						className: "bg-primary/20 text-primary px-4 py-1.5 rounded-full font-bold text-lg border border-primary/20",
+						children: ["Alvo: ", currentWord.word]
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+						className: "text-sm font-medium text-muted-foreground flex items-center gap-2 bg-background/50 px-4 py-2 rounded-full",
+						children: [
+							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+								className: "text-primary",
+								children: "Tradução:"
+							}),
+							" ",
+							currentWord.translation
+						]
+					})]
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+					className: cn("min-h-[160px] p-6 bg-background/40 rounded-3xl border-2 border-dashed flex flex-wrap gap-3 content-start mb-8 transition-all duration-300 shadow-inner", isCorrect === true ? "border-success/50 bg-success/5" : isCorrect === false ? "border-destructive/50 bg-destructive/5" : "border-white/10"),
+					children: [constructed.length === 0 && /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+						className: "text-muted-foreground/40 m-auto font-medium text-lg",
+						children: "Toque nas peças abaixo para montar a frase"
+					}), constructed.map((item) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
+						onClick: () => handleConstructedClick(item),
+						className: cn("px-5 py-2.5 rounded-2xl transition-all active:scale-95 text-lg font-medium shadow-sm", isCorrect === true ? "bg-success/20 border-2 border-success text-success-foreground" : isCorrect === false ? "bg-destructive/20 border-2 border-destructive text-destructive-foreground" : "bg-card border-2 border-primary/30 text-foreground hover:bg-destructive/20 hover:border-destructive hover:text-destructive-foreground"),
+						children: item.text
+					}, item.id))]
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+					className: "flex-1",
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+						className: "flex flex-wrap gap-3 justify-center",
+						children: pool.map((item) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
+							onClick: () => handlePoolClick(item),
+							className: "px-5 py-2.5 bg-secondary border border-white/10 shadow-lg rounded-2xl hover:-translate-y-1 hover:border-primary/50 hover:shadow-[0_8px_20px_rgba(108,63,197,0.2)] active:translate-y-0 active:shadow-none transition-all text-lg font-medium text-foreground select-none",
 							children: item.text
-						}, item.id))]
-					}),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-						className: "flex-1",
-						children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-							className: "flex flex-wrap gap-3 justify-center",
-							children: pool.map((item) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("button", {
-								onClick: () => handlePoolClick(item),
-								className: "px-4 py-2 bg-white border-2 border-border shadow-[0_4px_0_hsl(var(--border))] rounded-xl hover:translate-y-[2px] hover:shadow-[0_2px_0_hsl(var(--border))] active:translate-y-[4px] active:shadow-none transition-all text-lg font-medium select-none",
-								children: item.text
-							}, item.id))
-						})
-					}),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-						className: "mt-8 pt-6 border-t flex flex-col gap-3",
-						children: isCorrect === true ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
-							size: "lg",
-							className: "w-full h-14 text-lg bg-success hover:bg-success/90 text-success-foreground",
-							onClick: handleNext,
-							children: ["Continuar ", /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ArrowRight, { className: "w-5 h-5 ml-2" })]
-						}) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
-							size: "lg",
-							className: "w-full h-14 text-lg",
-							onClick: checkAnswer,
-							disabled: pool.length > 0,
-							children: isCorrect === false ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(X, { className: "w-5 h-5 mr-2" }), " Tentar Novamente"] }) : /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Check, { className: "w-5 h-5 mr-2" }), " Verificar"] })
-						})
+						}, item.id))
 					})
-				]
-			})
-		]
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+					className: "mt-8 pt-8 border-t border-white/5 flex flex-col gap-3",
+					children: isCorrect === true ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+						size: "lg",
+						className: "w-full h-16 text-lg bg-success hover:bg-success/90 text-success-foreground shadow-[0_0_20px_rgba(22,163,74,0.3)] animate-fade-in",
+						onClick: handleNext,
+						children: ["Continuar ", /* @__PURE__ */ (0, import_jsx_runtime.jsx)(ArrowRight, { className: "w-5 h-5 ml-2" })]
+					}) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Button, {
+						size: "lg",
+						className: cn("w-full h-16 text-lg transition-all", isCorrect === false && "bg-destructive hover:bg-destructive/90 text-destructive-foreground shadow-[0_0_20px_rgba(220,38,38,0.3)]"),
+						onClick: checkAnswer,
+						disabled: pool.length > 0,
+						variant: isCorrect === false ? "destructive" : "default",
+						children: isCorrect === false ? /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(X, { className: "w-5 h-5 mr-2" }), " Tentar Novamente"] }) : /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Check, { className: "w-5 h-5 mr-2" }), " Verificar Resposta"] })
+					})
+				})
+			]
+		})]
 	});
 }
 function Flashcards() {
@@ -26030,18 +26055,18 @@ function Flashcards() {
 		setCurrentIndex(0);
 	};
 	if (dueCards.length === 0) return /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-		className: "flex flex-col items-center justify-center h-[60vh] text-center animate-fade-in space-y-4",
+		className: "flex flex-col items-center justify-center h-[60vh] text-center animate-fade-in space-y-6",
 		children: [
 			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-				className: "w-24 h-24 bg-success/10 rounded-full flex items-center justify-center mb-4",
-				children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(PartyPopper, { className: "w-12 h-12 text-success" })
+				className: "w-32 h-32 bg-success/10 rounded-full flex items-center justify-center mb-2 shadow-[0_0_40px_rgba(22,163,74,0.2)]",
+				children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(PartyPopper, { className: "w-16 h-16 text-success animate-bounce" })
 			}),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h2", {
-				className: "text-3xl font-bold text-foreground",
+				className: "text-4xl font-bold text-foreground tracking-tight",
 				children: "Tudo Feito!"
 			}),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-				className: "text-muted-foreground max-w-md text-lg",
+				className: "text-muted-foreground max-w-md text-xl",
 				children: "Você não tem revisões pendentes para hoje. Excelente trabalho mantendo seu vocabulário afiado."
 			})
 		]
@@ -26049,7 +26074,7 @@ function Flashcards() {
 	const renderSentence = () => {
 		if (!currentCard) return null;
 		return currentCard.contextSentence.split(new RegExp(`(${currentCard.word})`, "gi")).map((part, i) => part.toLowerCase() === currentCard.word.toLowerCase() ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-			className: "bg-primary/20 text-primary font-bold px-1 rounded",
+			className: "bg-primary/30 text-primary-foreground px-2 py-0.5 rounded-md font-bold shadow-[0_0_10px_rgba(108,63,197,0.3)]",
 			children: part
 		}, i) : part);
 	};
@@ -26062,49 +26087,49 @@ function Flashcards() {
 					className: "text-3xl font-bold tracking-tight text-foreground flex items-center gap-3",
 					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(BrainCircuit, { className: "w-8 h-8 text-primary" }), "Revisão"]
 				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-					className: "text-muted-foreground mt-2",
+					className: "text-muted-foreground mt-2 text-lg",
 					children: "Pense na tradução e no contexto."
 				})] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-					className: "bg-muted px-4 py-2 rounded-full text-sm font-medium border shadow-sm",
+					className: "bg-secondary px-5 py-2.5 rounded-full text-sm font-bold border border-white/5 shadow-sm text-foreground",
 					children: [dueCards.length, " restantes"]
 				})]
 			}),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-				className: "flex-1 perspective-1000 relative min-h-[400px]",
+				className: "flex-1 perspective-1000 relative min-h-[450px]",
 				children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-					className: cn("w-full h-full absolute top-0 left-0 transition-all duration-500 preserve-3d cursor-pointer", isFlipped ? "rotate-y-180" : ""),
+					className: cn("w-full h-full absolute top-0 left-0 transition-all duration-700 preserve-3d cursor-pointer", isFlipped ? "rotate-y-180" : ""),
 					onClick: () => !isFlipped && setIsFlipped(true),
 					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
-						className: cn("w-full h-full absolute top-0 left-0 backface-hidden p-8 flex flex-col items-center justify-center shadow-hover border-2 text-center bg-white", isFlipped ? "pointer-events-none opacity-0" : ""),
+						className: cn("w-full h-full absolute top-0 left-0 backface-hidden p-8 flex flex-col items-center justify-center shadow-2xl border-white/5 bg-card/90 backdrop-blur-xl", isFlipped ? "pointer-events-none opacity-0" : ""),
 						children: [
 							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-								className: "text-sm font-semibold tracking-wider uppercase text-muted-foreground mb-8",
-								children: "Tradução"
+								className: "text-sm font-bold tracking-widest uppercase text-muted-foreground/60 mb-10 bg-background/50 px-4 py-2 rounded-full",
+								children: "Tradução Alvo"
 							}),
 							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h2", {
-								className: "text-4xl md:text-5xl font-bold text-foreground capitalize leading-tight",
+								className: "text-4xl md:text-5xl font-bold text-foreground capitalize leading-tight font-sans",
 								children: currentCard.translation
 							}),
 							/* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-								className: "mt-12 text-muted-foreground animate-pulse",
-								children: "Toque para revelar"
+								className: "mt-16 text-primary/70 animate-pulse font-medium bg-primary/10 px-6 py-2 rounded-full",
+								children: "Toque para revelar o contexto"
 							})
 						]
 					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
-						className: cn("w-full h-full absolute top-0 left-0 backface-hidden rotate-y-180 p-8 flex flex-col justify-between shadow-hover border-2 border-primary/20 bg-white", !isFlipped ? "pointer-events-none opacity-0" : ""),
+						className: cn("w-full h-full absolute top-0 left-0 backface-hidden rotate-y-180 p-8 flex flex-col justify-between shadow-2xl border-2 border-primary/30 bg-card", !isFlipped ? "pointer-events-none opacity-0" : ""),
 						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-							className: "text-center flex-1 flex flex-col justify-center",
+							className: "text-center flex-1 flex flex-col justify-center max-w-md mx-auto w-full",
 							children: [
 								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-									className: "text-sm font-semibold tracking-wider uppercase text-primary mb-4",
+									className: "text-sm font-bold tracking-widest uppercase text-primary mb-6 bg-primary/10 px-4 py-2 rounded-full self-center mx-auto",
 									children: "Inglês"
 								}),
 								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h2", {
-									className: "text-4xl font-bold text-foreground mb-6",
+									className: "text-4xl md:text-5xl font-extrabold text-foreground mb-8 font-sans",
 									children: currentCard.word
 								}),
 								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-									className: "text-xl md:text-2xl text-muted-foreground italic leading-relaxed bg-muted/50 p-6 rounded-xl border",
+									className: "text-xl md:text-2xl text-foreground/80 italic leading-relaxed bg-background/50 p-6 rounded-[20px] border border-white/5 shadow-inner",
 									children: [
 										"\"",
 										renderSentence(),
@@ -26113,53 +26138,53 @@ function Flashcards() {
 								})
 							]
 						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-							className: "grid grid-cols-2 md:grid-cols-4 gap-2 mt-8 pointer-events-auto",
+							className: "grid grid-cols-2 md:grid-cols-4 gap-3 mt-8 pointer-events-auto",
 							children: [
 								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
 									variant: "outline",
-									className: "h-16 flex flex-col gap-1 border-destructive/30 hover:bg-destructive/10 hover:text-destructive",
+									className: "h-14 rounded-full border-destructive/50 hover:bg-destructive hover:text-white transition-all group",
 									onClick: (e) => {
 										e.stopPropagation();
 										handleReview(1);
 									},
-									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(X, { className: "w-5 h-5" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-										className: "text-xs",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(X, { className: "w-5 h-5 mr-1 group-hover:scale-110 transition-transform" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+										className: "font-bold",
 										children: "Errei"
 									})]
 								}),
 								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
 									variant: "outline",
-									className: "h-16 flex flex-col gap-1 border-orange-500/30 hover:bg-orange-500/10 hover:text-orange-500",
+									className: "h-14 rounded-full border-warning/50 hover:bg-warning hover:text-white transition-all group",
 									onClick: (e) => {
 										e.stopPropagation();
 										handleReview(3);
 									},
-									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Frown, { className: "w-5 h-5" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-										className: "text-xs",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Frown, { className: "w-5 h-5 mr-1 group-hover:scale-110 transition-transform" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+										className: "font-bold",
 										children: "Difícil"
 									})]
 								}),
 								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
 									variant: "outline",
-									className: "h-16 flex flex-col gap-1 border-success/30 hover:bg-success/10 hover:text-success",
+									className: "h-14 rounded-full border-success/50 hover:bg-success hover:text-white transition-all group",
 									onClick: (e) => {
 										e.stopPropagation();
 										handleReview(4);
 									},
-									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Check, { className: "w-5 h-5" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-										className: "text-xs",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Check, { className: "w-5 h-5 mr-1 group-hover:scale-110 transition-transform" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+										className: "font-bold",
 										children: "Bom"
 									})]
 								}),
 								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
 									variant: "outline",
-									className: "h-16 flex flex-col gap-1 border-primary/30 hover:bg-primary/10 hover:text-primary",
+									className: "h-14 rounded-full border-primary/50 hover:bg-primary hover:text-white transition-all group shadow-[0_0_15px_rgba(108,63,197,0.1)] hover:shadow-[0_0_20px_rgba(108,63,197,0.4)]",
 									onClick: (e) => {
 										e.stopPropagation();
 										handleReview(5);
 									},
-									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Smile, { className: "w-5 h-5" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-										className: "text-xs",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Smile, { className: "w-5 h-5 mr-1 group-hover:scale-110 transition-transform" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+										className: "font-bold",
 										children: "Fácil"
 									})]
 								})
@@ -26169,7 +26194,7 @@ function Flashcards() {
 				})
 			}),
 			/* @__PURE__ */ (0, import_jsx_runtime.jsx)("style", { children: `
-        .perspective-1000 { perspective: 1000px; }
+        .perspective-1000 { perspective: 1200px; }
         .preserve-3d { transform-style: preserve-3d; }
         .backface-hidden { backface-visibility: hidden; }
         .rotate-y-180 { transform: rotateY(180deg); }
@@ -26237,7 +26262,7 @@ Label.displayName = Root$1.displayName;
 var Input = import_react.forwardRef(({ className, type, ...props }, ref) => {
 	return /* @__PURE__ */ (0, import_jsx_runtime.jsx)("input", {
 		type,
-		className: cn("flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm", className),
+		className: cn("flex h-12 w-full rounded-xl border border-input bg-background/50 px-4 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:border-primary disabled:cursor-not-allowed disabled:opacity-50 transition-all shadow-sm", className),
 		ref,
 		...props
 	});
@@ -27218,7 +27243,7 @@ var Select = Root2;
 var SelectValue = Value;
 var SelectTrigger = import_react.forwardRef(({ className, children, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Trigger, {
 	ref,
-	className: cn("flex h-10 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background data-[placeholder]:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1", className),
+	className: cn("flex h-10 w-full items-center justify-between rounded-md border border-input bg-background/50 px-3 py-2 text-sm ring-offset-background data-[placeholder]:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1 transition-all", className),
 	...props,
 	children: [children, /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Icon, {
 		asChild: true,
@@ -27242,7 +27267,7 @@ var SelectScrollDownButton = import_react.forwardRef(({ className, ...props }, r
 SelectScrollDownButton.displayName = ScrollDownButton.displayName;
 var SelectContent = import_react.forwardRef(({ className, children, position = "popper", ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Portal$1, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Content2, {
 	ref,
-	className: cn("relative z-50 max-h-[--radix-select-content-available-height] min-w-[8rem] overflow-y-auto overflow-x-hidden rounded-md border bg-popover text-popover-foreground shadow-md data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 origin-[--radix-select-content-transform-origin]", position === "popper" && "data-[side=bottom]:translate-y-1 data-[side=left]:-translate-x-1 data-[side=right]:translate-x-1 data-[side=top]:-translate-y-1", className),
+	className: cn("relative z-50 max-h-[--radix-select-content-available-height] min-w-[8rem] overflow-y-auto overflow-x-hidden rounded-md border border-white/10 bg-popover text-popover-foreground shadow-2xl data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 origin-[--radix-select-content-transform-origin]", position === "popper" && "data-[side=bottom]:translate-y-1 data-[side=left]:-translate-x-1 data-[side=right]:translate-x-1 data-[side=top]:-translate-y-1", className),
 	position,
 	...props,
 	children: [
@@ -27413,10 +27438,10 @@ var Root = Progress$1;
 var Indicator = ProgressIndicator;
 var Progress = import_react.forwardRef(({ className, value, ...props }, ref) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Root, {
 	ref,
-	className: cn("relative h-4 w-full overflow-hidden rounded-full bg-secondary", className),
+	className: cn("relative h-4 w-full overflow-hidden rounded-full bg-secondary border border-white/5", className),
 	...props,
 	children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Indicator, {
-		className: "h-full w-full flex-1 bg-primary transition-all",
+		className: "h-full w-full flex-1 bg-primary transition-all shadow-[0_0_10px_rgba(108,63,197,0.8)]",
 		style: { transform: `translateX(-${100 - (value || 0)}%)` }
 	})
 }));
@@ -27485,7 +27510,7 @@ function Settings() {
 		toast$2({
 			title: "Configurações salvas",
 			description: "Suas preferências foram atualizadas com sucesso.",
-			className: "bg-green-600 text-white border-green-700"
+			className: "bg-success text-success-foreground border-success"
 		});
 	};
 	const handleTestConnection = async () => {
@@ -27496,8 +27521,8 @@ function Settings() {
 			if (!localSettings.apiKey.startsWith("sk-") || localSettings.apiKey.length < 20) throw new Error("Formato inválido. A chave deve começar com \"sk-\" e ter mais de 20 caracteres.");
 			toast$2({
 				title: "Conexão bem-sucedida",
-				description: "API Key validada com sucesso e provedor alcançável.",
-				className: "bg-green-600 text-white border-green-700"
+				description: "API Key validada com sucesso.",
+				className: "bg-success text-success-foreground border-success"
 			});
 		} catch (error) {
 			toast$2({
@@ -27554,27 +27579,30 @@ function Settings() {
 		className: "space-y-8 animate-fade-in-up max-w-2xl mx-auto pb-12",
 		children: [
 			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("header", { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("h1", {
-				className: "text-3xl font-bold tracking-tight text-foreground",
+				className: "text-4xl font-bold tracking-tight text-foreground",
 				children: "Configurações"
 			}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-				className: "text-muted-foreground mt-2",
+				className: "text-muted-foreground mt-2 text-lg",
 				children: "Personalize sua experiência de aprendizado e gerencie seus dados."
 			})] }),
-			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
-				className: "shadow-soft",
-				children: [
-					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, { children: "Preferências e IA" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: "Defina seu nível e configure as chaves de API para os módulos de geração." })] }),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardContent, {
-						className: "space-y-6",
-						children: [
-							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-								className: "grid grid-cols-1 md:grid-cols-2 gap-4",
-								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-									className: "space-y-2",
-									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Nível de Inglês (CEFR)" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Select, {
-										value: localSettings?.level,
-										onValueChange: handleLevelChange,
-										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectTrigger, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectValue, { placeholder: "Selecione seu nível" }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SelectContent, { children: [
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, { children: [
+				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardTitle, { children: "Preferências e IA" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: "Defina seu nível e configure as chaves de API para os módulos de geração." })] }),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardContent, {
+					className: "space-y-6",
+					children: [
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "grid grid-cols-1 md:grid-cols-2 gap-6",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "space-y-3",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Nível de Inglês (CEFR)" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Select, {
+									value: localSettings?.level,
+									onValueChange: handleLevelChange,
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectTrigger, {
+										className: "h-12 rounded-xl",
+										children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectValue, { placeholder: "Selecione seu nível" })
+									}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SelectContent, {
+										className: "rounded-2xl border-white/10 glass",
+										children: [
 											/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
 												value: "A1",
 												children: "A1 - Iniciante"
@@ -27599,132 +27627,140 @@ function Settings() {
 												value: "C2",
 												children: "C2 - Fluente"
 											})
-										] })]
-									})]
-								}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-									className: "space-y-2",
-									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Meta Diária (Novas Palavras)" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
-										type: "number",
-										value: localSettings?.dailyGoal ?? 0,
-										onChange: (e) => setLocalSettings((prev) => ({
-											...prev,
-											dailyGoal: parseInt(e.target.value) || 0
-										}))
+										]
 									})]
 								})]
-							}),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-								className: "grid grid-cols-1 md:grid-cols-2 gap-4 bg-muted/50 p-4 rounded-lg border",
-								children: [
-									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-										className: "space-y-1",
-										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, {
-											className: "text-xs text-muted-foreground",
-											children: "Multiplicador de Intervalo (SRS)"
-										}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
-											className: "text-sm font-medium",
-											children: [(localSettings?.srsMultiplier ?? 1.2).toFixed(1), "x"]
-										})]
-									}),
-									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-										className: "space-y-1",
-										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, {
-											className: "text-xs text-muted-foreground",
-											children: "Complexidade (Builder)"
-										}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-											className: "text-sm font-medium capitalize",
-											children: localSettings?.complexity ?? "intermediate"
-										})]
-									}),
-									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
-										className: "col-span-full",
-										children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
-											className: "text-xs text-muted-foreground mt-1",
-											children: "Estes valores são ajustados automaticamente com base no seu nível de inglês."
-										})
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "space-y-3",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Meta Diária (Novas Palavras)" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+									type: "number",
+									value: localSettings?.dailyGoal ?? 0,
+									onChange: (e) => setLocalSettings((prev) => ({
+										...prev,
+										dailyGoal: parseInt(e.target.value) || 0
+									}))
+								})]
+							})]
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "grid grid-cols-1 md:grid-cols-2 gap-4 bg-background/50 p-5 rounded-2xl border border-white/5",
+							children: [
+								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+									className: "space-y-1.5",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, {
+										className: "text-xs text-muted-foreground",
+										children: "Multiplicador de Intervalo (SRS)"
+									}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
+										className: "text-base font-bold text-foreground",
+										children: [(localSettings?.srsMultiplier ?? 1.2).toFixed(1), "x"]
+									})]
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+									className: "space-y-1.5",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, {
+										className: "text-xs text-muted-foreground",
+										children: "Complexidade (Builder)"
+									}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+										className: "text-base font-bold text-foreground capitalize",
+										children: localSettings?.complexity ?? "intermediate"
+									})]
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
+									className: "col-span-full pt-2",
+									children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
+										className: "text-xs text-muted-foreground",
+										children: "Estes valores são ajustados automaticamente com base no seu nível de inglês."
 									})
-								]
-							}),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-								className: "space-y-2 pt-2",
-								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Chave de API (OpenAI / Anthropic)" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-									className: "flex gap-2",
-									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
-										type: "password",
-										placeholder: "sk-...",
-										value: localSettings?.apiKey ?? "",
-										onChange: (e) => setLocalSettings((prev) => ({
-											...prev,
-											apiKey: e.target.value
-										})),
-										className: "flex-1"
-									}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
-										variant: "secondary",
-										onClick: handleTestConnection,
-										disabled: isTesting,
-										children: [isTesting ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(LoaderCircle, { className: "w-4 h-4 animate-spin" }) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)(PlugZap, { className: "w-4 h-4" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-											className: "ml-2 sr-only md:not-sr-only",
-											children: "Testar"
-										})]
+								})
+							]
+						}),
+						/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "space-y-3 pt-2",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Chave de API (OpenAI / Anthropic)" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+								className: "flex gap-3",
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
+									type: "password",
+									placeholder: "sk-...",
+									value: localSettings?.apiKey ?? "",
+									onChange: (e) => setLocalSettings((prev) => ({
+										...prev,
+										apiKey: e.target.value
+									})),
+									className: "flex-1 font-mono"
+								}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+									variant: "secondary",
+									onClick: handleTestConnection,
+									disabled: isTesting,
+									className: "h-12 w-12 p-0 rounded-xl md:w-auto md:px-6",
+									children: [isTesting ? /* @__PURE__ */ (0, import_jsx_runtime.jsx)(LoaderCircle, { className: "w-5 h-5 animate-spin" }) : /* @__PURE__ */ (0, import_jsx_runtime.jsx)(PlugZap, { className: "w-5 h-5" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+										className: "ml-2 sr-only md:not-sr-only",
+										children: "Testar"
 									})]
 								})]
-							})
-						]
-					}),
-					/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardFooter, {
-						className: "bg-muted/30 border-t flex justify-end px-6 py-4",
-						children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
-							onClick: handleSave,
-							className: "gap-2",
-							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Save, { className: "w-4 h-4" }), "Salvar Configurações"]
+							})]
 						})
+					]
+				}),
+				/* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardFooter, {
+					className: "bg-background/30 border-t border-white/5 flex justify-end px-6 py-5 rounded-b-[24px]",
+					children: /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+						onClick: handleSave,
+						className: "gap-2 h-12 px-6",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Save, { className: "w-5 h-5" }), "Salvar Configurações"]
+					})
+				})
+			] }),
+			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
+				className: "border-destructive/30 bg-destructive/5 relative overflow-hidden",
+				children: [
+					/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { className: "absolute top-0 right-0 w-64 h-64 bg-destructive/10 blur-[80px] rounded-full" }),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardTitle, {
+						className: "text-destructive flex items-center gap-2",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(HardDrive, { className: "w-6 h-6" }), "Dados e Armazenamento"]
+					}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, {
+						className: "text-destructive/80",
+						children: "Monitore e exporte os dados armazenados localmente no seu navegador."
+					})] }),
+					/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardContent, {
+						className: "space-y-8 relative z-10",
+						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "space-y-3",
+							children: [
+								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+									className: "flex justify-between text-sm",
+									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
+										className: "font-bold text-foreground",
+										children: "Uso de Armazenamento Local"
+									}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
+										className: "text-muted-foreground font-mono",
+										children: [formatBytes(storageUsage?.bytes), " / 5 MB"]
+									})]
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Progress, {
+									value: storageUsage?.percentage ?? 0,
+									className: "h-3"
+								}),
+								/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
+									className: "text-xs text-muted-foreground",
+									children: [(storageUsage?.percentage ?? 0).toFixed(1), "% utilizado. Todos os dados são salvos com segurança de forma offline."]
+								})
+							]
+						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
+							className: "flex flex-col sm:flex-row gap-4 pt-2",
+							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+								variant: "outline",
+								className: "flex-1 gap-2 h-12",
+								onClick: handleExport,
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Download, { className: "w-5 h-5" }), "Exportar Dados"]
+							}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
+								variant: "destructive",
+								className: "flex-1 gap-2 h-12",
+								onClick: handleClearData,
+								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Trash2, { className: "w-5 h-5" }), "Apagar Progresso"]
+							})]
+						})]
 					})
 				]
-			}),
-			/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Card, {
-				className: "shadow-soft border-destructive/20",
-				children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardHeader, { children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardTitle, {
-					className: "text-destructive flex items-center gap-2",
-					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(HardDrive, { className: "w-5 h-5" }), "Dados e Armazenamento"]
-				}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(CardDescription, { children: "Monitore e exporte os dados armazenados localmente no seu navegador." })] }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(CardContent, {
-					className: "space-y-6",
-					children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-						className: "space-y-2",
-						children: [
-							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-								className: "flex justify-between text-sm",
-								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)("span", {
-									className: "font-medium",
-									children: "Uso de Armazenamento Local"
-								}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
-									className: "text-muted-foreground",
-									children: [formatBytes(storageUsage?.bytes), " / 5 MB"]
-								})]
-							}),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Progress, {
-								value: storageUsage?.percentage ?? 0,
-								className: "h-2"
-							}),
-							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
-								className: "text-xs text-muted-foreground",
-								children: [(storageUsage?.percentage ?? 0).toFixed(1), "% utilizado. Todos os dados são salvos com segurança de forma offline."]
-							})
-						]
-					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
-						className: "flex flex-col sm:flex-row gap-3 pt-2",
-						children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
-							variant: "outline",
-							className: "flex-1 gap-2",
-							onClick: handleExport,
-							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Download, { className: "w-4 h-4" }), "Exportar Dados (JSON)"]
-						}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Button, {
-							variant: "destructive",
-							className: "flex-1 gap-2",
-							onClick: handleClearData,
-							children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Trash2, { className: "w-4 h-4" }), "Apagar Todo o Progresso"]
-						})]
-					})]
-				})]
 			})
 		]
 	});
@@ -27798,4 +27834,4 @@ var App = () => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(StoreProvider, { chi
 var App_default = App;
 (0, import_client.createRoot)(document.getElementById("root")).render(/* @__PURE__ */ (0, import_jsx_runtime.jsx)(App_default, {}));
 
-//# sourceMappingURL=index-pcLan8Fv.js.map
+//# sourceMappingURL=index-DnQGNMHY.js.map
