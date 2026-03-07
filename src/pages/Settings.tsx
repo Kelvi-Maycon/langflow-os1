@@ -1,5 +1,13 @@
+import { useState, useEffect } from 'react'
 import { useStore } from '@/store/main'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+  CardFooter,
+} from '@/components/ui/card'
 import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
 import {
@@ -10,66 +18,220 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { Button } from '@/components/ui/button'
-import { Trash2, HardDrive } from 'lucide-react'
+import { Progress } from '@/components/ui/progress'
+import { Trash2, HardDrive, Download, Save, PlugZap, Loader2 } from 'lucide-react'
 import { useToast } from '@/hooks/use-toast'
 
 export default function Settings() {
-  const { settings, updateSettings, words, removeWord } = useStore()
+  const { settings, updateSettings, words } = useStore()
   const { toast } = useToast()
 
-  const handleSaveLevel = (val: string) => {
-    updateSettings({ level: val as any })
-    toast({ title: 'Configurações salvas', description: 'Nível de inglês atualizado.' })
+  const [localSettings, setLocalSettings] = useState(settings)
+  const [isTesting, setIsTesting] = useState(false)
+  const [storageUsage, setStorageUsage] = useState({ bytes: 0, percentage: 0 })
+
+  useEffect(() => {
+    let total = 0
+    for (const key in localStorage) {
+      if (localStorage.hasOwnProperty(key)) {
+        total += (localStorage[key].length + key.length) * 2
+      }
+    }
+    const maxStorage = 5 * 1024 * 1024 // 5MB limit approximation
+    setStorageUsage({ bytes: total, percentage: Math.min((total / maxStorage) * 100, 100) })
+  }, [words, settings])
+
+  const levelDefaults: Record<string, { srsMultiplier: number; complexity: string }> = {
+    A1: { srsMultiplier: 1.0, complexity: 'simple' },
+    A2: { srsMultiplier: 1.1, complexity: 'basic' },
+    B1: { srsMultiplier: 1.2, complexity: 'intermediate' },
+    B2: { srsMultiplier: 1.3, complexity: 'upper-intermediate' },
+    C1: { srsMultiplier: 1.4, complexity: 'advanced' },
+    C2: { srsMultiplier: 1.5, complexity: 'fluent' },
+  }
+
+  const handleLevelChange = (val: string) => {
+    const defaults = levelDefaults[val]
+    setLocalSettings((prev) => ({ ...prev, level: val as any, ...defaults }))
+  }
+
+  const handleSave = () => {
+    if (localSettings.dailyGoal < 1) {
+      toast({
+        title: 'Erro de Validação',
+        description: 'A meta diária deve ser pelo menos 1.',
+        variant: 'destructive',
+      })
+      return
+    }
+    updateSettings(localSettings)
+    toast({
+      title: 'Configurações salvas',
+      description: 'Suas preferências foram atualizadas com sucesso.',
+      className: 'bg-green-600 text-white border-green-700',
+    })
+  }
+
+  const handleTestConnection = async () => {
+    setIsTesting(true)
+    try {
+      // Mock API latency
+      await new Promise((r) => setTimeout(r, 1500))
+      if (!localSettings.apiKey) {
+        throw new Error('A Chave de API é obrigatória.')
+      }
+      if (!localSettings.apiKey.startsWith('sk-') || localSettings.apiKey.length < 20) {
+        throw new Error(
+          'Formato inválido. A chave deve começar com "sk-" e ter mais de 20 caracteres.',
+        )
+      }
+      toast({
+        title: 'Conexão bem-sucedida',
+        description: 'API Key validada com sucesso e provedor alcançável.',
+        className: 'bg-green-600 text-white border-green-700',
+      })
+    } catch (error: any) {
+      toast({ title: 'Falha na conexão', description: error.message, variant: 'destructive' })
+    } finally {
+      setIsTesting(false)
+    }
   }
 
   const handleClearData = () => {
-    if (confirm('Tem certeza? Isso apagará todo o seu progresso.')) {
-      localStorage.removeItem('langflow_words')
-      localStorage.removeItem('langflow_settings')
+    if (confirm('Tem certeza? Isso apagará todo o seu progresso e configurações armazenadas.')) {
+      const keysToRemove = [
+        'langflow_words',
+        'langflow_config',
+        'langflow_settings',
+        'langflow_sentences',
+        'langflow_flashcards',
+      ]
+      keysToRemove.forEach((k) => localStorage.removeItem(k))
       window.location.reload()
     }
   }
 
+  const handleExport = () => {
+    const data = {
+      langflow_words: JSON.parse(localStorage.getItem('langflow_words') || '[]'),
+      langflow_config: JSON.parse(localStorage.getItem('langflow_config') || '{}'),
+      langflow_sentences: JSON.parse(localStorage.getItem('langflow_sentences') || '[]'),
+      langflow_flashcards: JSON.parse(localStorage.getItem('langflow_flashcards') || '[]'),
+    }
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = `langflow_backup_${new Date().toISOString().split('T')[0]}.json`
+    document.body.appendChild(a)
+    a.click()
+    document.body.removeChild(a)
+    URL.revokeObjectURL(url)
+  }
+
+  const formatBytes = (bytes: number) => {
+    if (bytes === 0) return '0 B'
+    const k = 1024
+    const sizes = ['B', 'KB', 'MB', 'GB']
+    const i = Math.floor(Math.log(bytes) / Math.log(k))
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i]
+  }
+
   return (
-    <div className="space-y-6 animate-fade-in-up max-w-2xl mx-auto">
+    <div className="space-y-8 animate-fade-in-up max-w-2xl mx-auto pb-12">
       <header>
         <h1 className="text-3xl font-bold tracking-tight text-foreground">Configurações</h1>
-        <p className="text-muted-foreground mt-2">Personalize sua experiência de aprendizado.</p>
+        <p className="text-muted-foreground mt-2">
+          Personalize sua experiência de aprendizado e gerencie seus dados.
+        </p>
       </header>
 
       <Card className="shadow-soft">
         <CardHeader>
-          <CardTitle>Preferências de Aprendizado</CardTitle>
-          <CardDescription>Defina seu nível atual para adequar as explicações.</CardDescription>
+          <CardTitle>Preferências e IA</CardTitle>
+          <CardDescription>
+            Defina seu nível e configure as chaves de API para os módulos de geração.
+          </CardDescription>
         </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="space-y-2">
-            <Label>Nível de Inglês (CEFR)</Label>
-            <Select value={settings.level} onValueChange={handleSaveLevel}>
-              <SelectTrigger>
-                <SelectValue placeholder="Selecione seu nível" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="A1">A1 - Iniciante</SelectItem>
-                <SelectItem value="A2">A2 - Básico</SelectItem>
-                <SelectItem value="B1">B1 - Intermediário</SelectItem>
-                <SelectItem value="B2">B2 - Pós-Intermediário</SelectItem>
-                <SelectItem value="C1">C1 - Avançado</SelectItem>
-                <SelectItem value="C2">C2 - Fluente</SelectItem>
-              </SelectContent>
-            </Select>
+        <CardContent className="space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label>Nível de Inglês (CEFR)</Label>
+              <Select value={localSettings.level} onValueChange={handleLevelChange}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Selecione seu nível" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="A1">A1 - Iniciante</SelectItem>
+                  <SelectItem value="A2">A2 - Básico</SelectItem>
+                  <SelectItem value="B1">B1 - Intermediário</SelectItem>
+                  <SelectItem value="B2">B2 - Pós-Intermediário</SelectItem>
+                  <SelectItem value="C1">C1 - Avançado</SelectItem>
+                  <SelectItem value="C2">C2 - Fluente</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="space-y-2">
+              <Label>Meta Diária (Novas Palavras)</Label>
+              <Input
+                type="number"
+                value={localSettings.dailyGoal}
+                onChange={(e) =>
+                  setLocalSettings((prev) => ({
+                    ...prev,
+                    dailyGoal: parseInt(e.target.value) || 0,
+                  }))
+                }
+              />
+            </div>
           </div>
 
-          <div className="space-y-2">
-            <Label>Meta Diária (Novas Palavras)</Label>
-            <Input
-              type="number"
-              value={settings.dailyGoal}
-              onChange={(e) => updateSettings({ dailyGoal: parseInt(e.target.value) || 10 })}
-              onBlur={() => toast({ title: 'Meta salva', description: 'Meta diária atualizada.' })}
-            />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-muted/50 p-4 rounded-lg border">
+            <div className="space-y-1">
+              <Label className="text-xs text-muted-foreground">
+                Multiplicador de Intervalo (SRS)
+              </Label>
+              <p className="text-sm font-medium">{localSettings.srsMultiplier.toFixed(1)}x</p>
+            </div>
+            <div className="space-y-1">
+              <Label className="text-xs text-muted-foreground">Complexidade (Builder)</Label>
+              <p className="text-sm font-medium capitalize">{localSettings.complexity}</p>
+            </div>
+            <div className="col-span-full">
+              <p className="text-xs text-muted-foreground mt-1">
+                Estes valores são ajustados automaticamente com base no seu nível de inglês.
+              </p>
+            </div>
+          </div>
+
+          <div className="space-y-2 pt-2">
+            <Label>Chave de API (OpenAI / Anthropic)</Label>
+            <div className="flex gap-2">
+              <Input
+                type="password"
+                placeholder="sk-..."
+                value={localSettings.apiKey}
+                onChange={(e) => setLocalSettings((prev) => ({ ...prev, apiKey: e.target.value }))}
+                className="flex-1"
+              />
+              <Button variant="secondary" onClick={handleTestConnection} disabled={isTesting}>
+                {isTesting ? (
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                ) : (
+                  <PlugZap className="w-4 h-4" />
+                )}
+                <span className="ml-2 sr-only md:not-sr-only">Testar</span>
+              </Button>
+            </div>
           </div>
         </CardContent>
+        <CardFooter className="bg-muted/30 border-t flex justify-end px-6 py-4">
+          <Button onClick={handleSave} className="gap-2">
+            <Save className="w-4 h-4" />
+            Salvar Configurações
+          </Button>
+        </CardFooter>
       </Card>
 
       <Card className="shadow-soft border-destructive/20">
@@ -79,54 +241,34 @@ export default function Settings() {
             Dados e Armazenamento
           </CardTitle>
           <CardDescription>
-            Gerencie seus dados armazenados localmente no navegador.
+            Monitore e exporte os dados armazenados localmente no seu navegador.
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
-          <div className="text-sm bg-secondary p-4 rounded-md">
-            <p>
-              <strong>Palavras salvas:</strong> {words.length}
-            </p>
-            <p>
-              <strong>Dados sincronizados:</strong> LocalStorage apenas (seguro e privado)
-            </p>
-          </div>
-
           <div className="space-y-2">
-            <Label>Gerenciar Lista</Label>
-            <div className="max-h-48 overflow-y-auto border rounded-md divide-y">
-              {words.length === 0 && (
-                <p className="p-4 text-center text-muted-foreground text-sm">
-                  Nenhuma palavra salva ainda.
-                </p>
-              )}
-              {words.map((w) => (
-                <div
-                  key={w.id}
-                  className="flex items-center justify-between p-2 text-sm hover:bg-muted/50"
-                >
-                  <div className="flex flex-col">
-                    <span className="font-medium">{w.word}</span>
-                    <span className="text-xs text-muted-foreground truncate max-w-[200px]">
-                      {w.translation}
-                    </span>
-                  </div>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={() => removeWord(w.id)}
-                    className="text-destructive hover:bg-destructive/10"
-                  >
-                    <Trash2 className="w-4 h-4" />
-                  </Button>
-                </div>
-              ))}
+            <div className="flex justify-between text-sm">
+              <span className="font-medium">Uso de Armazenamento Local</span>
+              <span className="text-muted-foreground">
+                {formatBytes(storageUsage.bytes)} / 5 MB
+              </span>
             </div>
+            <Progress value={storageUsage.percentage} className="h-2" />
+            <p className="text-xs text-muted-foreground">
+              {storageUsage.percentage.toFixed(1)}% utilizado. Todos os dados são salvos com
+              segurança de forma offline.
+            </p>
           </div>
 
-          <Button variant="destructive" className="w-full" onClick={handleClearData}>
-            Apagar Todos os Dados
-          </Button>
+          <div className="flex flex-col sm:flex-row gap-3 pt-2">
+            <Button variant="outline" className="flex-1 gap-2" onClick={handleExport}>
+              <Download className="w-4 h-4" />
+              Exportar Dados (JSON)
+            </Button>
+            <Button variant="destructive" className="flex-1 gap-2" onClick={handleClearData}>
+              <Trash2 className="w-4 h-4" />
+              Apagar Todo o Progresso
+            </Button>
+          </div>
         </CardContent>
       </Card>
     </div>

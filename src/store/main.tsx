@@ -15,7 +15,13 @@ interface StoreContextType extends AppState {
   removeWord: (id: string) => void
 }
 
-const defaultSettings: UserSettings = { level: 'B1', apiKey: '', dailyGoal: 20 }
+const defaultSettings: UserSettings = {
+  level: 'B1',
+  apiKey: '',
+  dailyGoal: 20,
+  srsMultiplier: 1.2,
+  complexity: 'intermediate',
+}
 
 const mockWords: WordEntry[] = [
   {
@@ -65,15 +71,18 @@ export function StoreProvider({ children }: { children: ReactNode }) {
   })
 
   const [settings, setSettings] = useState<UserSettings>(() => {
-    const saved = localStorage.getItem('langflow_settings')
-    return saved ? JSON.parse(saved) : defaultSettings
+    const savedConfig = localStorage.getItem('langflow_config')
+    if (savedConfig) return JSON.parse(savedConfig)
+    const savedSettings = localStorage.getItem('langflow_settings')
+    if (savedSettings) return JSON.parse(savedSettings)
+    return defaultSettings
   })
 
   useEffect(() => {
     localStorage.setItem('langflow_words', JSON.stringify(words))
   }, [words])
   useEffect(() => {
-    localStorage.setItem('langflow_settings', JSON.stringify(settings))
+    localStorage.setItem('langflow_config', JSON.stringify(settings))
   }, [settings])
 
   const addWord = (data: Parameters<StoreContextType['addWord']>[0]) => {
@@ -97,7 +106,13 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     setWords((prev) =>
       prev.map((w) => {
         if (w.id !== id) return w
-        const sm2 = calculateSM2(quality, w.repetitions, w.interval, w.easeFactor)
+        const sm2 = calculateSM2(
+          quality,
+          w.repetitions,
+          w.interval,
+          w.easeFactor,
+          settings.srsMultiplier,
+        )
         const nextReviewDate = getNextReviewDate(sm2.interval)
         const status = sm2.interval > 21 ? 'mastered' : 'srs'
         return { ...w, ...sm2, nextReviewDate, status }

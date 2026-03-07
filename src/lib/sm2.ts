@@ -10,6 +10,7 @@ export function calculateSM2(
   repetitions: number,
   previousInterval: number,
   previousEaseFactor: number,
+  multiplier: number = 1.0,
 ): SM2Data {
   let interval = 0
   let easeFactor = previousEaseFactor + (0.1 - (5 - quality) * (0.08 + (5 - quality) * 0.02))
@@ -25,7 +26,7 @@ export function calculateSM2(
     } else if (repetitions === 1) {
       interval = 6
     } else {
-      interval = Math.round(previousInterval * easeFactor)
+      interval = Math.round(previousInterval * easeFactor * multiplier)
     }
     repetitions++
   }
