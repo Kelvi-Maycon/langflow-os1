@@ -19,6 +19,7 @@ export interface UserSettings {
   dailyGoal: number
   srsMultiplier: number
   complexity: string
+  aiModel?: string
 }
 
 export interface AppState {

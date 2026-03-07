@@ -21,6 +21,7 @@ const defaultSettings: UserSettings = {
   dailyGoal: 20,
   srsMultiplier: 1.2,
   complexity: 'intermediate',
+  aiModel: 'gpt-4o-mini',
 }
 
 const mockWords: WordEntry[] = [

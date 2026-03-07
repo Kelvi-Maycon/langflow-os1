@@ -2,8 +2,16 @@ import { useState, useMemo } from 'react'
 import { Card } from '@/components/ui/card'
 import { Textarea } from '@/components/ui/textarea'
 import { Button } from '@/components/ui/button'
-import { Play, FileText, CheckCircle2 } from 'lucide-react'
+import { Play, FileText, CheckCircle2, Settings2 } from 'lucide-react'
 import { WordInteraction } from '@/components/reader/WordInteraction'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
+import { useStore } from '@/store/main'
 
 const defaultText = `The quick brown fox jumps over the lazy dog. 
 This is a serendipity moment where you can learn new words.
@@ -12,6 +20,7 @@ Reading ephemeral texts ubiquitous on the internet helps improve your active voc
 export default function Reader() {
   const [inputText, setInputText] = useState(defaultText)
   const [isReadingMode, setIsReadingMode] = useState(false)
+  const { settings, updateSettings } = useStore()
 
   const processedContent = useMemo(() => {
     if (!isReadingMode) return null
@@ -36,11 +45,33 @@ export default function Reader() {
 
   return (
     <div className="space-y-6 animate-fade-in max-w-4xl mx-auto h-full flex flex-col">
-      <header>
-        <h1 className="text-3xl font-bold tracking-tight text-foreground">Leitor Imersivo</h1>
-        <p className="text-muted-foreground mt-2 text-lg">
-          Cole um texto em inglês, leia e clique nas palavras que não conhece.
-        </p>
+      <header className="flex flex-col md:flex-row md:items-start justify-between gap-4">
+        <div>
+          <h1 className="text-3xl font-bold tracking-tight text-foreground">Leitor Imersivo</h1>
+          <p className="text-muted-foreground mt-2 text-lg">
+            Cole um texto em inglês, leia e clique nas palavras que não conhece.
+          </p>
+        </div>
+
+        {isReadingMode && (
+          <div className="flex items-center gap-2 bg-secondary/40 p-1.5 rounded-xl border border-border animate-fade-in shadow-sm">
+            <Settings2 className="w-4 h-4 text-primary ml-2" />
+            <Select
+              value={settings.aiModel || 'gpt-4o-mini'}
+              onValueChange={(v) => updateSettings({ aiModel: v })}
+            >
+              <SelectTrigger className="w-[160px] h-9 border-0 bg-transparent focus:ring-0 shadow-none font-medium">
+                <SelectValue placeholder="Modelo de IA" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="gpt-4o">GPT-4o</SelectItem>
+                <SelectItem value="gpt-4o-mini">GPT-4o Mini</SelectItem>
+                <SelectItem value="gpt-3.5-turbo">GPT-3.5 Turbo</SelectItem>
+                <SelectItem value="claude-3-haiku">Claude 3 Haiku</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        )}
       </header>
 
       {!isReadingMode ? (
@@ -50,7 +81,7 @@ export default function Reader() {
               <FileText className="w-5 h-5" /> Cole seu texto aqui:
             </div>
             <Textarea
-              className="flex-1 resize-none text-base md:text-lg p-6 font-sans bg-secondary/30 border-border rounded-[20px] focus-visible:ring-primary shadow-inner"
+              className="flex-1 resize-none text-base md:text-lg p-6 font-sans bg-secondary/30 border-border rounded-[20px] focus-visible:ring-primary shadow-inner leading-relaxed"
               placeholder="Paste English text here..."
               value={inputText}
               onChange={(e) => setInputText(e.target.value)}
@@ -58,7 +89,7 @@ export default function Reader() {
           </Card>
           <Button
             size="lg"
-            className="w-full h-16 text-lg shadow-md group"
+            className="w-full h-16 text-lg shadow-md group rounded-2xl"
             onClick={() => {
               if (inputText.trim()) setIsReadingMode(true)
             }}
@@ -77,7 +108,7 @@ export default function Reader() {
             <div className="relative z-10">{processedContent}</div>
           </Card>
 
-          <div className="flex justify-between items-center bg-card/80 backdrop-blur-md p-4 px-6 rounded-full border border-border shadow-sm">
+          <div className="flex justify-between items-center bg-card/80 backdrop-blur-md p-4 px-6 rounded-2xl border border-border shadow-sm">
             <div className="text-sm font-medium flex items-center gap-3 text-muted-foreground">
               <div className="p-1.5 bg-success/20 rounded-full">
                 <CheckCircle2 className="w-4 h-4 text-success" />
@@ -86,7 +117,7 @@ export default function Reader() {
             </div>
             <Button
               variant="outline"
-              className="rounded-full bg-background hover:bg-secondary border-border"
+              className="rounded-xl bg-background hover:bg-secondary border-border"
               onClick={() => setIsReadingMode(false)}
             >
               Editar Texto
