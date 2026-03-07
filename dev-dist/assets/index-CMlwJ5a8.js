@@ -27426,7 +27426,7 @@ function Settings() {
 	});
 	(0, import_react.useEffect)(() => {
 		let total = 0;
-		for (const key in localStorage) if (localStorage.hasOwnProperty(key)) total += (localStorage[key].length + key.length) * 2;
+		for (const key in localStorage) if (Object.prototype.hasOwnProperty.call(localStorage, key)) total += (localStorage[key].length + key.length) * 2;
 		setStorageUsage({
 			bytes: total,
 			percentage: Math.min(total / (5 * 1024 * 1024) * 100, 100)
@@ -27792,4 +27792,4 @@ var App = () => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(StoreProvider, { chi
 var App_default = App;
 (0, import_client.createRoot)(document.getElementById("root")).render(/* @__PURE__ */ (0, import_jsx_runtime.jsx)(App_default, {}));
 
-//# sourceMappingURL=index-BjurpK0Q.js.map
+//# sourceMappingURL=index-CMlwJ5a8.js.map
