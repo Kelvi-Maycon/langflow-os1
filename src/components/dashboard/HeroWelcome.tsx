@@ -33,7 +33,7 @@ export function HeroWelcome() {
 
         <div className="flex flex-wrap gap-4">
           <Button
-            onClick={() => navigate('/builder')}
+            onClick={() => navigate('/practice')}
             size="lg"
             className="rounded-full bg-pink-500 hover:bg-pink-600 text-white border-0 h-14 px-8 text-base font-bold shadow-[0_4px_14px_0_rgba(236,72,153,0.25)] transition-all duration-300 hover:scale-[1.04] active:scale-[0.98]"
           >
