@@ -56,7 +56,7 @@ export default function Settings() {
   }
 
   const handleSave = () => {
-    if (localSettings.dailyGoal < 1) {
+    if (!localSettings || localSettings.dailyGoal < 1) {
       toast({
         title: 'Erro de Validação',
         description: 'A meta diária deve ser pelo menos 1.',
@@ -77,7 +77,7 @@ export default function Settings() {
     try {
       // Mock API latency
       await new Promise((r) => setTimeout(r, 1500))
-      if (!localSettings.apiKey) {
+      if (!localSettings?.apiKey) {
         throw new Error('A Chave de API é obrigatória.')
       }
       if (!localSettings.apiKey.startsWith('sk-') || localSettings.apiKey.length < 20) {
@@ -129,8 +129,8 @@ export default function Settings() {
     URL.revokeObjectURL(url)
   }
 
-  const formatBytes = (bytes: number) => {
-    if (bytes === 0) return '0 B'
+  const formatBytes = (bytes?: number) => {
+    if (!bytes || bytes === 0) return '0 B'
     const k = 1024
     const sizes = ['B', 'KB', 'MB', 'GB']
     const i = Math.floor(Math.log(bytes) / Math.log(k))
@@ -157,7 +157,7 @@ export default function Settings() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
               <Label>Nível de Inglês (CEFR)</Label>
-              <Select value={localSettings.level} onValueChange={handleLevelChange}>
+              <Select value={localSettings?.level} onValueChange={handleLevelChange}>
                 <SelectTrigger>
                   <SelectValue placeholder="Selecione seu nível" />
                 </SelectTrigger>
@@ -176,7 +176,7 @@ export default function Settings() {
               <Label>Meta Diária (Novas Palavras)</Label>
               <Input
                 type="number"
-                value={localSettings.dailyGoal}
+                value={localSettings?.dailyGoal ?? 0}
                 onChange={(e) =>
                   setLocalSettings((prev) => ({
                     ...prev,
@@ -192,11 +192,15 @@ export default function Settings() {
               <Label className="text-xs text-muted-foreground">
                 Multiplicador de Intervalo (SRS)
               </Label>
-              <p className="text-sm font-medium">{localSettings.srsMultiplier.toFixed(1)}x</p>
+              <p className="text-sm font-medium">
+                {(localSettings?.srsMultiplier ?? 1.2).toFixed(1)}x
+              </p>
             </div>
             <div className="space-y-1">
               <Label className="text-xs text-muted-foreground">Complexidade (Builder)</Label>
-              <p className="text-sm font-medium capitalize">{localSettings.complexity}</p>
+              <p className="text-sm font-medium capitalize">
+                {localSettings?.complexity ?? 'intermediate'}
+              </p>
             </div>
             <div className="col-span-full">
               <p className="text-xs text-muted-foreground mt-1">
@@ -211,7 +215,7 @@ export default function Settings() {
               <Input
                 type="password"
                 placeholder="sk-..."
-                value={localSettings.apiKey}
+                value={localSettings?.apiKey ?? ''}
                 onChange={(e) => setLocalSettings((prev) => ({ ...prev, apiKey: e.target.value }))}
                 className="flex-1"
               />
@@ -249,12 +253,12 @@ export default function Settings() {
             <div className="flex justify-between text-sm">
               <span className="font-medium">Uso de Armazenamento Local</span>
               <span className="text-muted-foreground">
-                {formatBytes(storageUsage.bytes)} / 5 MB
+                {formatBytes(storageUsage?.bytes)} / 5 MB
               </span>
             </div>
-            <Progress value={storageUsage.percentage} className="h-2" />
+            <Progress value={storageUsage?.percentage ?? 0} className="h-2" />
             <p className="text-xs text-muted-foreground">
-              {storageUsage.percentage.toFixed(1)}% utilizado. Todos os dados são salvos com
+              {(storageUsage?.percentage ?? 0).toFixed(1)}% utilizado. Todos os dados são salvos com
               segurança de forma offline.
             </p>
           </div>

@@ -24085,9 +24085,15 @@ function StoreProvider({ children }) {
 	});
 	const [settings, setSettings] = (0, import_react.useState)(() => {
 		const savedConfig = localStorage.getItem("langflow_config");
-		if (savedConfig) return JSON.parse(savedConfig);
+		if (savedConfig) return {
+			...defaultSettings,
+			...JSON.parse(savedConfig)
+		};
 		const savedSettings = localStorage.getItem("langflow_settings");
-		if (savedSettings) return JSON.parse(savedSettings);
+		if (savedSettings) return {
+			...defaultSettings,
+			...JSON.parse(savedSettings)
+		};
 		return defaultSettings;
 	});
 	(0, import_react.useEffect)(() => {
@@ -27467,7 +27473,7 @@ function Settings() {
 		}));
 	};
 	const handleSave = () => {
-		if (localSettings.dailyGoal < 1) {
+		if (!localSettings || localSettings.dailyGoal < 1) {
 			toast$2({
 				title: "Erro de Validação",
 				description: "A meta diária deve ser pelo menos 1.",
@@ -27486,7 +27492,7 @@ function Settings() {
 		setIsTesting(true);
 		try {
 			await new Promise((r$1) => setTimeout(r$1, 1500));
-			if (!localSettings.apiKey) throw new Error("A Chave de API é obrigatória.");
+			if (!localSettings?.apiKey) throw new Error("A Chave de API é obrigatória.");
 			if (!localSettings.apiKey.startsWith("sk-") || localSettings.apiKey.length < 20) throw new Error("Formato inválido. A chave deve começar com \"sk-\" e ter mais de 20 caracteres.");
 			toast$2({
 				title: "Conexão bem-sucedida",
@@ -27533,7 +27539,7 @@ function Settings() {
 		URL.revokeObjectURL(url);
 	};
 	const formatBytes = (bytes) => {
-		if (bytes === 0) return "0 B";
+		if (!bytes || bytes === 0) return "0 B";
 		const k = 1024;
 		const sizes = [
 			"B",
@@ -27566,7 +27572,7 @@ function Settings() {
 								children: [/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
 									className: "space-y-2",
 									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Nível de Inglês (CEFR)" }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(Select, {
-										value: localSettings.level,
+										value: localSettings?.level,
 										onValueChange: handleLevelChange,
 										children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectTrigger, { children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectValue, { placeholder: "Selecione seu nível" }) }), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)(SelectContent, { children: [
 											/* @__PURE__ */ (0, import_jsx_runtime.jsx)(SelectItem, {
@@ -27599,7 +27605,7 @@ function Settings() {
 									className: "space-y-2",
 									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Label, { children: "Meta Diária (Novas Palavras)" }), /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
 										type: "number",
-										value: localSettings.dailyGoal,
+										value: localSettings?.dailyGoal ?? 0,
 										onChange: (e) => setLocalSettings((prev) => ({
 											...prev,
 											dailyGoal: parseInt(e.target.value) || 0
@@ -27617,7 +27623,7 @@ function Settings() {
 											children: "Multiplicador de Intervalo (SRS)"
 										}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
 											className: "text-sm font-medium",
-											children: [localSettings.srsMultiplier.toFixed(1), "x"]
+											children: [(localSettings?.srsMultiplier ?? 1.2).toFixed(1), "x"]
 										})]
 									}),
 									/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
@@ -27627,7 +27633,7 @@ function Settings() {
 											children: "Complexidade (Builder)"
 										}), /* @__PURE__ */ (0, import_jsx_runtime.jsx)("p", {
 											className: "text-sm font-medium capitalize",
-											children: localSettings.complexity
+											children: localSettings?.complexity ?? "intermediate"
 										})]
 									}),
 									/* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", {
@@ -27646,7 +27652,7 @@ function Settings() {
 									children: [/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Input, {
 										type: "password",
 										placeholder: "sk-...",
-										value: localSettings.apiKey,
+										value: localSettings?.apiKey ?? "",
 										onChange: (e) => setLocalSettings((prev) => ({
 											...prev,
 											apiKey: e.target.value
@@ -27692,16 +27698,16 @@ function Settings() {
 									children: "Uso de Armazenamento Local"
 								}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("span", {
 									className: "text-muted-foreground",
-									children: [formatBytes(storageUsage.bytes), " / 5 MB"]
+									children: [formatBytes(storageUsage?.bytes), " / 5 MB"]
 								})]
 							}),
 							/* @__PURE__ */ (0, import_jsx_runtime.jsx)(Progress, {
-								value: storageUsage.percentage,
+								value: storageUsage?.percentage ?? 0,
 								className: "h-2"
 							}),
 							/* @__PURE__ */ (0, import_jsx_runtime.jsxs)("p", {
 								className: "text-xs text-muted-foreground",
-								children: [storageUsage.percentage.toFixed(1), "% utilizado. Todos os dados são salvos com segurança de forma offline."]
+								children: [(storageUsage?.percentage ?? 0).toFixed(1), "% utilizado. Todos os dados são salvos com segurança de forma offline."]
 							})
 						]
 					}), /* @__PURE__ */ (0, import_jsx_runtime.jsxs)("div", {
@@ -27792,4 +27798,4 @@ var App = () => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(StoreProvider, { chi
 var App_default = App;
 (0, import_client.createRoot)(document.getElementById("root")).render(/* @__PURE__ */ (0, import_jsx_runtime.jsx)(App_default, {}));
 
-//# sourceMappingURL=index-CMlwJ5a8.js.map
+//# sourceMappingURL=index-pcLan8Fv.js.map

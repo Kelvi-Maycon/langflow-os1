@@ -72,9 +72,9 @@ export function StoreProvider({ children }: { children: ReactNode }) {
 
   const [settings, setSettings] = useState<UserSettings>(() => {
     const savedConfig = localStorage.getItem('langflow_config')
-    if (savedConfig) return JSON.parse(savedConfig)
+    if (savedConfig) return { ...defaultSettings, ...JSON.parse(savedConfig) }
     const savedSettings = localStorage.getItem('langflow_settings')
-    if (savedSettings) return JSON.parse(savedSettings)
+    if (savedSettings) return { ...defaultSettings, ...JSON.parse(savedSettings) }
     return defaultSettings
   })
 
