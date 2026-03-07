@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { CheckCircle2, XCircle, ArrowRight, Loader2 } from 'lucide-react'
 import { useStore } from '@/store/main'
+import { cn } from '@/lib/utils'
 
 interface QuickPracticeProps {
   words: { word: string; translation: string; sentence: string }[]
@@ -10,18 +11,18 @@ interface QuickPracticeProps {
 }
 
 const practiceMocks: Record<string, { pt: string; en: string }> = {
-  the: { pt: 'O carro é azul.', en: 'The car is blue' },
-  is: { pt: 'Ele é alto.', en: 'He is tall' },
-  quick: { pt: 'Ele é muito rápido.', en: 'He is very quick' },
-  brown: { pt: 'O urso marrom.', en: 'The brown bear' },
-  fox: { pt: 'A raposa esperta.', en: 'The smart fox' },
-  jumps: { pt: 'O gato pula.', en: 'The cat jumps' },
-  over: { pt: 'O avião voa sobre a cidade.', en: 'The plane flies over the city' },
-  lazy: { pt: 'O cachorro preguiçoso.', en: 'The lazy dog' },
-  dog: { pt: 'O cachorro late.', en: 'The dog barks' },
-  serendipity: { pt: 'Foi uma descoberta feliz por acaso.', en: 'It was a serendipity' },
-  ephemeral: { pt: 'A arte efêmera.', en: 'The ephemeral art' },
-  ubiquitous: { pt: 'A tecnologia é onipresente.', en: 'Technology is ubiquitous' },
+  the: { pt: 'O carro é azul.', en: 'The car is blue.' },
+  is: { pt: 'Ele é alto.', en: 'He is tall.' },
+  quick: { pt: 'A raposa rápida corre.', en: 'The quick fox runs.' },
+  brown: { pt: 'A raposa é marrom.', en: 'The fox is brown.' },
+  fox: { pt: 'A raposa pulou.', en: 'The fox jumped.' },
+  jumps: { pt: 'O gato pula alto.', en: 'The cat jumps high.' },
+  over: { pt: 'O avião voa sobre a cidade.', en: 'The plane flies over the city.' },
+  lazy: { pt: 'O cachorro preguiçoso dorme.', en: 'The lazy dog sleeps.' },
+  dog: { pt: 'O cachorro late.', en: 'The dog barks.' },
+  serendipity: { pt: 'Foi um momento de serendipidade.', en: 'It was a moment of serendipity.' },
+  ephemeral: { pt: 'A beleza é efêmera.', en: 'Beauty is ephemeral.' },
+  ubiquitous: { pt: 'A tecnologia é onipresente hoje.', en: 'Technology is ubiquitous today.' },
 }
 
 export function QuickPractice({ words, onComplete }: QuickPracticeProps) {
@@ -49,7 +50,7 @@ export function QuickPractice({ words, onComplete }: QuickPracticeProps) {
           setPracticeData(
             practiceMocks[currentItem.word.toLowerCase()] || {
               pt: `Eu vi um(a) ${currentItem.translation} hoje.`,
-              en: `I saw a ${currentItem.word} today`,
+              en: `I saw a ${currentItem.word} today.`,
             },
           )
           setIsLoading(false)
@@ -70,11 +71,11 @@ export function QuickPractice({ words, onComplete }: QuickPracticeProps) {
               {
                 role: 'system',
                 content:
-                  'Você é um professor de inglês. Crie uma frase MUITO curta e simples em inglês (máx 6 palavras) focada na palavra fornecida, e forneça sua tradução exata e natural em português. Retorne apenas JSON: {"pt": "frase em português", "en": "frase em inglês"}',
+                  'Você é um professor de inglês. Usando a frase de contexto original como base, crie uma frase simples em inglês (máx 8 palavras) focada na palavra alvo. A frase deve ser idêntica ou muito parecida com o contexto, mas simplificada se necessário. Forneça também a tradução natural e exata em português. Retorne apenas JSON: {"pt": "frase em português", "en": "frase em inglês"}',
               },
               {
                 role: 'user',
-                content: `Palavra alvo: "${currentItem.word}", Tradução: "${currentItem.translation}"`,
+                content: `Palavra alvo: "${currentItem.word}"\nTradução: "${currentItem.translation}"\nContexto original: "${currentItem.sentence}"`,
               },
             ],
             response_format: { type: 'json_object' },
@@ -89,7 +90,7 @@ export function QuickPractice({ words, onComplete }: QuickPracticeProps) {
         setPracticeData(
           practiceMocks[currentItem.word.toLowerCase()] || {
             pt: `Eu vi um(a) ${currentItem.translation} hoje.`,
-            en: `I saw a ${currentItem.word} today`,
+            en: `I saw a ${currentItem.word} today.`,
           },
         )
       } finally {
@@ -143,21 +144,21 @@ export function QuickPractice({ words, onComplete }: QuickPracticeProps) {
   }
 
   return (
-    <div className="space-y-8 animate-fade-in-up flex flex-col h-full w-full max-w-2xl mx-auto py-4">
-      <div className="flex items-center justify-between text-primary border-b border-border pb-4">
+    <div className="space-y-6 animate-fade-in flex flex-col w-full mx-auto py-2">
+      <div className="flex items-center justify-between pb-4 border-b border-border/60">
         <div className="flex items-center gap-3">
-          <div className="p-2.5 bg-primary/10 rounded-xl">
-            <ArrowRight className="w-5 h-5" />
+          <div className="p-2 bg-primary/10 rounded-xl flex items-center justify-center text-primary">
+            <ArrowRight className="w-4 h-4" />
           </div>
-          <h3 className="font-bold text-2xl tracking-tight">Prática Rápida</h3>
+          <h3 className="font-bold text-xl text-primary tracking-tight">Prática Rápida</h3>
         </div>
-        <div className="text-sm font-bold text-muted-foreground bg-secondary px-4 py-1.5 rounded-full">
+        <div className="text-sm font-semibold text-muted-foreground bg-secondary/80 px-3 py-1 rounded-full">
           {currentIndex + 1} / {words.length}
         </div>
       </div>
 
       {isLoading || !practiceData ? (
-        <div className="flex-1 flex flex-col items-center justify-center gap-4 min-h-[250px] bg-secondary/10 rounded-[24px] border border-border">
+        <div className="flex-1 flex flex-col items-center justify-center gap-4 py-12">
           <Loader2 className="w-8 h-8 animate-spin text-primary" />
           <p className="text-muted-foreground font-medium">
             Gerando exercício de tradução ideal...
@@ -165,14 +166,16 @@ export function QuickPractice({ words, onComplete }: QuickPracticeProps) {
         </div>
       ) : (
         <>
-          <div className="space-y-3 bg-secondary/20 p-8 rounded-[24px] border border-border shadow-sm">
-            <p className="text-sm text-muted-foreground font-semibold uppercase tracking-wider flex items-center gap-2">
+          <div className="p-6 md:p-8 rounded-2xl border border-border bg-card shadow-sm space-y-3">
+            <p className="text-xs text-muted-foreground font-bold uppercase tracking-widest">
               Traduza para o inglês
             </p>
-            <p className="text-3xl font-medium text-foreground leading-tight">{practiceData.pt}</p>
+            <p className="text-2xl md:text-3xl font-medium text-foreground leading-tight">
+              {practiceData.pt}
+            </p>
           </div>
 
-          <div className="space-y-4 flex-1">
+          <div className="space-y-4">
             <Input
               value={answer}
               onChange={(e) => {
@@ -180,13 +183,14 @@ export function QuickPractice({ words, onComplete }: QuickPracticeProps) {
                 if (status !== 'idle') setStatus('idle')
               }}
               placeholder="Digite a tradução exata em inglês..."
-              className={`h-16 text-xl px-6 transition-all duration-300 rounded-[20px] ${
+              className={cn(
+                'h-14 text-lg px-4 transition-all duration-300 rounded-xl',
                 status === 'incorrect'
-                  ? 'border-destructive focus-visible:ring-destructive focus-visible:border-destructive bg-destructive/5'
+                  ? 'border-destructive focus-visible:ring-destructive focus-visible:border-destructive text-foreground bg-background'
                   : status === 'correct'
-                    ? 'border-success focus-visible:ring-success focus-visible:border-success bg-success/5'
-                    : 'bg-background shadow-inner'
-              }`}
+                    ? 'border-green-500 focus-visible:ring-green-500 focus-visible:border-green-500 bg-background'
+                    : 'bg-background',
+              )}
               onKeyDown={(e) => {
                 if (e.key === 'Enter') {
                   if (status === 'correct') handleNext()
@@ -197,15 +201,15 @@ export function QuickPractice({ words, onComplete }: QuickPracticeProps) {
             />
 
             {status === 'incorrect' && (
-              <div className="text-destructive flex items-start gap-3 bg-destructive/10 border border-destructive/20 p-5 rounded-2xl animate-fade-in">
+              <div className="text-destructive flex items-start gap-3 bg-destructive/5 border border-destructive/20 p-4 rounded-xl animate-fade-in">
                 <XCircle className="w-5 h-5 shrink-0 mt-0.5" />
                 <div className="space-y-1">
-                  <p className="font-semibold text-base">Tradução incorreta</p>
-                  <p className="opacity-90 text-sm">
+                  <p className="font-medium text-base">Tradução incorreta</p>
+                  <p className="text-sm opacity-90">
                     A frase exata esperada era:{' '}
-                    <strong className="font-bold">"{practiceData.en}"</strong>
+                    <strong className="font-semibold">"{practiceData.en}"</strong>
                   </p>
-                  <p className="opacity-80 text-xs mt-1">
+                  <p className="text-xs opacity-75 mt-1">
                     Verifique a estrutura e tente novamente.
                   </p>
                 </div>
@@ -213,30 +217,30 @@ export function QuickPractice({ words, onComplete }: QuickPracticeProps) {
             )}
 
             {status === 'correct' && (
-              <div className="text-success text-sm flex items-center gap-3 bg-success/10 border border-success/20 p-5 rounded-2xl animate-fade-in">
+              <div className="text-green-600 flex items-center gap-3 bg-green-50 border border-green-200 p-4 rounded-xl animate-fade-in dark:bg-green-950/30 dark:border-green-900 dark:text-green-400">
                 <CheckCircle2 className="w-6 h-6 shrink-0" />
-                <span className="font-semibold text-base">
+                <span className="font-medium text-base">
                   Excelente! Tradução validada com sucesso.
                 </span>
               </div>
             )}
           </div>
 
-          <div className="pt-6 mt-auto">
+          <div className="pt-2 mt-auto">
             {status === 'correct' ? (
               <Button
                 onClick={handleNext}
                 size="lg"
-                className="w-full h-16 text-lg rounded-2xl shadow-md group"
+                className="w-full h-14 text-base rounded-xl group"
               >
                 {currentIndex < words.length - 1 ? 'Próxima Palavra' : 'Concluir Sessão'}{' '}
-                <ArrowRight className="w-6 h-6 ml-2 group-hover:translate-x-1 transition-transform" />
+                <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
               </Button>
             ) : (
               <Button
                 onClick={checkAnswer}
                 size="lg"
-                className="w-full h-16 text-lg rounded-2xl shadow-sm"
+                className="w-full h-14 text-base rounded-xl"
                 disabled={!answer.trim()}
               >
                 Verificar Resposta

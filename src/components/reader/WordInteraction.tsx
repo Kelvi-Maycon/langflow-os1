@@ -95,11 +95,11 @@ export function WordInteraction({ word, sentence, onCapture }: WordInteractionPr
                 {
                   role: 'system',
                   content:
-                    'Você é um dicionário inteligente de inglês. Retorne a tradução direta e uma breve explicação em português do papel da palavra na frase. Responda apenas com JSON válido: {"translation": "...", "explanation": "..."}',
+                    'Você é um dicionário inteligente de inglês. Analise a palavra alvo dentro do contexto da frase fornecida. Retorne a tradução mais adequada para este contexto específico e uma breve explicação em português do papel e significado da palavra na frase. Responda apenas com JSON válido: {"translation": "...", "explanation": "..."}',
                 },
                 {
                   role: 'user',
-                  content: `Palavra: "${cleanWord}"\nFrase: "${sentence}"`,
+                  content: `Palavra: "${cleanWord}"\nFrase de contexto: "${sentence}"`,
                 },
               ],
               response_format: { type: 'json_object' },
@@ -149,7 +149,6 @@ export function WordInteraction({ word, sentence, onCapture }: WordInteractionPr
       onOpenChange={(isOpen) => {
         setOpen(isOpen)
         if (!isOpen) {
-          // Reset fetch state when closed so it refetches if needed, but here we keep cache
           fetched.current = false
         }
       }}

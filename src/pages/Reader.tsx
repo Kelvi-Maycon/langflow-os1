@@ -127,15 +127,17 @@ export default function Reader() {
           </Button>
         </div>
       ) : practiceMode ? (
-        <Card className="flex-1 p-8 md:p-12 bg-card text-foreground min-h-[500px] border-t-4 border-t-primary shadow-md relative overflow-y-auto">
-          <QuickPractice
-            words={capturedWords}
-            onComplete={() => {
-              setPracticeMode(false)
-              setCapturedWords([])
-            }}
-          />
-        </Card>
+        <div className="flex-1 flex flex-col items-center justify-start pt-4 md:pt-10 animate-fade-in-up">
+          <div className="w-full max-w-3xl bg-card rounded-[24px] shadow-sm border border-border p-6 md:p-10 relative">
+            <QuickPractice
+              words={capturedWords}
+              onComplete={() => {
+                setPracticeMode(false)
+                setCapturedWords([])
+              }}
+            />
+          </div>
+        </div>
       ) : (
         <div className="flex-1 flex flex-col gap-6 animate-fade-in-up overflow-hidden">
           <Card className="flex-1 p-8 md:p-12 text-lg md:text-xl leading-relaxed font-serif bg-card text-foreground overflow-y-auto border-t-4 border-t-primary shadow-md relative">
