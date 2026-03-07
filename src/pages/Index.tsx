@@ -19,20 +19,20 @@ export default function Index() {
         </div>
 
         <div className="flex items-center gap-3">
-          <div className="relative w-64 hidden lg:block">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+          <div className="relative w-64 hidden lg:block group">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground transition-colors group-hover:text-foreground" />
             <Input
               placeholder="Buscar lição..."
-              className="pl-9 bg-card/50 border-white/5 rounded-full h-10 text-sm focus-visible:ring-1 focus-visible:ring-white/20"
+              className="pl-9 bg-background border-border rounded-full h-10 text-sm shadow-sm hover:shadow-md hover:border-border/80 transition-all duration-300 focus-visible:ring-1 focus-visible:ring-primary/30"
             />
           </div>
 
-          <div className="flex items-center gap-2 bg-orange-500/10 border border-orange-500/20 px-4 py-2 rounded-full text-orange-400 font-bold text-sm shadow-[0_0_15px_rgba(249,115,22,0.1)]">
+          <div className="flex items-center gap-2 bg-orange-500/10 border border-orange-500/20 px-4 py-2 rounded-full text-orange-500 font-bold text-sm shadow-[0_0_15px_rgba(249,115,22,0.1)] hover:scale-[1.02] transition-transform duration-300 cursor-default">
             <Flame className="w-4 h-4 fill-current" />
             12 Dias
           </div>
 
-          <button className="w-10 h-10 rounded-full border border-white/5 bg-card/50 flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors relative">
+          <button className="w-10 h-10 rounded-full border border-border bg-background flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-secondary hover:shadow-md transition-all duration-300 active:scale-95 relative">
             <Bell className="w-4 h-4" />
             <span className="absolute top-2.5 right-2.5 w-2 h-2 rounded-full bg-pink-500 border-2 border-background" />
           </button>

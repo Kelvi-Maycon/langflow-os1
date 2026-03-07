@@ -9,7 +9,7 @@ const missions = [
     subtitle: 'Artigo: The Future of AI Design • 15 min',
     xp: '+50 XP',
     icon: Check,
-    iconBg: 'bg-success/20',
+    iconBg: 'bg-success/15',
     iconColor: 'text-success',
     completed: true,
   },
@@ -19,8 +19,8 @@ const missions = [
     subtitle: '45 flashcards aguardando sua atenção',
     xp: '+120 XP',
     icon: LibrarySquare,
-    iconBg: 'bg-pink-500/20',
-    iconColor: 'text-pink-500',
+    iconBg: 'bg-pink-500/15',
+    iconColor: 'text-pink-600',
     completed: false,
     progress: 60,
   },
@@ -30,7 +30,7 @@ const missions = [
     subtitle: 'Episódio #42 do Daily English Podcast',
     xp: '+80 XP',
     icon: Mic,
-    iconBg: 'bg-warning/20',
+    iconBg: 'bg-warning/15',
     iconColor: 'text-warning',
     completed: false,
   },
@@ -46,7 +46,7 @@ export function MissionsToday() {
             Complete as tarefas para ganhar XP bônus
           </p>
         </div>
-        <div className="bg-pink-500/10 text-pink-400 font-bold text-sm px-4 py-1.5 rounded-full border border-pink-500/20">
+        <div className="bg-pink-500/10 text-pink-600 font-bold text-sm px-4 py-1.5 rounded-full border border-pink-500/20">
           2/3 Completas
         </div>
       </header>
@@ -57,7 +57,7 @@ export function MissionsToday() {
           return (
             <Card
               key={mission.id}
-              className="p-5 flex items-center gap-5 bg-card/50 hover:bg-card border-white/5 transition-all duration-300 hover:scale-[1.02] cursor-pointer rounded-[24px]"
+              className="p-5 flex items-center gap-5 bg-card hover:bg-secondary/50 border-border shadow-sm transition-all duration-250 ease-out hover:scale-[1.02] hover:shadow-md cursor-pointer rounded-[24px]"
             >
               <div
                 className={`w-14 h-14 rounded-full flex items-center justify-center shrink-0 ${mission.iconBg}`}
@@ -69,11 +69,11 @@ export function MissionsToday() {
                 <h4 className="font-bold text-foreground text-lg truncate">{mission.title}</h4>
                 <p className="text-sm text-muted-foreground truncate">{mission.subtitle}</p>
                 {mission.progress !== undefined && (
-                  <Progress value={mission.progress} className="h-1.5 mt-3 w-1/2 bg-white/5" />
+                  <Progress value={mission.progress} className="h-1.5 mt-3 w-1/2" />
                 )}
               </div>
 
-              <div className="font-bold text-sm text-muted-foreground bg-white/5 px-3 py-1.5 rounded-full whitespace-nowrap">
+              <div className="font-bold text-sm text-muted-foreground bg-secondary px-3 py-1.5 rounded-full whitespace-nowrap border border-border/50">
                 {mission.xp}
               </div>
             </Card>
