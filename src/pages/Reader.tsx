@@ -68,7 +68,7 @@ export default function Reader() {
 
   return (
     <div className="space-y-6 animate-fade-in max-w-4xl mx-auto h-full flex flex-col">
-      <header className="flex flex-col md:flex-row md:items-start justify-between gap-4">
+      <header className="flex flex-col md:flex-row md:items-start justify-between gap-4 shrink-0">
         <div>
           <h1 className="text-3xl font-bold tracking-tight text-foreground">Leitor Imersivo</h1>
           <p className="text-muted-foreground mt-2 text-lg">
@@ -79,7 +79,7 @@ export default function Reader() {
         </div>
 
         {isReadingMode && !practiceMode && (
-          <div className="flex items-center gap-2 bg-secondary/40 p-1.5 rounded-xl border border-border animate-fade-in shadow-sm">
+          <div className="flex items-center gap-2 bg-secondary/40 p-1.5 rounded-xl border border-border animate-fade-in shadow-sm shrink-0">
             <Settings2 className="w-4 h-4 text-primary ml-2" />
             <Select
               value={settings.aiModel || 'gpt-4o-mini'}
@@ -114,7 +114,7 @@ export default function Reader() {
           </Card>
           <Button
             size="lg"
-            className="w-full h-16 text-lg shadow-md group rounded-2xl"
+            className="w-full h-16 text-lg shadow-md group rounded-2xl shrink-0"
             onClick={() => {
               if (inputText.trim()) setIsReadingMode(true)
             }}
@@ -127,7 +127,7 @@ export default function Reader() {
           </Button>
         </div>
       ) : practiceMode ? (
-        <Card className="flex-1 p-8 md:p-12 bg-card text-foreground min-h-[500px] border-t-4 border-t-primary shadow-md relative">
+        <Card className="flex-1 p-8 md:p-12 bg-card text-foreground min-h-[500px] border-t-4 border-t-primary shadow-md relative overflow-y-auto">
           <QuickPractice
             words={capturedWords}
             onComplete={() => {
@@ -137,59 +137,64 @@ export default function Reader() {
           />
         </Card>
       ) : (
-        <div className="flex-1 flex flex-col gap-6 animate-fade-in-up">
-          <Card className="flex-1 p-8 md:p-12 text-lg md:text-xl leading-relaxed font-serif bg-card text-foreground min-h-[400px] overflow-y-auto border-t-4 border-t-primary shadow-md relative">
+        <div className="flex-1 flex flex-col gap-6 animate-fade-in-up overflow-hidden">
+          <Card className="flex-1 p-8 md:p-12 text-lg md:text-xl leading-relaxed font-serif bg-card text-foreground overflow-y-auto border-t-4 border-t-primary shadow-md relative">
             <div className="absolute inset-0 bg-gradient-to-b from-primary/5 to-transparent pointer-events-none rounded-[24px]" />
             <div className="relative z-10">{processedContent}</div>
           </Card>
 
           {capturedWords.length > 0 ? (
-            <div className="bg-card/90 backdrop-blur-md p-6 rounded-[24px] border border-border shadow-md animate-fade-in-up">
-              <h3 className="text-sm font-semibold mb-4 flex items-center gap-2 text-muted-foreground uppercase tracking-wider">
-                <CheckCircle2 className="w-4 h-4 text-primary" />
-                Palavras Capturadas ({capturedWords.length})
-              </h3>
-              <div className="flex flex-wrap gap-2.5 mb-6">
-                {capturedWords.map((cw) => (
-                  <div
-                    key={cw.word}
-                    className="px-3.5 py-1.5 rounded-xl text-sm font-medium bg-secondary text-secondary-foreground border border-border/50 shadow-sm transition-all hover:bg-secondary/80"
-                  >
-                    {cw.word}
+            <div className="bg-card/95 backdrop-blur-md p-5 rounded-[24px] border border-primary/30 shadow-lg animate-fade-in-up shrink-0 ring-1 ring-primary/20">
+              <div className="flex flex-col md:flex-row justify-between gap-4 md:items-center">
+                <div className="flex-1">
+                  <h3 className="text-sm font-bold mb-3 flex items-center gap-2 text-foreground uppercase tracking-wider">
+                    <CheckCircle2 className="w-4 h-4 text-primary" />
+                    Palavras Capturadas ({capturedWords.length})
+                  </h3>
+                  <div className="flex flex-wrap gap-2 max-h-[100px] overflow-y-auto">
+                    {capturedWords.map((cw) => (
+                      <div
+                        key={cw.word}
+                        className="px-3 py-1.5 rounded-lg text-sm font-semibold bg-primary/10 text-primary border border-primary/20 shadow-sm transition-all hover:bg-primary/20"
+                      >
+                        {cw.word}
+                      </div>
+                    ))}
                   </div>
-                ))}
-              </div>
-              <div className="flex flex-col sm:flex-row gap-3">
-                <Button
-                  variant="outline"
-                  className="flex-1 h-14 rounded-2xl border-border"
-                  onClick={() => {
-                    setIsReadingMode(false)
-                    setCapturedWords([])
-                  }}
-                >
-                  Sair do Leitor
-                </Button>
-                <Button
-                  className="flex-1 h-14 rounded-2xl shadow-md group text-base"
-                  onClick={() => setPracticeMode(true)}
-                >
-                  Próxima Fase: Prática{' '}
-                  <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
-                </Button>
+                </div>
+                <div className="flex flex-col sm:flex-row gap-3 md:w-auto w-full shrink-0 items-end md:items-center justify-end">
+                  <Button
+                    variant="ghost"
+                    className="h-12 rounded-xl text-muted-foreground hover:text-foreground"
+                    onClick={() => {
+                      setIsReadingMode(false)
+                      setCapturedWords([])
+                    }}
+                  >
+                    Sair do Leitor
+                  </Button>
+                  <Button
+                    className="h-12 rounded-xl shadow-md group text-base px-6 w-full sm:w-auto"
+                    onClick={() => setPracticeMode(true)}
+                  >
+                    Próxima Fase{' '}
+                    <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
+                  </Button>
+                </div>
               </div>
             </div>
           ) : (
-            <div className="flex justify-between items-center bg-card/80 backdrop-blur-md p-5 px-6 rounded-2xl border border-border shadow-sm">
-              <div className="text-sm font-medium flex items-center gap-3 text-muted-foreground">
-                <div className="p-2 bg-primary/10 rounded-full">
+            <div className="flex flex-col sm:flex-row justify-between items-center bg-card/80 backdrop-blur-md p-4 px-6 rounded-2xl border border-border shadow-sm shrink-0 gap-4">
+              <div className="text-sm font-medium flex items-center gap-3 text-muted-foreground w-full sm:w-auto text-center sm:text-left">
+                <div className="p-2 bg-primary/10 rounded-full hidden sm:block">
                   <CheckCircle2 className="w-4 h-4 text-primary" />
                 </div>
-                Clique nas palavras para capturar o contexto
+                Clique nas palavras no texto acima para capturar o contexto.
               </div>
               <Button
                 variant="outline"
-                className="rounded-xl h-11 bg-background hover:bg-secondary border-border"
+                size="sm"
+                className="rounded-xl h-10 bg-background hover:bg-secondary border-border w-full sm:w-auto"
                 onClick={() => setIsReadingMode(false)}
               >
                 Editar Texto

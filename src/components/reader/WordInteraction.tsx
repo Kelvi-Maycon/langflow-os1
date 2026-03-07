@@ -72,15 +72,15 @@ export function WordInteraction({ word, sentence, onCapture }: WordInteractionPr
 
   const mockData = mockDictionary[cleanWord] || {
     translation: `tradução de "${cleanWord}"`,
-    explanation: `Uma explicação detalhada sobre como usar a palavra "${cleanWord}" no contexto da frase. Esta análise foi gerada com a ajuda do modelo ${
+    explanation: `Análise gerada usando o modelo ${
       settings.aiModel || 'gpt-4o-mini'
-    }.`,
+    } para o contexto atual.`,
   }
 
   useEffect(() => {
     if (open) {
       setIsLoading(true)
-      const timer = setTimeout(() => setIsLoading(false), 500)
+      const timer = setTimeout(() => setIsLoading(false), 400)
       return () => clearTimeout(timer)
     }
   }, [open])
@@ -92,7 +92,7 @@ export function WordInteraction({ word, sentence, onCapture }: WordInteractionPr
     setOpen(false)
     toast({
       title: 'Palavra capturada',
-      description: `"${cleanWord}" foi adicionada à lista capturada.`,
+      description: `"${cleanWord}" foi adicionada com sucesso.`,
     })
   }
 
@@ -105,33 +105,36 @@ export function WordInteraction({ word, sentence, onCapture }: WordInteractionPr
       </PopoverTrigger>
       <PopoverContent
         side="top"
-        className="w-[320px] p-5 shadow-xl border-border/60 bg-card rounded-xl z-50"
+        sideOffset={6}
+        className="w-[260px] p-4 shadow-xl border-border/60 bg-popover rounded-xl z-50"
       >
         {isLoading ? (
-          <div className="py-8 flex justify-center items-center flex-col gap-3 text-muted-foreground">
-            <Loader2 className="w-6 h-6 animate-spin text-primary" />
-            <p className="text-sm font-medium animate-pulse">
-              Consultando {settings.aiModel || 'gpt-4o-mini'}...
-            </p>
+          <div className="py-6 flex justify-center items-center flex-col gap-2 text-muted-foreground">
+            <Loader2 className="w-5 h-5 animate-spin text-primary" />
+            <p className="text-xs font-medium animate-pulse">Buscando definição...</p>
           </div>
         ) : (
-          <div className="space-y-4 animate-fade-in">
-            <div className="flex items-start gap-4">
-              <div className="p-2.5 bg-primary/10 rounded-xl">
-                <BookOpen className="w-5 h-5 text-primary" />
+          <div className="space-y-3 animate-fade-in">
+            <div className="flex items-start justify-between gap-2">
+              <div>
+                <h4 className="font-bold text-lg leading-none text-foreground">{cleanWord}</h4>
+                <p className="text-sm text-primary font-medium mt-1">{mockData.translation}</p>
               </div>
-              <div className="flex-1">
-                <h4 className="font-bold text-xl leading-none text-foreground">{cleanWord}</h4>
-                <p className="text-sm text-primary font-medium mt-1.5">{mockData.translation}</p>
+              <div className="p-1.5 bg-primary/10 rounded-lg shrink-0">
+                <BookOpen className="w-4 h-4 text-primary" />
               </div>
             </div>
 
-            <div className="text-sm text-muted-foreground bg-secondary/40 p-3.5 rounded-lg leading-relaxed">
+            <div className="text-xs text-muted-foreground bg-secondary/50 p-2.5 rounded-lg leading-relaxed">
               {mockData.explanation}
             </div>
 
-            <Button className="w-full mt-2 shadow-sm" onClick={handleCaptureClick}>
-              <Plus className="w-4 h-4 mr-2" /> Adicionar a Palavras Capturadas
+            <Button
+              size="sm"
+              className="w-full mt-1 shadow-sm h-8 text-xs font-semibold"
+              onClick={handleCaptureClick}
+            >
+              <Plus className="w-3 h-3 mr-1.5" /> Adicionar
             </Button>
           </div>
         )}

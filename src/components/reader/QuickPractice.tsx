@@ -45,14 +45,14 @@ export function QuickPractice({ words, onComplete }: QuickPracticeProps) {
   if (!currentItem || !mock) return null
 
   const checkAnswer = () => {
-    const cleanInput = answer
-      .toLowerCase()
-      .replace(/[^a-z0-9 ]/g, '')
-      .trim()
-    const cleanExpected = mock.en
-      .toLowerCase()
-      .replace(/[^a-z0-9 ]/g, '')
-      .trim()
+    const normalize = (str: string) =>
+      str
+        .trim()
+        .toLowerCase()
+        .replace(/\s+/g, ' ')
+        .replace(/[.!?]$/, '')
+    const cleanInput = normalize(answer)
+    const cleanExpected = normalize(mock.en)
 
     if (cleanInput === cleanExpected) {
       setStatus('correct')
@@ -92,7 +92,7 @@ export function QuickPractice({ words, onComplete }: QuickPracticeProps) {
           <div className="p-2.5 bg-primary/10 rounded-xl">
             <ArrowRight className="w-5 h-5" />
           </div>
-          <h3 className="font-bold text-2xl tracking-tight">Quick Practice</h3>
+          <h3 className="font-bold text-2xl tracking-tight">Prática Rápida</h3>
         </div>
         <div className="text-sm font-bold text-muted-foreground bg-secondary px-4 py-1.5 rounded-full">
           {currentIndex + 1} / {words.length}
@@ -111,7 +111,7 @@ export function QuickPractice({ words, onComplete }: QuickPracticeProps) {
           value={answer}
           onChange={(e) => {
             setAnswer(e.target.value)
-            setStatus('idle')
+            if (status !== 'idle') setStatus('idle')
           }}
           placeholder="Type your translation here..."
           className={`h-16 text-xl px-6 transition-all duration-300 rounded-[20px] ${
@@ -131,19 +131,20 @@ export function QuickPractice({ words, onComplete }: QuickPracticeProps) {
         />
 
         {status === 'incorrect' && (
-          <div className="text-destructive text-sm flex items-start gap-3 bg-destructive/10 p-5 rounded-2xl animate-fade-in">
-            <XCircle className="w-6 h-6 shrink-0 mt-0.5" />
+          <div className="text-destructive flex items-start gap-3 bg-destructive/10 border border-destructive/20 p-5 rounded-2xl animate-fade-in">
+            <XCircle className="w-5 h-5 shrink-0 mt-0.5" />
             <div className="space-y-1">
               <p className="font-semibold text-base">Tradução incorreta</p>
               <p className="opacity-90 text-sm">
                 A frase esperada era: <strong className="font-bold">"{mock.en}"</strong>
               </p>
+              <p className="opacity-80 text-xs mt-1">Verifique a ortografia e tente novamente.</p>
             </div>
           </div>
         )}
 
         {status === 'correct' && (
-          <div className="text-success text-sm flex items-center gap-3 bg-success/10 p-5 rounded-2xl animate-fade-in">
+          <div className="text-success text-sm flex items-center gap-3 bg-success/10 border border-success/20 p-5 rounded-2xl animate-fade-in">
             <CheckCircle2 className="w-6 h-6 shrink-0" />
             <span className="font-semibold text-base">Excelente! Tradução exata.</span>
           </div>
