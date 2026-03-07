@@ -2,12 +2,24 @@ import { Card } from '@/components/ui/card'
 import { Progress } from '@/components/ui/progress'
 import { Trophy, BookOpen, Mic } from 'lucide-react'
 import { WeeklyChart } from './WeeklyChart'
+import { useToast } from '@/hooks/use-toast'
 
 export function StatsSidebar() {
+  const { toast } = useToast()
+
   return (
     <div className="space-y-6">
       {/* Próxima Conquista */}
-      <Card className="p-8 bg-card border-border shadow-sm hover:shadow-md transition-all duration-300 ease-out hover:-translate-y-1 rounded-[32px] flex flex-col items-center text-center group">
+      <Card
+        onClick={() =>
+          toast({
+            title: 'Detalhes da Conquista',
+            description:
+              'Aprenda mais 550 palavras esta semana para alcançar a classe Poliglota Jr.',
+          })
+        }
+        className="p-8 bg-card border-border shadow-sm hover:shadow-md transition-all duration-300 ease-out hover:-translate-y-1 active:scale-[0.98] cursor-pointer rounded-[32px] flex flex-col items-center text-center group"
+      >
         <span className="text-xs font-bold tracking-widest text-muted-foreground mb-8">
           PRÓXIMA CONQUISTA
         </span>
@@ -40,7 +52,15 @@ export function StatsSidebar() {
 
       {/* Mini Stats */}
       <div className="grid grid-cols-2 gap-4">
-        <Card className="p-5 bg-card border-border shadow-sm flex flex-col items-center text-center justify-center gap-3 transition-all duration-300 ease-out hover:scale-[1.04] hover:shadow-md rounded-[24px]">
+        <Card
+          onClick={() =>
+            toast({
+              title: 'Estatísticas',
+              description: 'Você adicionou 140 palavras ao seu vocabulário este mês.',
+            })
+          }
+          className="p-5 bg-card border-border shadow-sm flex flex-col items-center text-center justify-center gap-3 transition-all duration-300 ease-out hover:scale-[1.04] hover:shadow-md active:scale-[0.98] cursor-pointer rounded-[24px]"
+        >
           <div className="w-10 h-10 rounded-full bg-blue-500/10 flex items-center justify-center">
             <BookOpen className="w-5 h-5 text-blue-500" />
           </div>
@@ -52,7 +72,15 @@ export function StatsSidebar() {
           </div>
         </Card>
 
-        <Card className="p-5 bg-card border-border shadow-sm flex flex-col items-center text-center justify-center gap-3 transition-all duration-300 ease-out hover:scale-[1.04] hover:shadow-md rounded-[24px]">
+        <Card
+          onClick={() =>
+            toast({
+              title: 'Estatísticas',
+              description: 'Sua pronúncia está acima da média global em 12%.',
+            })
+          }
+          className="p-5 bg-card border-border shadow-sm flex flex-col items-center text-center justify-center gap-3 transition-all duration-300 ease-out hover:scale-[1.04] hover:shadow-md active:scale-[0.98] cursor-pointer rounded-[24px]"
+        >
           <div className="w-10 h-10 rounded-full bg-pink-500/10 flex items-center justify-center">
             <Mic className="w-5 h-5 text-pink-500" />
           </div>

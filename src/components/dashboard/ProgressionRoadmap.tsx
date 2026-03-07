@@ -1,5 +1,6 @@
 import { Card } from '@/components/ui/card'
 import { ArrowRight, Check, Lock } from 'lucide-react'
+import { useToast } from '@/hooks/use-toast'
 
 const steps = [
   { id: 1, label: 'BÁSICO I', status: 'completed' },
@@ -10,11 +11,21 @@ const steps = [
 ]
 
 export function ProgressionRoadmap() {
+  const { toast } = useToast()
+
   return (
     <section className="space-y-6">
       <header className="flex items-center justify-between">
         <h3 className="text-2xl font-bold text-foreground tracking-tight">Jornada de Maestria</h3>
-        <button className="text-sm font-bold text-pink-500 hover:text-pink-600 flex items-center gap-1 transition-colors duration-250 ease-out p-2 rounded-lg hover:bg-pink-500/10">
+        <button
+          onClick={() =>
+            toast({
+              title: 'Jornada Completa',
+              description: 'O mapa interativo será liberado ao concluir o nível Intermediário.',
+            })
+          }
+          className="text-sm font-bold text-pink-500 hover:text-pink-600 flex items-center gap-1 transition-all duration-250 ease-out p-2 rounded-lg hover:bg-pink-500/10 active:scale-95"
+        >
           Ver Mapa Completo <ArrowRight className="w-4 h-4" />
         </button>
       </header>

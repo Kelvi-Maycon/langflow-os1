@@ -1,7 +1,12 @@
 import { Button } from '@/components/ui/button'
 import { Play, Map } from 'lucide-react'
+import { useNavigate } from 'react-router-dom'
+import { useToast } from '@/hooks/use-toast'
 
 export function HeroWelcome() {
+  const navigate = useNavigate()
+  const { toast } = useToast()
+
   return (
     <div className="relative overflow-hidden rounded-[32px] bg-card border border-border p-8 md:p-12 shadow-sm hover:shadow-md transition-all duration-300 ease-out flex flex-col md:flex-row items-center justify-between gap-8 group">
       {/* Background glowing effects - soft and light-mode friendly */}
@@ -28,12 +33,19 @@ export function HeroWelcome() {
 
         <div className="flex flex-wrap gap-4">
           <Button
+            onClick={() => navigate('/builder')}
             size="lg"
             className="rounded-full bg-pink-500 hover:bg-pink-600 text-white border-0 h-14 px-8 text-base font-bold shadow-[0_4px_14px_0_rgba(236,72,153,0.25)] transition-all duration-300 hover:scale-[1.04] active:scale-[0.98]"
           >
             <Play className="w-5 h-5 mr-2 fill-current" /> Continuar Jornada
           </Button>
           <Button
+            onClick={() =>
+              toast({
+                title: 'Mapa de Fluência',
+                description: 'Acessando a visualização completa da sua jornada de aprendizado...',
+              })
+            }
             size="lg"
             variant="outline"
             className="rounded-full bg-background border-border hover:bg-secondary hover:text-foreground h-14 px-8 text-base font-bold transition-all duration-300 hover:scale-[1.04] active:scale-[0.98] shadow-sm"

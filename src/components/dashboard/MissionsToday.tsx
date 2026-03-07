@@ -1,8 +1,10 @@
+import { useState, useMemo } from 'react'
 import { Card } from '@/components/ui/card'
 import { Progress } from '@/components/ui/progress'
 import { Check, Mic, LibrarySquare } from 'lucide-react'
+import { useToast } from '@/hooks/use-toast'
 
-const missions = [
+const initialMissions = [
   {
     id: 1,
     title: 'Leitura Matinal',
@@ -37,6 +39,33 @@ const missions = [
 ]
 
 export function MissionsToday() {
+  const [missions, setMissions] = useState(initialMissions)
+  const { toast } = useToast()
+
+  const completedCount = useMemo(() => missions.filter((m) => m.completed).length, [missions])
+
+  const handleMissionClick = (id: number) => {
+    setMissions((prev) =>
+      prev.map((m) => {
+        if (m.id === id && !m.completed) {
+          toast({
+            title: '🎉 Missão Concluída!',
+            description: `Você finalizou "${m.title}" e ganhou ${m.xp}.`,
+          })
+          return {
+            ...m,
+            completed: true,
+            progress: 100,
+            icon: Check,
+            iconBg: 'bg-success/15',
+            iconColor: 'text-success',
+          }
+        }
+        return m
+      }),
+    )
+  }
+
   return (
     <section className="space-y-6">
       <header className="flex items-center justify-between">
@@ -47,7 +76,7 @@ export function MissionsToday() {
           </p>
         </div>
         <div className="bg-pink-500/10 text-pink-600 font-bold text-sm px-4 py-1.5 rounded-full border border-pink-500/20">
-          2/3 Completas
+          {completedCount}/{missions.length} Completas
         </div>
       </header>
 
@@ -57,12 +86,13 @@ export function MissionsToday() {
           return (
             <Card
               key={mission.id}
-              className="p-5 flex items-center gap-5 bg-card hover:bg-secondary/40 border-border shadow-sm transition-all duration-250 ease-out hover:scale-[1.02] hover:shadow-md cursor-pointer rounded-[24px]"
+              onClick={() => handleMissionClick(mission.id)}
+              className={`p-5 flex items-center gap-5 bg-card hover:bg-secondary/40 border-border shadow-sm transition-all duration-250 ease-out hover:scale-[1.02] hover:shadow-md cursor-pointer active:scale-[0.98] rounded-[24px] ${mission.completed ? 'opacity-80' : ''}`}
             >
               <div
-                className={`w-14 h-14 rounded-full flex items-center justify-center shrink-0 ${mission.iconBg}`}
+                className={`w-14 h-14 rounded-full flex items-center justify-center shrink-0 transition-colors duration-500 ${mission.iconBg}`}
               >
-                <Icon className={`w-6 h-6 ${mission.iconColor}`} />
+                <Icon className={`w-6 h-6 transition-colors duration-500 ${mission.iconColor}`} />
               </div>
 
               <div className="flex-1 min-w-0">
