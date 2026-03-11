@@ -7,6 +7,7 @@ Transformar o LangFlow em uma experiencia visual premium, gamificada e muito mai
 ## Problema atual
 
 O produto tem estrutura funcional boa, mas sua camada visual ainda nao traduz:
+
 - progresso pessoal;
 - motivacao diaria;
 - senso de recompensa;
@@ -16,6 +17,7 @@ O produto tem estrutura funcional boa, mas sua camada visual ainda nao traduz:
 ## Meta do redesign
 
 O usuario deve abrir o app e sentir imediatamente:
+
 - foco do dia;
 - progresso de dominio;
 - continuidade da jornada;
@@ -24,6 +26,7 @@ O usuario deve abrir o app e sentir imediatamente:
 ## Escopo
 
 Inclui:
+
 - redesign total da camada visual;
 - nova dashboard inspirada nas referencias;
 - nova hierarquia de gamificacao na UI;
@@ -32,6 +35,7 @@ Inclui:
 - aplicacao da nova linguagem visual em Reader, Builder, Flashcard e Settings.
 
 Nao inclui:
+
 - alteracao de textos de negocio;
 - alteracao de stores;
 - alteracao de APIs;
@@ -79,6 +83,7 @@ Nao inclui:
 ## Sucesso visual
 
 O redesign sera bem-sucedido quando:
+
 - a dashboard parecer um produto premium de aprendizado;
 - a composicao estiver muito mais proxima das referencias do que do estado atual;
 - a gamificacao estiver explicita sem parecer infantil;

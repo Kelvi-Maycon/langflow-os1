@@ -1,60 +1,63 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { useConfig } from '../../store/useConfig.js';
-import { useWordStore } from '../../store/useWordStore.js';
-import { useProgressStore } from '../../store/useProgressStore.js';
-import { useUiStore } from '../../store/useUiStore.js';
-import { parseText, getSentenceForToken } from '../../utils/parser.js';
-import { explainWord } from '../../services/ai.js';
-import { fetchYouTubeTranscript } from '../../services/youtube.js';
-import { BookIcon, PlayIcon, ReloadIcon, SearchIcon, SparkIcon } from '../shared/icons.jsx';
-import { Badge } from '../ui/badge.jsx';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useConfig } from '../../store/useConfig.js'
+import { useWordStore } from '../../store/useWordStore.js'
+import { useProgressStore } from '../../store/useProgressStore.js'
+import { useUiStore } from '../../store/useUiStore.js'
+import { parseText, getSentenceForToken } from '../../utils/parser.js'
+import { explainWord } from '../../services/ai.js'
+import { fetchYouTubeTranscript } from '../../services/youtube.js'
+import { BookIcon, PlayIcon, ReloadIcon, SearchIcon, SparkIcon } from '../shared/icons.jsx'
+import { Badge } from '../ui/badge.jsx'
 
 function estimateMinutes(tokens = []) {
-  const wordCount = tokens.filter((token) => token.type !== 'space' && token.clean).length;
-  return Math.max(1, Math.ceil(wordCount / 180));
+  const wordCount = tokens.filter((token) => token.type !== 'space' && token.clean).length
+  return Math.max(1, Math.ceil(wordCount / 180))
 }
 
 function isValidYoutubeUrl(value) {
   try {
-    const url = new URL(value);
-    return url.hostname.includes('youtube.com') || url.hostname.includes('youtu.be');
+    const url = new URL(value)
+    return url.hostname.includes('youtube.com') || url.hostname.includes('youtu.be')
   } catch {
-    return false;
+    return false
   }
 }
 
 export default function Reader({ onPractice }) {
-  const { config } = useConfig();
-  const { words, addWord, getWordByText, markSeenInReader, updateWord } = useWordStore();
-  const { recordReaderWord } = useProgressStore();
-  const { pushToast } = useUiStore();
+  const { config } = useConfig()
+  const { words, addWord, getWordByText, markSeenInReader, updateWord } = useWordStore()
+  const { recordReaderWord } = useProgressStore()
+  const { pushToast } = useUiStore()
 
-  const [rawText, setRawText] = useState('');
-  const [youtubeUrl, setYoutubeUrl] = useState('');
-  const [youtubeStatus, setYoutubeStatus] = useState(null);
-  const [tokens, setTokens] = useState(null);
-  const [sessionWords, setSessionWords] = useState([]);
-  const [tooltip, setTooltip] = useState(null);
+  const [rawText, setRawText] = useState('')
+  const [youtubeUrl, setYoutubeUrl] = useState('')
+  const [youtubeStatus, setYoutubeStatus] = useState(null)
+  const [tokens, setTokens] = useState(null)
+  const [sessionWords, setSessionWords] = useState([])
+  const [tooltip, setTooltip] = useState(null)
 
-  const tooltipRef = useRef(null);
-  const textAreaRef = useRef(null);
-  const youtubeInputRef = useRef(null);
+  const tooltipRef = useRef(null)
+  const textAreaRef = useRef(null)
+  const youtubeInputRef = useRef(null)
 
-  const bankWords = useMemo(() => new Set(words.map((word) => word.word)), [words]);
-  const clickedWords = useMemo(() => new Set(sessionWords.map((word) => word.wordText)), [sessionWords]);
-  const estimatedSessionMinutes = useMemo(() => estimateMinutes(tokens || []), [tokens]);
+  const bankWords = useMemo(() => new Set(words.map((word) => word.word)), [words])
+  const clickedWords = useMemo(
+    () => new Set(sessionWords.map((word) => word.wordText)),
+    [sessionWords],
+  )
+  const estimatedSessionMinutes = useMemo(() => estimateMinutes(tokens || []), [tokens])
 
   const focusEntry = useCallback(() => {
     if (rawText.trim()) {
-      textAreaRef.current?.focus();
-      return;
+      textAreaRef.current?.focus()
+      return
     }
     if (youtubeUrl.trim()) {
-      youtubeInputRef.current?.focus();
-      return;
+      youtubeInputRef.current?.focus()
+      return
     }
-    textAreaRef.current?.focus();
-  }, [rawText, youtubeUrl]);
+    textAreaRef.current?.focus()
+  }, [rawText, youtubeUrl])
 
   const startReading = useCallback(() => {
     if (!rawText.trim()) {
@@ -63,17 +66,17 @@ export default function Reader({ onPractice }) {
         source: 'reader',
         title: 'Texto vazio',
         description: 'Cole um texto ou importe uma legenda antes de iniciar.',
-      });
-      focusEntry();
-      return;
+      })
+      focusEntry()
+      return
     }
 
-    const parsedTokens = parseText(rawText.trim());
-    setTokens(parsedTokens);
-    setSessionWords([]);
-    setTooltip(null);
-    setYoutubeStatus(null);
-  }, [focusEntry, pushToast, rawText]);
+    const parsedTokens = parseText(rawText.trim())
+    setTokens(parsedTokens)
+    setSessionWords([])
+    setTooltip(null)
+    setYoutubeStatus(null)
+  }, [focusEntry, pushToast, rawText])
 
   const handleYouTubeImport = useCallback(async () => {
     if (!youtubeUrl.trim()) {
@@ -82,181 +85,188 @@ export default function Reader({ onPractice }) {
         source: 'reader',
         title: 'URL vazia',
         description: 'Cole uma URL valida do YouTube para importar a legenda.',
-      });
-      youtubeInputRef.current?.focus();
-      return;
+      })
+      youtubeInputRef.current?.focus()
+      return
     }
 
     if (!isValidYoutubeUrl(youtubeUrl.trim())) {
       const nextStatus = {
         state: 'error',
         message: 'URL invalida. Use um link do YouTube completo.',
-      };
-      setYoutubeStatus(nextStatus);
+      }
+      setYoutubeStatus(nextStatus)
       pushToast({
         kind: 'error',
         source: 'reader',
         title: 'URL invalida',
         description: nextStatus.message,
-      });
-      youtubeInputRef.current?.focus();
-      return;
+      })
+      youtubeInputRef.current?.focus()
+      return
     }
 
-    setYoutubeStatus({ state: 'loading', message: 'Buscando legenda em ingles...' });
+    setYoutubeStatus({ state: 'loading', message: 'Buscando legenda em ingles...' })
 
     try {
-      const result = await fetchYouTubeTranscript(youtubeUrl.trim());
-      setRawText(result.text);
+      const result = await fetchYouTubeTranscript(youtubeUrl.trim())
+      setRawText(result.text)
       const nextStatus = {
         state: 'success',
         message: `Legenda carregada (${result.language}${result.isAutoGenerated ? ' auto' : ''}).`,
-      };
-      setYoutubeStatus(nextStatus);
+      }
+      setYoutubeStatus(nextStatus)
       pushToast({
         kind: 'success',
         source: 'reader',
         title: 'Legenda importada',
         description: nextStatus.message,
-      });
-      textAreaRef.current?.focus();
+      })
+      textAreaRef.current?.focus()
     } catch (error) {
       const nextStatus = {
         state: 'error',
         message: error.message || 'Nao foi possivel carregar a legenda.',
-      };
-      setYoutubeStatus(nextStatus);
+      }
+      setYoutubeStatus(nextStatus)
       pushToast({
         kind: 'error',
         source: 'reader',
         title: 'Importacao falhou',
         description: nextStatus.message,
-      });
+      })
     }
-  }, [pushToast, youtubeUrl]);
+  }, [pushToast, youtubeUrl])
 
-  const handleWordClick = useCallback(async (tokenIdx, token) => {
-    if (!token.clean) return;
+  const handleWordClick = useCallback(
+    async (tokenIdx, token) => {
+      if (!token.clean) return
 
-    const existing = getWordByText(token.clean);
-    const sentence = getSentenceForToken(tokens, tokenIdx);
+      const existing = getWordByText(token.clean)
+      const sentence = getSentenceForToken(tokens, tokenIdx)
 
-    setTooltip({
-      tokenIdx,
-      word: token.raw,
-      clean: token.clean,
-      loading: true,
-      text: '',
-      exist: Boolean(existing),
-      sentence,
-    });
-
-    let wordId = existing?.id;
-    if (!existing) {
-      const added = addWord(token.clean, {
-        originalSentence: sentence,
-        tag: 'contexto',
-        initialStatus: 'reconhecida',
-      });
-      wordId = added?.id;
-    } else if (wordId) {
-      markSeenInReader(wordId);
-    }
-
-    if (!sessionWords.find((sessionWord) => sessionWord.wordId === wordId)) {
-      setSessionWords((current) => [
-        ...current,
-        { wordId, wordText: token.clean, originalSentence: sentence },
-      ]);
-      recordReaderWord({
-        wordId,
-        isNewWord: !existing,
-        isRecycled: Boolean(existing),
-      });
-    }
-
-    if (existing && wordId) {
-      updateWord(wordId, { lastSeenAt: Date.now() });
-    }
-
-    try {
-      const aiConfig = config.provider ? config : null;
-      const result = await explainWord({
+      setTooltip({
+        tokenIdx,
         word: token.raw,
+        clean: token.clean,
+        loading: true,
+        text: '',
+        exist: Boolean(existing),
         sentence,
-        userLevel: config.userLevel || 'B1',
-        config: aiConfig,
-      });
+      })
 
-      setTooltip((current) => current?.tokenIdx === tokenIdx
-        ? { ...current, loading: false, text: result.text, fromAI: result.fromAI }
-        : current);
-
-      if (wordId && result.fromAI) {
-        updateWord(wordId, { tooltipExplanation: result.text, lastSeenAt: Date.now() });
+      let wordId = existing?.id
+      if (!existing) {
+        const added = addWord(token.clean, {
+          originalSentence: sentence,
+          tag: 'contexto',
+          initialStatus: 'reconhecida',
+        })
+        wordId = added?.id
+      } else if (wordId) {
+        markSeenInReader(wordId)
       }
-    } catch (error) {
-      setTooltip((current) => current?.tokenIdx === tokenIdx
-        ? { ...current, loading: false, text: `Erro: ${error.message}` }
-        : current);
-    }
-  }, [
-    addWord,
-    config,
-    getWordByText,
-    markSeenInReader,
-    recordReaderWord,
-    sessionWords,
-    tokens,
-    updateWord,
-  ]);
+
+      if (!sessionWords.find((sessionWord) => sessionWord.wordId === wordId)) {
+        setSessionWords((current) => [
+          ...current,
+          { wordId, wordText: token.clean, originalSentence: sentence },
+        ])
+        recordReaderWord({
+          wordId,
+          isNewWord: !existing,
+          isRecycled: Boolean(existing),
+        })
+      }
+
+      if (existing && wordId) {
+        updateWord(wordId, { lastSeenAt: Date.now() })
+      }
+
+      try {
+        const aiConfig = config.provider ? config : null
+        const result = await explainWord({
+          word: token.raw,
+          sentence,
+          userLevel: config.userLevel || 'B1',
+          config: aiConfig,
+        })
+
+        setTooltip((current) =>
+          current?.tokenIdx === tokenIdx
+            ? { ...current, loading: false, text: result.text, fromAI: result.fromAI }
+            : current,
+        )
+
+        if (wordId && result.fromAI) {
+          updateWord(wordId, { tooltipExplanation: result.text, lastSeenAt: Date.now() })
+        }
+      } catch (error) {
+        setTooltip((current) =>
+          current?.tokenIdx === tokenIdx
+            ? { ...current, loading: false, text: `Erro: ${error.message}` }
+            : current,
+        )
+      }
+    },
+    [
+      addWord,
+      config,
+      getWordByText,
+      markSeenInReader,
+      recordReaderWord,
+      sessionWords,
+      tokens,
+      updateWord,
+    ],
+  )
 
   const closeTooltip = useCallback((event) => {
     if (tooltipRef.current && !tooltipRef.current.contains(event.target)) {
-      setTooltip(null);
+      setTooltip(null)
     }
-  }, []);
+  }, [])
 
   const addToBank = useCallback(() => {
-    if (!tooltip) return;
-    const existing = getWordByText(tooltip.clean);
+    if (!tooltip) return
+    const existing = getWordByText(tooltip.clean)
     if (!existing) {
-      addWord(tooltip.clean, {});
+      addWord(tooltip.clean, {})
       pushToast({
         kind: 'success',
         source: 'reader',
         title: 'Item salvo',
         description: `"${tooltip.clean}" foi adicionado ao banco.`,
-      });
+      })
     }
-    setTooltip(null);
-  }, [addWord, getWordByText, pushToast, tooltip]);
+    setTooltip(null)
+  }, [addWord, getWordByText, pushToast, tooltip])
 
   const reset = useCallback(() => {
-    setTokens(null);
-    setRawText('');
-    setSessionWords([]);
-    setTooltip(null);
-    setYoutubeStatus(null);
-  }, []);
+    setTokens(null)
+    setRawText('')
+    setSessionWords([])
+    setTooltip(null)
+    setYoutubeStatus(null)
+  }, [])
 
   useEffect(() => {
     const handlePageAction = (event) => {
-      const action = event.detail?.action;
-      if (action !== 'reader-primary') return;
+      const action = event.detail?.action
+      if (action !== 'reader-primary') return
 
       if (tokens === null) {
         if (rawText.trim()) {
-          startReading();
-          return;
+          startReading()
+          return
         }
-        focusEntry();
-        return;
+        focusEntry()
+        return
       }
 
       if (sessionWords.length > 0 && onPractice) {
-        onPractice(sessionWords);
-        return;
+        onPractice(sessionWords)
+        return
       }
 
       pushToast({
@@ -264,15 +274,18 @@ export default function Reader({ onPractice }) {
         source: 'reader',
         title: 'Sessao pronta para captura',
         description: 'Clique em palavras do texto para montar a pratica desta sessao.',
-      });
-    };
+      })
+    }
 
-    window.addEventListener('langflow:page-action', handlePageAction);
-    return () => window.removeEventListener('langflow:page-action', handlePageAction);
-  }, [focusEntry, onPractice, pushToast, rawText, sessionWords, startReading, tokens]);
+    window.addEventListener('langflow:page-action', handlePageAction)
+    return () => window.removeEventListener('langflow:page-action', handlePageAction)
+  }, [focusEntry, onPractice, pushToast, rawText, sessionWords, startReading, tokens])
 
   return (
-    <div className="text-neutral-800 antialiased min-h-screen flex flex-col pt-0 lg:pt-0 pb-16" onClick={closeTooltip}>
+    <div
+      className="text-neutral-800 antialiased min-h-screen flex flex-col pt-0 lg:pt-0 pb-16"
+      onClick={closeTooltip}
+    >
       {/* Gamified Dashboard Header Approach */}
       <header className="px-4 md:px-8 h-20 w-full hidden md:flex items-center justify-between">
         <div className="flex items-center gap-8">
@@ -281,7 +294,9 @@ export default function Reader({ onPractice }) {
               <BookIcon size={28} className="text-violet-600" />
               Leitor Imersivo
             </h1>
-            <p className="text-xs font-semibold tracking-wider text-neutral-400 uppercase mt-0.5">Captura de contexto natural</p>
+            <p className="text-xs font-semibold tracking-wider text-neutral-400 uppercase mt-0.5">
+              Captura de contexto natural
+            </p>
           </div>
         </div>
       </header>
@@ -289,22 +304,29 @@ export default function Reader({ onPractice }) {
       <main className="max-w-[1400px] w-full mt-2 lg:mt-4 mx-auto px-4 md:px-8">
         {tokens === null ? (
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            
             {/* YouTube Entry Card */}
             <div className="bg-white rounded-3xl p-6 md:p-10 shadow-soft border border-neutral-100 flex flex-col relative overflow-hidden">
               <div className="absolute top-0 right-0 w-64 h-64 bg-pink-50 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3 opacity-70"></div>
-              
+
               <div className="relative z-10">
                 <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-neutral-100 border border-neutral-200 mb-6 w-max">
                   <span className="w-2 h-2 rounded-full bg-pink-500"></span>
-                  <span className="text-[11px] font-bold text-neutral-500 uppercase tracking-widest">Entrada rápida</span>
+                  <span className="text-[11px] font-bold text-neutral-500 uppercase tracking-widest">
+                    Entrada rápida
+                  </span>
                 </div>
-                
-                <h3 className="text-3xl font-extrabold text-neutral-900 mb-2">Comece por um vídeo do YouTube</h3>
-                <p className="text-neutral-500 mb-8 max-w-sm">Use uma legenda real para trazer contexto natural antes de praticar.</p>
-                
+
+                <h3 className="text-3xl font-extrabold text-neutral-900 mb-2">
+                  Comece por um vídeo do YouTube
+                </h3>
+                <p className="text-neutral-500 mb-8 max-w-sm">
+                  Use uma legenda real para trazer contexto natural antes de praticar.
+                </p>
+
                 <div className="mt-4 space-y-3">
-                  <label className="text-[11px] font-bold text-neutral-400 uppercase tracking-widest">URL do vídeo</label>
+                  <label className="text-[11px] font-bold text-neutral-400 uppercase tracking-widest">
+                    URL do vídeo
+                  </label>
                   <div className="flex flex-col sm:flex-row gap-3">
                     <div className="relative flex-1 group">
                       <SearchIcon className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-neutral-400 group-focus-within:text-violet-600 transition-colors" />
@@ -322,18 +344,26 @@ export default function Reader({ onPractice }) {
                       onClick={handleYouTubeImport}
                       disabled={!youtubeUrl.trim() || youtubeStatus?.state === 'loading'}
                     >
-                      {youtubeStatus?.state === 'loading' ? <SparkIcon size={16} className="animate-spin text-pink-400" /> : <PlayIcon size={16} />}
+                      {youtubeStatus?.state === 'loading' ? (
+                        <SparkIcon size={16} className="animate-spin text-pink-400" />
+                      ) : (
+                        <PlayIcon size={16} />
+                      )}
                       {youtubeStatus?.state === 'loading' ? 'Importando...' : 'Importar'}
                     </button>
                   </div>
                 </div>
 
                 {youtubeStatus ? (
-                  <div className={`mt-5 p-3 rounded-xl text-sm font-medium flex items-center gap-2 ${youtubeStatus.state === 'success' ? 'bg-green-50 text-green-700 border border-green-200' : youtubeStatus.state === 'error' ? 'bg-orange-50 text-orange-700 border border-orange-200' : 'bg-violet-50 text-violet-700 border border-violet-200'}`}>
+                  <div
+                    className={`mt-5 p-3 rounded-xl text-sm font-medium flex items-center gap-2 ${youtubeStatus.state === 'success' ? 'bg-green-50 text-green-700 border border-green-200' : youtubeStatus.state === 'error' ? 'bg-orange-50 text-orange-700 border border-orange-200' : 'bg-violet-50 text-violet-700 border border-violet-200'}`}
+                  >
                     {youtubeStatus.message}
                   </div>
                 ) : (
-                  <div className="mt-5 text-xs font-semibold text-neutral-400">Se a legenda não existir, cole o texto manualmente ao lado.</div>
+                  <div className="mt-5 text-xs font-semibold text-neutral-400">
+                    Se a legenda não existir, cole o texto manualmente ao lado.
+                  </div>
                 )}
               </div>
             </div>
@@ -341,18 +371,26 @@ export default function Reader({ onPractice }) {
             {/* Text Entry Card */}
             <div className="bg-gradient-to-br from-violet-600 to-fuchsia-600 rounded-3xl p-6 md:p-10 shadow-soft border border-neutral-100 flex flex-col relative overflow-hidden text-white min-h-[450px]">
               <div className="absolute bottom-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl translate-y-1/3 translate-x-1/3"></div>
-              
+
               <div className="relative z-10 flex flex-col h-full">
                 <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/20 border border-white/10 mb-6 w-max">
                   <span className="w-2 h-2 rounded-full bg-white animate-pulse"></span>
-                  <span className="text-[11px] font-bold text-white/90 uppercase tracking-widest">Sessão de leitura</span>
+                  <span className="text-[11px] font-bold text-white/90 uppercase tracking-widest">
+                    Sessão de leitura
+                  </span>
                 </div>
-                
-                <h3 className="text-3xl font-extrabold text-white mb-2 tracking-tight">Cole seu texto em inglês</h3>
-                <p className="text-white/70 mb-6 max-w-md">Reader, tooltip contextual e prática seguem o mesmo fluxo.</p>
-                
+
+                <h3 className="text-3xl font-extrabold text-white mb-2 tracking-tight">
+                  Cole seu texto em inglês
+                </h3>
+                <p className="text-white/70 mb-6 max-w-md">
+                  Reader, tooltip contextual e prática seguem o mesmo fluxo.
+                </p>
+
                 <div className="flex-1 flex flex-col">
-                  <label className="text-[11px] font-bold text-white/60 uppercase tracking-widest mb-2">Texto da sessão</label>
+                  <label className="text-[11px] font-bold text-white/60 uppercase tracking-widest mb-2">
+                    Texto da sessão
+                  </label>
                   <textarea
                     ref={textAreaRef}
                     className="w-full flex-1 min-h-[160px] p-4 bg-white/10 border border-white/20 hover:bg-white/15 focus:bg-white/20 focus:border-white/40 rounded-xl text-sm transition-all outline-none placeholder-white/40 text-white resize-none"
@@ -376,19 +414,17 @@ export default function Reader({ onPractice }) {
                     Iniciar leitura
                   </button>
                 </div>
-                
+
                 {!config.provider && (
-                   <div className="mt-4 p-3 bg-orange-500/20 text-orange-100 border border-orange-400/30 rounded-xl text-xs font-semibold">
-                     Nenhuma IA configurada. Fallback local ativo.
-                   </div>
+                  <div className="mt-4 p-3 bg-orange-500/20 text-orange-100 border border-orange-400/30 rounded-xl text-xs font-semibold">
+                    Nenhuma IA configurada. Fallback local ativo.
+                  </div>
                 )}
               </div>
             </div>
-
           </div>
         ) : (
           <div className="flex flex-col gap-6">
-            
             {/* Workspace Header / Session Bar */}
             <div className="bg-white rounded-3xl p-4 md:p-6 shadow-soft border border-neutral-100 flex flex-col md:flex-row items-center justify-between gap-4">
               <div className="flex items-center gap-6">
@@ -397,14 +433,20 @@ export default function Reader({ onPractice }) {
                     <BookIcon size={20} />
                   </div>
                   <div>
-                    <p className="text-[10px] font-bold text-neutral-400 uppercase tracking-widest">Palavras Capturadas</p>
+                    <p className="text-[10px] font-bold text-neutral-400 uppercase tracking-widest">
+                      Palavras Capturadas
+                    </p>
                     <div className="text-xl font-bold text-neutral-900">{clickedWords.size}</div>
                   </div>
                 </div>
                 <div className="h-8 w-px bg-neutral-200 hidden md:block"></div>
                 <div>
-                  <p className="text-[10px] font-bold text-neutral-400 uppercase tracking-widest">Tempo de leitura</p>
-                  <div className="text-sm font-semibold text-neutral-600">{estimatedSessionMinutes} min est.</div>
+                  <p className="text-[10px] font-bold text-neutral-400 uppercase tracking-widest">
+                    Tempo de leitura
+                  </p>
+                  <div className="text-sm font-semibold text-neutral-600">
+                    {estimatedSessionMinutes} min est.
+                  </div>
                 </div>
               </div>
 
@@ -417,7 +459,7 @@ export default function Reader({ onPractice }) {
                   <SparkIcon size={16} />
                   <span>Praticar Capturas</span>
                 </button>
-                <button 
+                <button
                   className="flex-none bg-neutral-100 hover:bg-neutral-200 text-neutral-700 px-4 py-3 rounded-xl font-semibold transition-colors flex items-center justify-center border border-neutral-200"
                   onClick={reset}
                 >
@@ -446,92 +488,134 @@ export default function Reader({ onPractice }) {
                       <SearchIcon size={32} />
                     </div>
                     <h3 className="text-xl font-bold text-neutral-900 mb-2">Nada para ler</h3>
-                    <p className="text-neutral-500 max-w-md">O texto importado não gerou blocos válidos. Tente outro conteúdo.</p>
+                    <p className="text-neutral-500 max-w-md">
+                      O texto importado não gerou blocos válidos. Tente outro conteúdo.
+                    </p>
                   </div>
-                ) : tokens.map((token, index) => {
-                  if (token.type === 'space') return <span key={index}>{token.raw}</span>;
+                ) : (
+                  tokens.map((token, index) => {
+                    if (token.type === 'space') return <span key={index}>{token.raw}</span>
 
-                  const inBank = bankWords.has(token.clean);
-                  const inSession = clickedWords.has(token.clean);
-                  const isActive = tooltip?.tokenIdx === index;
-                  
-                  let bgClass = 'hover:bg-neutral-100 hover:text-neutral-900 rounded cursor-pointer transition-colors';
-                  if (inBank) bgClass = 'bg-neutral-100 text-neutral-800 rounded cursor-pointer border border-neutral-200/50 shadow-sm';
-                  if (inSession && !inBank) bgClass = 'bg-violet-100 text-violet-900 rounded font-medium cursor-pointer border border-violet-200 shadow-sm';
+                    const inBank = bankWords.has(token.clean)
+                    const inSession = clickedWords.has(token.clean)
+                    const isActive = tooltip?.tokenIdx === index
 
-                  return (
-                    <span key={index} className="relative inline-block">
-                      <span
-                        className={`inline-block px-1 ${bgClass}`}
-                        style={{ outline: isActive ? '2px solid #7C3AED' : 'none', outlineOffset: 1 }}
-                        onClick={(event) => {
-                          event.stopPropagation();
-                          handleWordClick(index, token);
-                        }}
-                      >
-                        {token.raw}
-                      </span>
+                    let bgClass =
+                      'hover:bg-neutral-100 hover:text-neutral-900 rounded cursor-pointer transition-colors'
+                    if (inBank)
+                      bgClass =
+                        'bg-neutral-100 text-neutral-800 rounded cursor-pointer border border-neutral-200/50 shadow-sm'
+                    if (inSession && !inBank)
+                      bgClass =
+                        'bg-violet-100 text-violet-900 rounded font-medium cursor-pointer border border-violet-200 shadow-sm'
 
-                      {isActive ? (
-                        <div className="absolute top-full left-1/2 -translate-x-1/2 mt-3 w-[320px] bg-white rounded-2xl shadow-lg border border-neutral-100 z-50 overflow-hidden flex flex-col font-sans" ref={tooltipRef} onClick={(event) => event.stopPropagation()} style={{boxShadow: '0 8px 24px rgba(124, 58, 237, 0.14)'}}>
-                          <div className="bg-neutral-50 border-b border-neutral-100 p-4">
-                            <div className="text-[22px] font-bold text-neutral-900 mb-3 leading-none">{tooltip.word}</div>
-                            <div className="flex gap-2">
-                              {tooltip.exist ? (
-                                <span className="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-neutral-200 text-neutral-600 border border-neutral-300/50">Já no banco</span>
+                    return (
+                      <span key={index} className="relative inline-block">
+                        <span
+                          className={`inline-block px-1 ${bgClass}`}
+                          style={{
+                            outline: isActive ? '2px solid #7C3AED' : 'none',
+                            outlineOffset: 1,
+                          }}
+                          onClick={(event) => {
+                            event.stopPropagation()
+                            handleWordClick(index, token)
+                          }}
+                        >
+                          {token.raw}
+                        </span>
+
+                        {isActive ? (
+                          <div
+                            className="absolute top-full left-1/2 -translate-x-1/2 mt-3 w-[320px] bg-white rounded-2xl shadow-lg border border-neutral-100 z-50 overflow-hidden flex flex-col font-sans"
+                            ref={tooltipRef}
+                            onClick={(event) => event.stopPropagation()}
+                            style={{ boxShadow: '0 8px 24px rgba(124, 58, 237, 0.14)' }}
+                          >
+                            <div className="bg-neutral-50 border-b border-neutral-100 p-4">
+                              <div className="text-[22px] font-bold text-neutral-900 mb-3 leading-none">
+                                {tooltip.word}
+                              </div>
+                              <div className="flex gap-2">
+                                {tooltip.exist ? (
+                                  <span className="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-neutral-200 text-neutral-600 border border-neutral-300/50">
+                                    Já no banco
+                                  </span>
+                                ) : (
+                                  <span className="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-violet-100 text-violet-700 border border-violet-200">
+                                    Novo item
+                                  </span>
+                                )}
+                                <span className="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider border border-neutral-200 text-neutral-500 bg-white">
+                                  {tooltip.fromAI ? 'IA' : 'Contexto'}
+                                </span>
+                              </div>
+                            </div>
+
+                            <div className="p-4">
+                              <div className="text-[10px] font-bold text-neutral-400 uppercase tracking-widest mb-1.5">
+                                Significado contextual
+                              </div>
+                              {tooltip.loading ? (
+                                <div className="flex items-center gap-2 text-sm text-neutral-500 font-medium my-2">
+                                  <SparkIcon size={14} className="animate-spin text-violet-400" />
+                                  Buscando contexto...
+                                </div>
                               ) : (
-                                <span className="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-violet-100 text-violet-700 border border-violet-200">Novo item</span>
+                                <>
+                                  <div className="text-[15px] font-medium text-neutral-800 mb-3 leading-snug">
+                                    {tooltip.text}
+                                  </div>
+                                  {tooltip.sentence && (
+                                    <div className="text-[12px] italic text-neutral-500 bg-neutral-50/80 p-3 rounded-xl border border-neutral-100 leading-relaxed shadow-inner-soft">
+                                      {tooltip.sentence}
+                                    </div>
+                                  )}
+                                </>
                               )}
-                              <span className="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider border border-neutral-200 text-neutral-500 bg-white">
-                                {tooltip.fromAI ? 'IA' : 'Contexto'}
-                              </span>
+                            </div>
+
+                            <div className="p-3 bg-neutral-50 flex border-t border-neutral-100 gap-2">
+                              {!tooltip.exist ? (
+                                <button
+                                  className="flex-1 bg-violet-600 hover:bg-violet-700 text-white font-semibold py-2 rounded-xl text-xs transition-colors shadow-sm focus:ring-2 focus:ring-violet-400 focus:outline-none"
+                                  onClick={addToBank}
+                                >
+                                  + Salvar palavra
+                                </button>
+                              ) : (
+                                <span className="flex-1 text-center py-2 text-xs font-semibold text-neutral-400 cursor-not-allowed uppercase tracking-wider">
+                                  Já no deck
+                                </span>
+                              )}
+                              <button
+                                className="px-4 bg-white border border-neutral-200 hover:bg-neutral-100 text-neutral-700 font-semibold py-2 rounded-xl text-xs transition-colors"
+                                onClick={() => setTooltip(null)}
+                              >
+                                Fechar
+                              </button>
                             </div>
                           </div>
-
-                          <div className="p-4">
-                            <div className="text-[10px] font-bold text-neutral-400 uppercase tracking-widest mb-1.5">Significado contextual</div>
-                            {tooltip.loading ? (
-                              <div className="flex items-center gap-2 text-sm text-neutral-500 font-medium my-2">
-                                <SparkIcon size={14} className="animate-spin text-violet-400" />
-                                Buscando contexto...
-                              </div>
-                            ) : (
-                              <>
-                                <div className="text-[15px] font-medium text-neutral-800 mb-3 leading-snug">{tooltip.text}</div>
-                                {tooltip.sentence && (
-                                  <div className="text-[12px] italic text-neutral-500 bg-neutral-50/80 p-3 rounded-xl border border-neutral-100 leading-relaxed shadow-inner-soft">{tooltip.sentence}</div>
-                                )}
-                              </>
-                            )}
-                          </div>
-
-                          <div className="p-3 bg-neutral-50 flex border-t border-neutral-100 gap-2">
-                            {!tooltip.exist ? (
-                              <button className="flex-1 bg-violet-600 hover:bg-violet-700 text-white font-semibold py-2 rounded-xl text-xs transition-colors shadow-sm focus:ring-2 focus:ring-violet-400 focus:outline-none" onClick={addToBank}>
-                                + Salvar palavra
-                              </button>
-                            ) : (
-                              <span className="flex-1 text-center py-2 text-xs font-semibold text-neutral-400 cursor-not-allowed uppercase tracking-wider">Já no deck</span>
-                            )}
-                            <button className="px-4 bg-white border border-neutral-200 hover:bg-neutral-100 text-neutral-700 font-semibold py-2 rounded-xl text-xs transition-colors" onClick={() => setTooltip(null)}>
-                              Fechar
-                            </button>
-                          </div>
-                        </div>
-                      ) : null}
-                    </span>
-                  );
-                })}
+                        ) : null}
+                      </span>
+                    )
+                  })
+                )}
               </div>
             </div>
 
             {/* Captures Footer */}
             {sessionWords.length > 0 ? (
               <div className="bg-white rounded-3xl p-6 md:p-8 shadow-soft border border-neutral-100 mb-12">
-                <div className="text-[11px] font-bold text-neutral-400 uppercase tracking-widest mb-4">Capturas dessa leitura</div>
+                <div className="text-[11px] font-bold text-neutral-400 uppercase tracking-widest mb-4">
+                  Capturas dessa leitura
+                </div>
                 <div className="flex flex-wrap gap-2">
                   {sessionWords.map((sessionWord) => (
-                    <Badge key={sessionWord.wordId} className="bg-violet-50 text-violet-700 hover:bg-violet-100 border border-violet-100/50 px-3 py-1 font-bold">
+                    <Badge
+                      key={sessionWord.wordId}
+                      className="bg-violet-50 text-violet-700 hover:bg-violet-100 border border-violet-100/50 px-3 py-1 font-bold"
+                    >
                       {sessionWord.wordText}
                     </Badge>
                   ))}
@@ -543,13 +627,15 @@ export default function Reader({ onPractice }) {
                   <SearchIcon size={24} />
                 </div>
                 <h3 className="text-lg font-bold text-neutral-800 mb-1">Sem capturas ativas</h3>
-                <p className="text-sm text-neutral-500 max-w-sm mx-auto">Interaja com as palavras acima que você não conhece bem. Elas formarão a base do seu próximo exercício.</p>
+                <p className="text-sm text-neutral-500 max-w-sm mx-auto">
+                  Interaja com as palavras acima que você não conhece bem. Elas formarão a base do
+                  seu próximo exercício.
+                </p>
               </div>
             )}
-            
           </div>
         )}
       </main>
     </div>
-  );
+  )
 }

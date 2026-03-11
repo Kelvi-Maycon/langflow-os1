@@ -21,13 +21,13 @@ const badgeVariants = cva(
       size: {
         md: 'text-[11px] px-2.5 py-1',
         sm: 'text-[9px] px-2 py-0.5',
-      }
+      },
     },
     defaultVariants: {
       variant: 'default',
-      size: 'md'
+      size: 'md',
     },
-  }
+  },
 )
 
 export function Badge({ className, variant, size, ...props }) {

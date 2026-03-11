@@ -1,12 +1,12 @@
-import { render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-import { MemoryRouter, Route, Routes } from 'react-router-dom';
-import { describe, expect, it } from 'vitest';
-import AppLayout from './AppLayout.jsx';
-import { useCardStore } from '../../store/useCardStore.js';
-import { getDayKey, useProgressStore } from '../../store/useProgressStore.js';
-import { useUiStore } from '../../store/useUiStore.js';
-import { useWordStore } from '../../store/useWordStore.js';
+import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import { MemoryRouter, Route, Routes } from 'react-router-dom'
+import { describe, expect, it } from 'vitest'
+import AppLayout from './AppLayout.jsx'
+import { useCardStore } from '../../store/useCardStore.js'
+import { getDayKey, useProgressStore } from '../../store/useProgressStore.js'
+import { useUiStore } from '../../store/useUiStore.js'
+import { useWordStore } from '../../store/useWordStore.js'
 
 function renderLayout(initialPath = '/reader') {
   return render(
@@ -20,28 +20,28 @@ function renderLayout(initialPath = '/reader') {
           <Route path="/settings" element={<div>Settings page</div>} />
         </Route>
       </Routes>
-    </MemoryRouter>
-  );
+    </MemoryRouter>,
+  )
 }
 
 describe('AppLayout', () => {
   it('shows notification count and opens the popover', async () => {
-    const user = userEvent.setup();
+    const user = userEvent.setup()
 
-    useUiStore.getState().pushNotification({ title: 'Sessao concluida', read: false });
+    useUiStore.getState().pushNotification({ title: 'Sessao concluida', read: false })
 
-    renderLayout('/reader');
+    renderLayout('/reader')
 
-    expect(screen.getByTestId('notifications-unread-count')).toHaveTextContent('1');
+    expect(screen.getByTestId('notifications-unread-count')).toHaveTextContent('1')
 
-    await user.click(screen.getByTestId('notifications-trigger'));
+    await user.click(screen.getByTestId('notifications-trigger'))
 
-    expect(screen.getByTestId('notifications-panel')).toBeInTheDocument();
-    expect(screen.getByText('Sessao concluida')).toBeInTheDocument();
-  });
+    expect(screen.getByTestId('notifications-panel')).toBeInTheDocument()
+    expect(screen.getByText('Sessao concluida')).toBeInTheDocument()
+  })
 
   it('renders navigation badges without breaking the route shell', () => {
-    const todayKey = getDayKey();
+    const todayKey = getDayKey()
 
     useProgressStore.setState((state) => ({
       ...state,
@@ -52,7 +52,7 @@ describe('AppLayout', () => {
           readerWords: 3,
         },
       },
-    }));
+    }))
     useCardStore.setState({
       flashcards: [
         {
@@ -66,14 +66,14 @@ describe('AppLayout', () => {
           reviewCount: 0,
         },
       ],
-    });
-    useWordStore.getState().addWord('persist', { initialStatus: 'ativa' });
+    })
+    useWordStore.getState().addWord('persist', { initialStatus: 'ativa' })
 
-    renderLayout('/reader');
+    renderLayout('/reader')
 
-    expect(screen.getByText('Reader page')).toBeInTheDocument();
-    expect(screen.getByTestId('nav-item-reader')).toHaveTextContent('3');
-    expect(screen.getByTestId('nav-item-practice')).toHaveTextContent('PROMPT');
-    expect(screen.getByTestId('nav-item-flashcards')).toHaveTextContent('1');
-  });
-});
+    expect(screen.getByText('Reader page')).toBeInTheDocument()
+    expect(screen.getByTestId('nav-item-reader')).toHaveTextContent('3')
+    expect(screen.getByTestId('nav-item-practice')).toHaveTextContent('PROMPT')
+    expect(screen.getByTestId('nav-item-flashcards')).toHaveTextContent('1')
+  })
+})

@@ -1,9 +1,9 @@
-import { useUiStore } from '../../store/useUiStore.js';
+import { useUiStore } from '../../store/useUiStore.js'
 
 export default function ToastViewport() {
-  const { toasts, dismissToast } = useUiStore();
+  const { toasts, dismissToast } = useUiStore()
 
-  if (toasts.length === 0) return null;
+  if (toasts.length === 0) return null
 
   return (
     <div className="toast-viewport" aria-live="polite" aria-atomic="true">
@@ -24,5 +24,5 @@ export default function ToastViewport() {
         </div>
       ))}
     </div>
-  );
+  )
 }

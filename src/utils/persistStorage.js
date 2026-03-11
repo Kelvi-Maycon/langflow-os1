@@ -1,33 +1,41 @@
-import { createJSONStorage } from 'zustand/middleware';
+import { createJSONStorage } from 'zustand/middleware'
 
 function createMemoryStorage() {
-  let store = {};
+  let store = {}
 
   return {
     getItem(key) {
-      return Object.prototype.hasOwnProperty.call(store, key) ? store[key] : null;
+      return Object.prototype.hasOwnProperty.call(store, key) ? store[key] : null
     },
     setItem(key, value) {
-      store[key] = String(value);
+      store[key] = String(value)
     },
     removeItem(key) {
-      delete store[key];
+      delete store[key]
     },
-  };
+  }
 }
 
-const memoryStorage = createMemoryStorage();
+const memoryStorage = createMemoryStorage()
 
 function getSafeStorage() {
-  if (typeof window !== 'undefined' && window.localStorage && typeof window.localStorage.getItem === 'function') {
-    return window.localStorage;
+  if (
+    typeof window !== 'undefined' &&
+    window.localStorage &&
+    typeof window.localStorage.getItem === 'function'
+  ) {
+    return window.localStorage
   }
 
-  if (typeof globalThis !== 'undefined' && globalThis.localStorage && typeof globalThis.localStorage.getItem === 'function') {
-    return globalThis.localStorage;
+  if (
+    typeof globalThis !== 'undefined' &&
+    globalThis.localStorage &&
+    typeof globalThis.localStorage.getItem === 'function'
+  ) {
+    return globalThis.localStorage
   }
 
-  return memoryStorage;
+  return memoryStorage
 }
 
-export const persistStorage = createJSONStorage(() => getSafeStorage());
+export const persistStorage = createJSONStorage(() => getSafeStorage())

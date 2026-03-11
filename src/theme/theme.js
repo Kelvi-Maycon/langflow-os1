@@ -79,4 +79,4 @@ export const langFlowTheme = {
     ease: 'cubic-bezier(0.22, 1, 0.36, 1)',
     easeSoft: 'cubic-bezier(0.33, 1, 0.68, 1)',
   },
-};
+}

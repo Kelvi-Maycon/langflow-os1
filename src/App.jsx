@@ -1,38 +1,35 @@
-import { useEffect } from 'react';
-import {
-  BrowserRouter,
-  Navigate,
-  Route,
-  Routes,
-  useLocation,
-  useNavigate,
-} from 'react-router-dom';
-import Dashboard from './components/shared/Dashboard.jsx';
-import Evolution from './components/shared/Evolution.jsx';
-import Settings from './components/Settings/Settings.jsx';
-import Reader from './components/Reader/Reader.jsx';
-import Builder from './components/Builder/Builder.jsx';
-import Flashcard from './components/Flashcard/Flashcard.jsx';
-import Vocabulary from './components/Vocabulary/Vocabulary.jsx';
-import AppLayout from './components/shared/AppLayout.jsx';
-import ToastViewport from './components/shared/ToastViewport.jsx';
-import { useWordStore } from './store/useWordStore.js';
-import { useProgressStore } from './store/useProgressStore.js';
+import { useEffect } from 'react'
+import { BrowserRouter, Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom'
+import Dashboard from './components/shared/Dashboard.jsx'
+import Evolution from './components/shared/Evolution.jsx'
+import Settings from './components/Settings/Settings.jsx'
+import Reader from './components/Reader/Reader.jsx'
+import Builder from './components/Builder/Builder.jsx'
+import Flashcard from './components/Flashcard/Flashcard.jsx'
+import Vocabulary from './components/Vocabulary/Vocabulary.jsx'
+import AppLayout from './components/shared/AppLayout.jsx'
+import ToastViewport from './components/shared/ToastViewport.jsx'
+import { useWordStore } from './store/useWordStore.js'
+import { useProgressStore } from './store/useProgressStore.js'
 
 function DashboardRoute() {
-  return <Dashboard />;
+  return <Dashboard />
 }
 
 function ReaderRoute() {
-  const navigate = useNavigate();
-  return <Reader onPractice={(selectedWords) => navigate('/practice', { state: { words: selectedWords } })} />;
+  const navigate = useNavigate()
+  return (
+    <Reader
+      onPractice={(selectedWords) => navigate('/practice', { state: { words: selectedWords } })}
+    />
+  )
 }
 
 function PracticeRoute() {
-  const location = useLocation();
-  const navigate = useNavigate();
-  const initialWords = location.state?.words || [];
-  const initialMode = location.state?.mode || 'assembly';
+  const location = useLocation()
+  const navigate = useNavigate()
+  const initialWords = location.state?.words || []
+  const initialMode = location.state?.mode || 'assembly'
 
   return (
     <Builder
@@ -41,18 +38,18 @@ function PracticeRoute() {
       initialMode={initialMode}
       onDone={() => navigate('/flashcards')}
     />
-  );
+  )
 }
 
 export default function App() {
-  const { words } = useWordStore();
-  const { syncWordStatusTotals } = useProgressStore();
-  const activeWords = words.filter((word) => ['ativa', 'dominada'].includes(word.status)).length;
-  const masteredWords = words.filter((word) => word.status === 'dominada').length;
+  const { words } = useWordStore()
+  const { syncWordStatusTotals } = useProgressStore()
+  const activeWords = words.filter((word) => ['ativa', 'dominada'].includes(word.status)).length
+  const masteredWords = words.filter((word) => word.status === 'dominada').length
 
   useEffect(() => {
-    syncWordStatusTotals({ activeWords, masteredWords });
-  }, [activeWords, masteredWords, syncWordStatusTotals]);
+    syncWordStatusTotals({ activeWords, masteredWords })
+  }, [activeWords, masteredWords, syncWordStatusTotals])
 
   return (
     <BrowserRouter>
@@ -70,5 +67,5 @@ export default function App() {
         </Route>
       </Routes>
     </BrowserRouter>
-  );
+  )
 }

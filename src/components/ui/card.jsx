@@ -9,7 +9,15 @@ export function CardHeader({ className, ...props }) {
 }
 
 export function CardTitle({ className, ...props }) {
-  return <h3 className={cn('text-[16px] font-semibold leading-none text-foreground font-display', className)} {...props} />
+  return (
+    <h3
+      className={cn(
+        'text-[16px] font-semibold leading-none text-foreground font-display',
+        className,
+      )}
+      {...props}
+    />
+  )
 }
 
 export function CardDescription({ className, ...props }) {

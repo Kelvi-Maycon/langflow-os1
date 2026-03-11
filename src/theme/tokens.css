@@ -8,51 +8,51 @@
   --font-mono: 'Fira Code', ui-monospace, monospace;
 
   /* PRIMARY — 7 stops */
-  --primary-50:  #F0EAFF;
-  --primary-100: #D6C4FF;
-  --primary-300: #A87BFF;
-  --primary-500: #7C3AED;
-  --primary-700: #4E1EAB;
-  --primary-800: #2B1175;
-  --primary-900: #1E0A52;
+  --primary-50: #f0eaff;
+  --primary-100: #d6c4ff;
+  --primary-300: #a87bff;
+  --primary-500: #7c3aed;
+  --primary-700: #4e1eab;
+  --primary-800: #2b1175;
+  --primary-900: #1e0a52;
 
   /* NEUTRAL — 11 stops, tint roxo */
-  --neutral-bg:  #F5F4FF;
-  --neutral-50:  #EDEAF8;
-  --neutral-100: #E6E2F5;
-  --neutral-200: #D0CBEC;
-  --neutral-300: #B6B0D5;
-  --neutral-400: #9C96BC;
-  --neutral-500: #746D98;
-  --neutral-600: #4A4470;
-  --neutral-700: #342D54;
-  --neutral-800: #1E1B3A;
+  --neutral-bg: #f5f4ff;
+  --neutral-50: #edeaf8;
+  --neutral-100: #e6e2f5;
+  --neutral-200: #d0cbec;
+  --neutral-300: #b6b0d5;
+  --neutral-400: #9c96bc;
+  --neutral-500: #746d98;
+  --neutral-600: #4a4470;
+  --neutral-700: #342d54;
+  --neutral-800: #1e1b3a;
   --neutral-900: #141128;
-  --neutral-950: #0A0820;
+  --neutral-950: #0a0820;
 
   /* GAMIFICATION */
-  --color-xp:        #EC4899;
-  --color-vocab:     #6366F1;
-  --color-retention: #F97316;
-  --color-level:     #10B981;
-  --color-streak:    #F59E0B;
-  
-  --color-xp-bg: #FCE7F3;
-  --color-vocab-bg: #EEF2FF;
-  --color-retention-bg: #FFF7ED;
-  --color-level-bg: #D1FAE5;
-  --color-streak-bg: #FEF3C7;
+  --color-xp: #ec4899;
+  --color-vocab: #6366f1;
+  --color-retention: #f97316;
+  --color-level: #10b981;
+  --color-streak: #f59e0b;
+
+  --color-xp-bg: #fce7f3;
+  --color-vocab-bg: #eef2ff;
+  --color-retention-bg: #fff7ed;
+  --color-level-bg: #d1fae5;
+  --color-streak-bg: #fef3c7;
 
   /* SEMANTIC */
-  --color-success: #10B981;
-  --color-warning: #F59E0B;
-  --color-error: #EF4444;
-  --color-info: #3B82F6;
+  --color-success: #10b981;
+  --color-warning: #f59e0b;
+  --color-error: #ef4444;
+  --color-info: #3b82f6;
 
   /* SURFACE */
-  --surface-bg: #F5F4FF;
-  --surface-card: #FFFFFF;
-  --surface-divider: #D0CBEC;
+  --surface-bg: #f5f4ff;
+  --surface-card: #ffffff;
+  --surface-divider: #d0cbec;
 
   /* SPACING (8pt grid) */
   --sp-1: 4px;
@@ -72,10 +72,10 @@
 
   /* SHADOWS (tint roxo) */
   --shadow-none: none;
-  --shadow-sm:  0 1px 3px rgba(124,58,237,0.08);
-  --shadow-md:  0 4px 12px rgba(124,58,237,0.10);
-  --shadow-lg:  0 8px 24px rgba(124,58,237,0.14);
-  --shadow-btn: 0 4px 14px rgba(124,58,237,0.35);
+  --shadow-sm: 0 1px 3px rgba(124, 58, 237, 0.08);
+  --shadow-md: 0 4px 12px rgba(124, 58, 237, 0.1);
+  --shadow-lg: 0 8px 24px rgba(124, 58, 237, 0.14);
+  --shadow-btn: 0 4px 14px rgba(124, 58, 237, 0.35);
 
   /* TRANSITIONS */
   --t-fast: 150ms ease-out;
@@ -93,7 +93,7 @@
   --c-bg-soft: var(--neutral-50);
   --c-card: var(--surface-card);
   --c-card-soft: rgba(255, 255, 255, 0.56);
-  --c-sidebar: #FFFFFF;
+  --c-sidebar: #ffffff;
   --c-sidebar-soft: rgba(255, 255, 255, 0.48);
   --c-hover: rgba(124, 58, 237, 0.04);
   --c-border: var(--surface-divider);
@@ -103,7 +103,7 @@
   --c-heading: var(--neutral-950);
   --c-muted: var(--neutral-400);
   --c-subtle: var(--neutral-400);
-  --c-inverse: #FFFFFF;
+  --c-inverse: #ffffff;
 
   --c-success: var(--color-success);
   --c-success-soft: rgba(16, 185, 129, 0.12);
@@ -125,7 +125,7 @@
 
   /* SHADCN VARIABLES mapped to HSL values based on adLiszQ + #7C3AED */
   /* #F5F4FF */
-  --background: 245 100% 98%; 
+  --background: 245 100% 98%;
   /* #1E1B3A */
   --foreground: 246 36% 16%;
   /* #FFFFFF */

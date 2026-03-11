@@ -1,11 +1,11 @@
-import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
-import { uuid } from '../utils/shuffle.js';
-import { persistStorage } from '../utils/persistStorage.js';
+import { create } from 'zustand'
+import { persist } from 'zustand/middleware'
+import { uuid } from '../utils/shuffle.js'
+import { persistStorage } from '../utils/persistStorage.js'
 
-const STORE_VERSION = 1;
-const MAX_NOTIFICATIONS = 25;
-const DEFAULT_TOAST_DURATION = 4000;
+const STORE_VERSION = 1
+const MAX_NOTIFICATIONS = 25
+const DEFAULT_TOAST_DURATION = 4000
 
 function buildNotification(input = {}) {
   return {
@@ -16,7 +16,7 @@ function buildNotification(input = {}) {
     source: input.source || 'system',
     createdAt: input.createdAt || Date.now(),
     read: Boolean(input.read),
-  };
+  }
 }
 
 export const useUiStore = create(
@@ -29,19 +29,19 @@ export const useUiStore = create(
         const toast = {
           ...buildNotification(input),
           duration: input.duration ?? DEFAULT_TOAST_DURATION,
-        };
+        }
 
         set((state) => ({
           toasts: [...state.toasts, toast],
-        }));
+        }))
 
         if (toast.duration > 0 && typeof window !== 'undefined') {
           window.setTimeout(() => {
-            get().dismissToast(toast.id);
-          }, toast.duration);
+            get().dismissToast(toast.id)
+          }, toast.duration)
         }
 
-        return toast.id;
+        return toast.id
       },
 
       dismissToast: (id) =>
@@ -50,27 +50,27 @@ export const useUiStore = create(
         })),
 
       pushNotification: (input = {}) => {
-        const notification = buildNotification(input);
+        const notification = buildNotification(input)
 
         set((state) => ({
           notifications: [notification, ...state.notifications].slice(0, MAX_NOTIFICATIONS),
-        }));
+        }))
 
-        return notification.id;
+        return notification.id
       },
 
       publishMilestone: (input = {}) => {
-        const payload = buildNotification(input);
-        get().pushNotification(payload);
-        get().pushToast(payload);
-        return payload.id;
+        const payload = buildNotification(input)
+        get().pushNotification(payload)
+        get().pushToast(payload)
+        return payload.id
       },
 
       markNotificationRead: (id) =>
         set((state) => ({
-          notifications: state.notifications.map((entry) => (
-            entry.id === id ? { ...entry, read: true } : entry
-          )),
+          notifications: state.notifications.map((entry) =>
+            entry.id === id ? { ...entry, read: true } : entry,
+          ),
         })),
 
       markAllNotificationsRead: () =>
@@ -92,6 +92,6 @@ export const useUiStore = create(
       storage: persistStorage,
       version: STORE_VERSION,
       partialize: (state) => ({ notifications: state.notifications }),
-    }
-  )
-);
+    },
+  ),
+)

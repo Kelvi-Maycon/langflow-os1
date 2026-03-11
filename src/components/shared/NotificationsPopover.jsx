@@ -1,32 +1,28 @@
-import { useMemo, useState } from 'react';
-import { Badge } from '../ui/badge.jsx';
-import { Button } from '../ui/button.jsx';
-import { Card } from '../ui/card.jsx';
-import { useUiStore } from '../../store/useUiStore.js';
-import { BellIcon } from './icons.jsx';
+import { useMemo, useState } from 'react'
+import { Badge } from '../ui/badge.jsx'
+import { Button } from '../ui/button.jsx'
+import { Card } from '../ui/card.jsx'
+import { useUiStore } from '../../store/useUiStore.js'
+import { BellIcon } from './icons.jsx'
 
 function formatRelativeDate(timestamp) {
-  const diffMinutes = Math.max(0, Math.round((Date.now() - timestamp) / 60000));
-  if (diffMinutes < 1) return 'agora';
-  if (diffMinutes < 60) return `${diffMinutes} min`;
-  const diffHours = Math.round(diffMinutes / 60);
-  if (diffHours < 24) return `${diffHours} h`;
-  return `${Math.round(diffHours / 24)} d`;
+  const diffMinutes = Math.max(0, Math.round((Date.now() - timestamp) / 60000))
+  if (diffMinutes < 1) return 'agora'
+  if (diffMinutes < 60) return `${diffMinutes} min`
+  const diffHours = Math.round(diffMinutes / 60)
+  if (diffHours < 24) return `${diffHours} h`
+  return `${Math.round(diffHours / 24)} d`
 }
 
 export default function NotificationsPopover() {
-  const [open, setOpen] = useState(false);
-  const {
-    notifications,
-    markNotificationRead,
-    markAllNotificationsRead,
-    clearNotifications,
-  } = useUiStore();
+  const [open, setOpen] = useState(false)
+  const { notifications, markNotificationRead, markAllNotificationsRead, clearNotifications } =
+    useUiStore()
 
   const unreadCount = useMemo(
     () => notifications.filter((entry) => !entry.read).length,
-    [notifications]
-  );
+    [notifications],
+  )
 
   return (
     <div className="notifications-popover">
@@ -62,7 +58,11 @@ export default function NotificationsPopover() {
           </div>
 
           <div className="notifications-actions">
-            <button type="button" className="btn btn-ghost btn-sm" onClick={markAllNotificationsRead}>
+            <button
+              type="button"
+              className="btn btn-ghost btn-sm"
+              onClick={markAllNotificationsRead}
+            >
               Marcar todas
             </button>
             <button type="button" className="btn btn-ghost btn-sm" onClick={clearNotifications}>
@@ -90,7 +90,9 @@ export default function NotificationsPopover() {
                     <strong>{entry.title}</strong>
                     {entry.description ? <span>{entry.description}</span> : null}
                   </span>
-                  <span className="notifications-item-time">{formatRelativeDate(entry.createdAt)}</span>
+                  <span className="notifications-item-time">
+                    {formatRelativeDate(entry.createdAt)}
+                  </span>
                 </button>
               ))}
             </div>
@@ -98,5 +100,5 @@ export default function NotificationsPopover() {
         </Card>
       ) : null}
     </div>
-  );
+  )
 }

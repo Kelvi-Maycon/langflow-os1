@@ -3,10 +3,7 @@ import animate from 'tailwindcss-animate'
 /** @type {import('tailwindcss').Config} */
 export default {
   darkMode: ['class'],
-  content: [
-    './index.html',
-    './src/**/*.{js,jsx}',
-  ],
+  content: ['./index.html', './src/**/*.{js,jsx}'],
   theme: {
     container: {
       center: true,
@@ -75,28 +72,28 @@ export default {
         },
         xp: {
           DEFAULT: 'var(--color-xp)',
-          bg: 'var(--color-xp-bg)'
+          bg: 'var(--color-xp-bg)',
         },
         vocab: {
           DEFAULT: 'var(--color-vocab)',
-          bg: 'var(--color-vocab-bg)'
+          bg: 'var(--color-vocab-bg)',
         },
         retention: {
           DEFAULT: 'var(--color-retention)',
-          bg: 'var(--color-retention-bg)'
+          bg: 'var(--color-retention-bg)',
         },
         level: {
           DEFAULT: 'var(--color-level)',
-          bg: 'var(--color-level-bg)'
+          bg: 'var(--color-level-bg)',
         },
         streak: {
           DEFAULT: 'var(--color-streak)',
-          bg: 'var(--color-streak-bg)'
+          bg: 'var(--color-streak-bg)',
         },
         brand: {
           light: 'var(--primary-300)',
           DEFAULT: 'var(--primary-500)',
-          dark: 'var(--primary-700)'
+          dark: 'var(--primary-700)',
         },
         neutral: {
           50: 'var(--neutral-50)',
@@ -111,7 +108,7 @@ export default {
           900: 'var(--neutral-900)',
           950: 'var(--neutral-950)',
           bg: 'var(--neutral-bg)',
-        }
+        },
       },
       borderRadius: {
         lg: 'var(--radius)',
@@ -122,7 +119,7 @@ export default {
         soft: '0 1px 2px rgba(15, 23, 42, 0.02)',
         card: 'var(--shadow-card)',
         hover: '0 10px 28px rgba(108, 63, 197, 0.12)',
-        'btn': 'var(--shadow-btn)',
+        btn: 'var(--shadow-btn)',
         'sm-purple': 'var(--shadow-sm)',
         'md-purple': 'var(--shadow-md)',
         'lg-purple': 'var(--shadow-lg)',

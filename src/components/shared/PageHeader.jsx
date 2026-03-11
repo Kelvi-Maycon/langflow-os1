@@ -6,14 +6,20 @@ export default function PageHeader({ icon, title, description, actions = null })
           {icon}
         </div>
         <div className="space-y-1.5">
-          <div className="text-[10px] font-semibold uppercase tracking-[0.28em] text-muted-foreground">LangFlow</div>
-          <h1 className="text-[28px] font-semibold tracking-[-0.03em] text-foreground md:text-[32px]">{title}</h1>
+          <div className="text-[10px] font-semibold uppercase tracking-[0.28em] text-muted-foreground">
+            LangFlow
+          </div>
+          <h1 className="text-[28px] font-semibold tracking-[-0.03em] text-foreground md:text-[32px]">
+            {title}
+          </h1>
           {description ? (
-            <p className="max-w-2xl text-[14px] leading-6 text-muted-foreground md:text-[14px]">{description}</p>
+            <p className="max-w-2xl text-[14px] leading-6 text-muted-foreground md:text-[14px]">
+              {description}
+            </p>
           ) : null}
         </div>
       </div>
       {actions ? <div className="flex items-center gap-3">{actions}</div> : null}
     </div>
-  );
+  )
 }

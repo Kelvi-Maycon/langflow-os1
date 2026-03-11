@@ -3,6 +3,7 @@
 Este arquivo foi substituido pelo dossie mais recente do redesign.
 
 Consulte:
+
 - [README.md](/Users/kelvimaycon/ingles/langflow/docs/redesign/README.md)
 - [reference-analysis.md](/Users/kelvimaycon/ingles/langflow/docs/redesign/reference-analysis.md)
 - [action-plan.md](/Users/kelvimaycon/ingles/langflow/docs/redesign/action-plan.md)

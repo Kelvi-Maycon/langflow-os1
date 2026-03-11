@@ -1,4 +1,4 @@
 interface:
-  display_name: "Action Plan PRD"
-  short_description: "Turn a goal into a concrete execution plan"
-  default_prompt: "Use $action-plan-prd to analyze this goal and produce the right planning package: tasks, PRD, milestones, risks, metrics, and open questions."
+  display_name: 'Action Plan PRD'
+  short_description: 'Turn a goal into a concrete execution plan'
+  default_prompt: 'Use $action-plan-prd to analyze this goal and produce the right planning package: tasks, PRD, milestones, risks, metrics, and open questions.'
