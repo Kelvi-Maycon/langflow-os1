@@ -1,0 +1,157 @@
+:root {
+  color-scheme: light;
+
+  /* TYPOGRAPHY */
+  --font-display: 'Inter', system-ui, sans-serif; /* Display, H1, H2, H3 */
+  --font-ui: 'Inter', system-ui, sans-serif; /* Body e UI */
+  --font-body: 'Inter', system-ui, sans-serif;
+  --font-mono: 'Fira Code', ui-monospace, monospace;
+
+  /* PRIMARY — 7 stops */
+  --primary-50:  #F0EAFF;
+  --primary-100: #D6C4FF;
+  --primary-300: #A87BFF;
+  --primary-500: #7C3AED;
+  --primary-700: #4E1EAB;
+  --primary-800: #2B1175;
+  --primary-900: #1E0A52;
+
+  /* NEUTRAL — 11 stops, tint roxo */
+  --neutral-bg:  #F5F4FF;
+  --neutral-50:  #EDEAF8;
+  --neutral-100: #E6E2F5;
+  --neutral-200: #D0CBEC;
+  --neutral-300: #B6B0D5;
+  --neutral-400: #9C96BC;
+  --neutral-500: #746D98;
+  --neutral-600: #4A4470;
+  --neutral-700: #342D54;
+  --neutral-800: #1E1B3A;
+  --neutral-900: #141128;
+  --neutral-950: #0A0820;
+
+  /* GAMIFICATION */
+  --color-xp:        #EC4899;
+  --color-vocab:     #6366F1;
+  --color-retention: #F97316;
+  --color-level:     #10B981;
+  --color-streak:    #F59E0B;
+  
+  --color-xp-bg: #FCE7F3;
+  --color-vocab-bg: #EEF2FF;
+  --color-retention-bg: #FFF7ED;
+  --color-level-bg: #D1FAE5;
+  --color-streak-bg: #FEF3C7;
+
+  /* SEMANTIC */
+  --color-success: #10B981;
+  --color-warning: #F59E0B;
+  --color-error: #EF4444;
+  --color-info: #3B82F6;
+
+  /* SURFACE */
+  --surface-bg: #F5F4FF;
+  --surface-card: #FFFFFF;
+  --surface-divider: #D0CBEC;
+
+  /* SPACING (8pt grid) */
+  --sp-1: 4px;
+  --sp-2: 8px;
+  --sp-3: 12px;
+  --sp-4: 16px;
+  --sp-5: 20px;
+  --sp-6: 24px;
+  --sp-8: 32px;
+
+  /* BORDER RADIUS */
+  --r-sm: 4px;
+  --r-md: 8px;
+  --r-lg: 12px;
+  --r-xl: 20px;
+  --r-full: 9999px;
+
+  /* SHADOWS (tint roxo) */
+  --shadow-none: none;
+  --shadow-sm:  0 1px 3px rgba(124,58,237,0.08);
+  --shadow-md:  0 4px 12px rgba(124,58,237,0.10);
+  --shadow-lg:  0 8px 24px rgba(124,58,237,0.14);
+  --shadow-btn: 0 4px 14px rgba(124,58,237,0.35);
+
+  /* TRANSITIONS */
+  --t-fast: 150ms ease-out;
+  --t-normal: 250ms ease-out;
+  --t-spring: 350ms cubic-bezier(0.68, -0.55, 0.265, 1.55);
+
+  /* LEGACY FALLBACKS ALIASES (Para Shadcn e componentes legados) */
+  --c-brand: var(--primary-500);
+  --c-brand-light: var(--primary-300);
+  --c-brand-dark: var(--primary-700);
+  --c-brand-soft: rgba(124, 58, 237, 0.1);
+  --c-brand-mid: rgba(124, 58, 237, 0.18);
+
+  --c-bg: var(--neutral-bg);
+  --c-bg-soft: var(--neutral-50);
+  --c-card: var(--surface-card);
+  --c-card-soft: rgba(255, 255, 255, 0.56);
+  --c-sidebar: #FFFFFF;
+  --c-sidebar-soft: rgba(255, 255, 255, 0.48);
+  --c-hover: rgba(124, 58, 237, 0.04);
+  --c-border: var(--surface-divider);
+  --c-line: var(--surface-divider);
+
+  --c-text: var(--neutral-600);
+  --c-heading: var(--neutral-950);
+  --c-muted: var(--neutral-400);
+  --c-subtle: var(--neutral-400);
+  --c-inverse: #FFFFFF;
+
+  --c-success: var(--color-success);
+  --c-success-soft: rgba(16, 185, 129, 0.12);
+  --c-error: var(--color-error);
+  --c-error-soft: rgba(239, 68, 68, 0.12);
+  --c-warning: var(--color-warning);
+  --c-warning-soft: rgba(245, 158, 11, 0.12);
+  --c-info: var(--color-info);
+  --c-info-soft: rgba(59, 130, 246, 0.12);
+
+  --c-purple: var(--primary-500);
+  --c-pink: var(--color-xp);
+  --c-orange: var(--color-retention);
+
+  --sh-sm: var(--shadow-sm);
+  --sh-md: var(--shadow-md);
+  --sh-lg: var(--shadow-lg);
+  --sh-brand: var(--shadow-btn);
+
+  /* SHADCN VARIABLES mapped to HSL values based on adLiszQ + #7C3AED */
+  /* #F5F4FF */
+  --background: 245 100% 98%; 
+  /* #1E1B3A */
+  --foreground: 246 36% 16%;
+  /* #FFFFFF */
+  --card: 0 0% 100%;
+  --card-foreground: 246 36% 16%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 246 36% 16%;
+  /* #7C3AED */
+  --primary: 262 83% 58%;
+  --primary-foreground: 0 0% 100%;
+  /* #EDEAF8 */
+  --secondary: 252 50% 95%;
+  /* #4E1EAB */
+  --secondary-foreground: 260 70% 39%;
+  /* #F0EAFF */
+  --muted: 257 100% 96%;
+  /* #9C96BC */
+  --muted-foreground: 250 20% 66%;
+  --accent: 257 100% 96%;
+  --accent-foreground: 262 83% 58%;
+  /* #EF4444 */
+  --destructive: 0 84% 60%;
+  --destructive-foreground: 0 0% 98%;
+  /* #D0CBEC */
+  --border: 249 46% 86%;
+  --input: 249 46% 86%;
+  --ring: 262 83% 58%;
+  --radius: 20px;
+}

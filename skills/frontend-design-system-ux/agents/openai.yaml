@@ -1,0 +1,4 @@
+interface:
+  display_name: "Frontend Design System UX"
+  short_description: "Build accessible production-grade interfaces"
+  default_prompt: "Use $frontend-design-system-ux to design and implement an accessible, high-fidelity interface with clear tokens, components, and UX rationale."
