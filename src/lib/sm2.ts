@@ -1,41 +1,35 @@
-// Basic implementation of the SuperMemo-2 (SM-2) algorithm
-export interface SM2Data {
-  interval: number
-  easeFactor: number
-  repetitions: number
-}
-
 export function calculateSM2(
-  quality: number, // 0-5 (0: complete blackout, 5: perfect response)
+  quality: number,
   repetitions: number,
   previousInterval: number,
   previousEaseFactor: number,
-  multiplier: number = 1.0,
-): SM2Data {
-  let interval = 0
-  let easeFactor = previousEaseFactor + (0.1 - (5 - quality) * (0.08 + (5 - quality) * 0.02))
+  srsMultiplier: number = 1.2,
+) {
+  let interval: number
+  let easeFactor = previousEaseFactor
 
-  if (easeFactor < 1.3) easeFactor = 1.3
-
-  if (quality < 3) {
-    repetitions = 0
-    interval = 1
-  } else {
+  if (quality >= 3) {
     if (repetitions === 0) {
       interval = 1
     } else if (repetitions === 1) {
       interval = 6
     } else {
-      interval = Math.round(previousInterval * easeFactor * multiplier)
+      interval = Math.round(previousInterval * easeFactor * srsMultiplier)
     }
     repetitions++
+  } else {
+    repetitions = 0
+    interval = 1
   }
+
+  easeFactor = easeFactor + (0.1 - (5 - quality) * (0.08 + (5 - quality) * 0.02))
+  if (easeFactor < 1.3) easeFactor = 1.3
 
   return { interval, easeFactor, repetitions }
 }
 
 export function getNextReviewDate(intervalDays: number): number {
-  const date = new Date()
-  date.setDate(date.getDate() + intervalDays)
-  return date.getTime()
+  const now = new Date()
+  now.setDate(now.getDate() + intervalDays)
+  return now.getTime()
 }

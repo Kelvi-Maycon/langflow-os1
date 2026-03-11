@@ -2,11 +2,13 @@ import { useState, useMemo } from 'react'
 import { useStore } from '@/store/main'
 import { Card } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { BrainCircuit, Check, X, Frown, Smile, PartyPopper } from 'lucide-react'
+import { BrainCircuit, Check, X, Frown, Smile, PartyPopper, ArrowRight } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { useNavigate } from 'react-router-dom'
 
 export default function Flashcards() {
   const { words, reviewWord, recordFlashcardAttempt } = useStore()
+  const navigate = useNavigate()
 
   const dueCards = useMemo(
     () =>
@@ -19,7 +21,9 @@ export default function Flashcards() {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isFlipped, setIsFlipped] = useState(false)
 
-  const currentCard = dueCards[currentIndex]
+  // Ensure safe index mapping
+  const safeIndex = currentIndex < dueCards.length ? currentIndex : 0
+  const currentCard = dueCards[safeIndex]
 
   const handleReview = (quality: number) => {
     if (!currentCard) return
@@ -29,6 +33,9 @@ export default function Flashcards() {
 
     reviewWord(currentCard.id, quality)
     setIsFlipped(false)
+
+    // Always stick to 0, because processing the review filters out the reviewed card,
+    // essentially popping it off the dueCards queue and feeding the next one up!
     setCurrentIndex(0)
   }
 
@@ -43,6 +50,23 @@ export default function Flashcards() {
           Você não tem revisões pendentes para hoje. Excelente trabalho mantendo seu vocabulário
           afiado.
         </p>
+        <div className="flex flex-col sm:flex-row gap-4 mt-4">
+          <Button
+            size="lg"
+            className="text-base h-14 px-8 rounded-xl shadow-md"
+            onClick={() => navigate('/')}
+          >
+            Voltar ao Início
+          </Button>
+          <Button
+            size="lg"
+            variant="outline"
+            className="text-base h-14 px-8 rounded-xl shadow-sm"
+            onClick={() => navigate('/practice')}
+          >
+            Ir para Prática Rápida <ArrowRight className="ml-2 w-5 h-5" />
+          </Button>
+        </div>
       </div>
     )
   }

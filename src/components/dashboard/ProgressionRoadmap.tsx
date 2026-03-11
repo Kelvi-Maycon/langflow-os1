@@ -1,32 +1,39 @@
 import { Card } from '@/components/ui/card'
 import { ArrowRight, Check, Lock } from 'lucide-react'
-import { useToast } from '@/hooks/use-toast'
-
-const steps = [
-  { id: 1, label: 'BÁSICO I', status: 'completed' },
-  { id: 2, label: 'BÁSICO II', status: 'completed' },
-  { id: 3, label: 'INTERMEDIÁRIO', status: 'current', tooltip: 'NÍVEL ATUAL B1' },
-  { id: 4, label: 'AVANÇADO', status: 'locked' },
-  { id: 5, label: 'MESTRE', status: 'locked' },
-]
+import { useStore } from '@/store/main'
+import { useNavigate } from 'react-router-dom'
 
 export function ProgressionRoadmap() {
-  const { toast } = useToast()
+  const { words } = useStore()
+  const navigate = useNavigate()
+
+  const count = words.length
+
+  const steps = [
+    { id: 1, label: 'BÁSICO I', req: 0 },
+    { id: 2, label: 'BÁSICO II', req: 10 },
+    { id: 3, label: 'INTERMEDIÁRIO', req: 25 },
+    { id: 4, label: 'AVANÇADO', req: 50 },
+    { id: 5, label: 'MESTRE', req: 100 },
+  ].map((s, i, arr) => {
+    const isCompleted = count >= s.req && count >= (arr[i + 1]?.req || Infinity)
+    const isCurrent = count >= s.req && count < (arr[i + 1]?.req || Infinity)
+    return {
+      ...s,
+      status: isCompleted ? 'completed' : isCurrent ? 'current' : 'locked',
+      tooltip: isCurrent ? `${count}/${arr[i + 1]?.req || 100} palavras` : null,
+    }
+  })
 
   return (
     <section className="space-y-6">
       <header className="flex items-center justify-between">
         <h3 className="text-2xl font-bold text-foreground tracking-tight">Jornada de Maestria</h3>
         <button
-          onClick={() =>
-            toast({
-              title: 'Jornada Completa',
-              description: 'O mapa interativo será liberado ao concluir o nível Intermediário.',
-            })
-          }
+          onClick={() => navigate('/settings')}
           className="text-sm font-bold text-pink-500 hover:text-pink-600 flex items-center gap-1 transition-all duration-250 ease-out p-2 rounded-lg hover:bg-pink-500/10 active:scale-95"
         >
-          Ver Mapa Completo <ArrowRight className="w-4 h-4" />
+          Ver Nível Atual <ArrowRight className="w-4 h-4" />
         </button>
       </header>
 

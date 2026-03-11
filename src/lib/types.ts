@@ -1,4 +1,4 @@
-export type WordStatus = 'learning' | 'builder' | 'srs' | 'mastered'
+export type WordStatus = 'practice' | 'srs' | 'mastered'
 
 export interface WordEntry {
   id: string
@@ -14,12 +14,12 @@ export interface WordEntry {
 }
 
 export interface UserSettings {
-  level: 'A1' | 'A2' | 'B1' | 'B2' | 'C1' | 'C2'
+  level: string
   apiKey: string
   dailyGoal: number
   srsMultiplier: number
   complexity: string
-  aiModel?: string
+  aiModel: string
 }
 
 export interface UserStats {

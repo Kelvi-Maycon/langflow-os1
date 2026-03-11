@@ -26,10 +26,12 @@ export default function Practice() {
   const { words, updateWordStatus, settings, recordPracticeAttempt } = useStore()
   const navigate = useNavigate()
 
-  const builderWords = useMemo(() => words.filter((w) => w.status === 'builder'), [words])
+  const practiceWords = useMemo(() => words.filter((w) => w.status === 'practice'), [words])
   const [currentIndex, setCurrentIndex] = useState(0)
 
-  const currentWord = builderWords[currentIndex]
+  // Ensure index is always valid
+  const safeIndex = currentIndex < practiceWords.length ? currentIndex : 0
+  const currentWord = practiceWords[safeIndex]
 
   const [answer, setAnswer] = useState('')
   const [status, setStatus] = useState<'idle' | 'correct' | 'incorrect'>('idle')
@@ -126,14 +128,23 @@ export default function Practice() {
   const handleNext = () => {
     if (status === 'correct') {
       updateWordStatus(currentWord.id, 'srs')
+      // If we remove the current word, the array shrinks, effectively shifting the next word to the current index.
+      if (safeIndex >= practiceWords.length - 1) {
+        setCurrentIndex(0)
+      }
+    } else {
+      // If skipped or moved forward without removing, we explicitly increment the index
+      if (safeIndex >= practiceWords.length - 1) {
+        setCurrentIndex(0)
+      } else {
+        setCurrentIndex((prev) => prev + 1)
+      }
     }
-
-    if (currentIndex >= builderWords.length - 1) {
-      setCurrentIndex(0)
-    }
+    setStatus('idle')
+    setAnswer('')
   }
 
-  if (builderWords.length === 0) {
+  if (practiceWords.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center h-[60vh] text-center animate-fade-in space-y-6">
         <div className="w-32 h-32 bg-primary/10 rounded-full flex items-center justify-center mb-2 border border-primary/20 shadow-sm">
@@ -141,16 +152,26 @@ export default function Practice() {
         </div>
         <h2 className="text-4xl font-bold text-foreground tracking-tight">Sessão Concluída!</h2>
         <p className="text-muted-foreground max-w-md text-xl">
-          Você completou todas as palavras na fila de prática. Vá para a Biblioteca capturar novos
+          Você completou todas as palavras na fila de prática. Vá para o Leitor capturar novos
           termos.
         </p>
-        <Button
-          size="lg"
-          className="mt-4 text-base h-14 px-8 rounded-xl"
-          onClick={() => navigate('/reader')}
-        >
-          Ir para a Biblioteca <ArrowRight className="ml-2 w-5 h-5" />
-        </Button>
+        <div className="flex flex-col sm:flex-row gap-4 mt-4">
+          <Button
+            size="lg"
+            className="text-base h-14 px-8 rounded-xl"
+            onClick={() => navigate('/')}
+          >
+            Voltar ao Início
+          </Button>
+          <Button
+            size="lg"
+            variant="outline"
+            className="text-base h-14 px-8 rounded-xl"
+            onClick={() => navigate('/reader')}
+          >
+            Ir para a Biblioteca <ArrowRight className="ml-2 w-5 h-5" />
+          </Button>
+        </div>
       </div>
     )
   }
@@ -168,7 +189,7 @@ export default function Practice() {
           </p>
         </div>
         <div className="text-sm font-medium bg-card px-4 py-2 rounded-full border border-border shadow-sm text-foreground">
-          {currentIndex + 1} de {builderWords.length}
+          {safeIndex + 1} de {practiceWords.length}
         </div>
       </header>
 
@@ -210,7 +231,7 @@ export default function Practice() {
                 onKeyDown={(e) => {
                   if (e.key === 'Enter') {
                     if (status === 'correct') handleNext()
-                    else if (answer.trim()) checkAnswer()
+                    else if (answer.trim() && status !== 'incorrect') checkAnswer()
                   }
                 }}
                 autoFocus
@@ -229,7 +250,7 @@ export default function Practice() {
                         </strong>
                       </p>
                       <p className="text-sm opacity-75 mt-2 font-medium">
-                        Verifique a estrutura e tente novamente.
+                        Tente novamente ou pule para a próxima.
                       </p>
                     </div>
                   </div>
@@ -245,25 +266,37 @@ export default function Practice() {
                 )}
               </div>
 
-              <div className="pt-4 border-t border-border">
+              <div className="pt-4 border-t border-border flex gap-3">
                 {status === 'correct' ? (
                   <Button
                     onClick={handleNext}
                     size="lg"
                     className="w-full h-16 text-lg rounded-2xl group bg-success hover:bg-success/90 text-success-foreground shadow-[0_0_20px_rgba(22,163,74,0.3)] animate-fade-in"
                   >
-                    {currentIndex < builderWords.length - 1 ? 'Próxima Palavra' : 'Concluir Sessão'}{' '}
+                    {safeIndex < practiceWords.length - 1 ? 'Próxima Palavra' : 'Concluir Sessão'}{' '}
                     <ArrowRight className="w-6 h-6 ml-2 group-hover:translate-x-1 transition-transform" />
                   </Button>
                 ) : (
-                  <Button
-                    onClick={checkAnswer}
-                    size="lg"
-                    className="w-full h-16 text-lg rounded-2xl shadow-md"
-                    disabled={!answer.trim()}
-                  >
-                    Verificar Resposta
-                  </Button>
+                  <>
+                    <Button
+                      onClick={checkAnswer}
+                      size="lg"
+                      className="flex-1 h-16 text-lg rounded-2xl shadow-md"
+                      disabled={!answer.trim() || status === 'incorrect'}
+                    >
+                      Verificar Resposta
+                    </Button>
+                    {status === 'incorrect' && (
+                      <Button
+                        onClick={handleNext}
+                        size="lg"
+                        variant="outline"
+                        className="h-16 px-6 text-lg rounded-2xl animate-fade-in"
+                      >
+                        Pular <ArrowRight className="w-5 h-5 ml-2" />
+                      </Button>
+                    )}
+                  </>
                 )}
               </div>
             </div>

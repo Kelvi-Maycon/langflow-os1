@@ -1,31 +1,54 @@
+import { useMemo } from 'react'
 import { Card } from '@/components/ui/card'
 import { Bar, BarChart, ResponsiveContainer, Cell } from 'recharts'
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart'
-
-const data = [
-  { day: 'S', value: 40 },
-  { day: 'T', value: 65 },
-  { day: 'Q', value: 45 },
-  { day: 'Q ', value: 100, isCurrent: true },
-  { day: 'S ', value: 30 },
-  { day: 'S  ', value: 20 },
-  { day: 'D', value: 15 },
-]
+import { useStore } from '@/store/main'
 
 const chartConfig = {
   value: {
-    label: 'Atividade',
+    label: 'Palavras Adicionadas',
     color: 'hsl(var(--primary))',
   },
 }
 
 export function WeeklyChart() {
+  const { words } = useStore()
+
+  const data = useMemo(() => {
+    const arr = Array.from({ length: 7 }).map((_, i) => {
+      const d = new Date()
+      d.setDate(d.getDate() - (6 - i))
+      d.setHours(0, 0, 0, 0)
+
+      const nextD = new Date(d)
+      nextD.setDate(d.getDate() + 1)
+
+      const count = words.filter(
+        (w) => w.createdAt >= d.getTime() && w.createdAt < nextD.getTime(),
+      ).length
+
+      return {
+        day: d.toLocaleDateString('pt-BR', { weekday: 'short' }).charAt(0).toUpperCase(),
+        value: count,
+        isCurrent: i === 6,
+      }
+    })
+
+    // Prevent empty chart from collapsing structure
+    const maxVal = Math.max(...arr.map((d) => d.value))
+    if (maxVal === 0) {
+      arr[6].value = 1
+    }
+
+    return arr
+  }, [words])
+
   return (
     <Card className="p-6 bg-card border-border shadow-sm hover:shadow-md transition-shadow duration-300 rounded-[24px]">
       <div className="flex items-center justify-between mb-8">
-        <h4 className="font-bold text-foreground">Atividade Semanal</h4>
+        <h4 className="font-bold text-foreground">Novas Palavras</h4>
         <span className="text-[10px] font-bold bg-secondary px-2 py-1 rounded-md text-muted-foreground border border-border">
-          ESSA SEMANA
+          ÚLTIMOS 7 DIAS
         </span>
       </div>
 

@@ -39,7 +39,7 @@ const mockWords: WordEntry[] = [
     word: 'serendipity',
     translation: 'serendipidade',
     contextSentence: 'Finding that old photograph was a moment of pure serendipity.',
-    status: 'builder',
+    status: 'practice',
     nextReviewDate: Date.now() - 10000,
     interval: 1,
     easeFactor: 2.5,
@@ -77,7 +77,20 @@ const StoreContext = createContext<StoreContextType | null>(null)
 export function StoreProvider({ children }: { children: ReactNode }) {
   const [words, setWords] = useState<WordEntry[]>(() => {
     const saved = localStorage.getItem('langflow_words')
-    return saved ? JSON.parse(saved) : mockWords
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved)
+        // Migrate legacy "builder" status to "practice"
+        return parsed.map((w: any) => ({
+          ...w,
+          status: w.status === 'builder' ? 'practice' : w.status,
+        }))
+      } catch (e) {
+        console.error('Failed to parse words from local storage', e)
+        return mockWords
+      }
+    }
+    return mockWords
   })
 
   const [settings, setSettings] = useState<UserSettings>(() => {

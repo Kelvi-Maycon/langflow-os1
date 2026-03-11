@@ -47,7 +47,7 @@ export default function Reader() {
           word: cw.word,
           translation: cw.translation,
           contextSentence: cw.sentence,
-          status: 'builder',
+          status: 'practice',
         })
       }
     })

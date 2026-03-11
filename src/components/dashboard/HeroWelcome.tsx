@@ -1,11 +1,15 @@
 import { Button } from '@/components/ui/button'
-import { Play, Map } from 'lucide-react'
+import { Play, BrainCircuit } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
-import { useToast } from '@/hooks/use-toast'
+import { useStore } from '@/store/main'
 
 export function HeroWelcome() {
   const navigate = useNavigate()
-  const { toast } = useToast()
+  const { words, settings } = useStore()
+
+  const goal = settings.dailyGoal || 20
+  const todayWords = words.filter((w) => w.createdAt > Date.now() - 86400000).length
+  const progress = Math.min((todayWords / goal) * 100, 100)
 
   return (
     <div className="relative overflow-hidden rounded-[32px] bg-card border border-border p-8 md:p-12 shadow-sm hover:shadow-md transition-all duration-300 ease-out flex flex-col md:flex-row items-center justify-between gap-8 group">
@@ -27,8 +31,8 @@ export function HeroWelcome() {
         </h2>
 
         <p className="text-lg text-muted-foreground mb-8 leading-relaxed">
-          Você está a 85% do seu objetivo semanal. Mantenha o foco para desbloquear o Certificado
-          B2.
+          Você está a {Math.round(progress)}% do seu objetivo diário. Mantenha o foco para expandir
+          seu vocabulário e desbloquear sua fluência.
         </p>
 
         <div className="flex flex-wrap gap-4">
@@ -37,20 +41,15 @@ export function HeroWelcome() {
             size="lg"
             className="rounded-full bg-pink-500 hover:bg-pink-600 text-white border-0 h-14 px-8 text-base font-bold shadow-[0_4px_14px_0_rgba(236,72,153,0.25)] transition-all duration-300 hover:scale-[1.04] active:scale-[0.98]"
           >
-            <Play className="w-5 h-5 mr-2 fill-current" /> Continuar Jornada
+            <Play className="w-5 h-5 mr-2 fill-current" /> Continuar Prática
           </Button>
           <Button
-            onClick={() =>
-              toast({
-                title: 'Mapa de Fluência',
-                description: 'Acessando a visualização completa da sua jornada de aprendizado...',
-              })
-            }
+            onClick={() => navigate('/flashcards')}
             size="lg"
             variant="outline"
             className="rounded-full bg-background border-border hover:bg-secondary hover:text-foreground h-14 px-8 text-base font-bold transition-all duration-300 hover:scale-[1.04] active:scale-[0.98] shadow-sm"
           >
-            <Map className="w-5 h-5 mr-2" /> Ver Caminho
+            <BrainCircuit className="w-5 h-5 mr-2" /> Revisar Flashcards
           </Button>
         </div>
       </div>

@@ -6,18 +6,17 @@ import { ProgressionRoadmap } from '@/components/dashboard/ProgressionRoadmap'
 import { StatsSidebar } from '@/components/dashboard/StatsSidebar'
 import { CollectionsSection } from '@/components/dashboard/CollectionsSection'
 import { useToast } from '@/hooks/use-toast'
+import { useNavigate } from 'react-router-dom'
 import { useState } from 'react'
 
 export default function Index() {
   const { toast } = useToast()
+  const navigate = useNavigate()
   const [searchValue, setSearchValue] = useState('')
 
   const handleSearch = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter' && searchValue.trim()) {
-      toast({
-        title: 'Busca iniciada',
-        description: `Procurando lições sobre "${searchValue}"...`,
-      })
+      navigate('/reader')
       setSearchValue('')
     }
   }
@@ -27,9 +26,9 @@ export default function Index() {
       {/* Top Bar Area */}
       <header className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight text-foreground">Olá, Bruno!</h1>
+          <h1 className="text-3xl font-bold tracking-tight text-foreground">Olá, Aprendiz!</h1>
           <p className="text-xs font-bold tracking-widest text-muted-foreground mt-1 uppercase">
-            Bom dia • Quinta-feira, 24 Out
+            Sua central de estudos
           </p>
         </div>
 
@@ -37,7 +36,7 @@ export default function Index() {
           <div className="relative w-64 hidden lg:block group">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground transition-colors group-hover:text-foreground" />
             <Input
-              placeholder="Buscar lição..."
+              placeholder="Buscar ou capturar..."
               value={searchValue}
               onChange={(e) => setSearchValue(e.target.value)}
               onKeyDown={handleSearch}
@@ -46,26 +45,15 @@ export default function Index() {
           </div>
 
           <button
-            onClick={() =>
-              toast({
-                title: '🔥 Ofensiva Ativa!',
-                description:
-                  'Você está há 12 dias consecutivos estudando. Continue assim para bater seu recorde!',
-              })
-            }
+            onClick={() => navigate('/practice')}
             className="flex items-center gap-2 bg-orange-500/10 border border-orange-500/20 px-4 py-2 rounded-full text-orange-600 font-bold text-sm shadow-sm hover:scale-[1.02] active:scale-95 transition-all duration-300"
           >
             <Flame className="w-4 h-4 fill-current text-orange-500" />
-            12 Dias
+            Praticar
           </button>
 
           <button
-            onClick={() =>
-              toast({
-                title: 'Notificações',
-                description: 'Você não tem novas mensagens no momento.',
-              })
-            }
+            onClick={() => navigate('/settings')}
             className="w-10 h-10 rounded-full border border-border bg-card flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-secondary hover:shadow-sm transition-all duration-300 active:scale-95 relative"
           >
             <Bell className="w-4 h-4" />
