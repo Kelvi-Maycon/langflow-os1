@@ -1,8 +1,20 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react'
-import { AppState, WordEntry, UserSettings, WordStatus, UserStats } from '@/lib/types'
+import { AppState, WordEntry, UserSettings, WordStatus } from '@/lib/types'
 import { calculateSM2, getNextReviewDate } from '@/lib/sm2'
+import { format } from 'date-fns'
 
-interface StoreContextType extends AppState {
+export interface ExtendedUserStats {
+  practiceAttempts: number
+  practiceCorrect: number
+  flashcardAttempts: number
+  flashcardCorrect: number
+  streak: number
+  lastPracticeDate: string | null
+  practiceHistory: Record<string, number>
+}
+
+interface StoreContextType extends Omit<AppState, 'stats'> {
+  stats: ExtendedUserStats
   addWord: (
     word: Omit<
       WordEntry,
@@ -26,11 +38,14 @@ const defaultSettings: UserSettings = {
   aiModel: 'gpt-4o-mini',
 }
 
-const defaultStats: UserStats = {
+const defaultStats: ExtendedUserStats = {
   practiceAttempts: 0,
   practiceCorrect: 0,
   flashcardAttempts: 0,
   flashcardCorrect: 0,
+  streak: 0,
+  lastPracticeDate: null,
+  practiceHistory: {},
 }
 
 const mockWords: WordEntry[] = [
@@ -39,12 +54,12 @@ const mockWords: WordEntry[] = [
     word: 'serendipity',
     translation: 'serendipidade',
     contextSentence: 'Finding that old photograph was a moment of pure serendipity.',
-    status: 'practice',
+    status: 'srs',
     nextReviewDate: Date.now() - 10000,
     interval: 1,
     easeFactor: 2.5,
     repetitions: 0,
-    createdAt: Date.now(),
+    createdAt: Date.now() - 50000,
   },
   {
     id: '2',
@@ -80,13 +95,11 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     if (saved) {
       try {
         const parsed = JSON.parse(saved)
-        // Migrate legacy "builder" status to "practice"
         return parsed.map((w: any) => ({
           ...w,
-          status: w.status === 'builder' ? 'practice' : w.status,
+          status: w.status === 'builder' || w.status === 'practice' ? 'srs' : w.status,
         }))
       } catch (e) {
-        console.error('Failed to parse words from local storage', e)
         return mockWords
       }
     }
@@ -101,7 +114,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
     return defaultSettings
   })
 
-  const [stats, setStats] = useState<UserStats>(() => {
+  const [stats, setStats] = useState<ExtendedUserStats>(() => {
     const saved = localStorage.getItem('langflow_stats')
     if (saved) return { ...defaultStats, ...JSON.parse(saved) }
     return defaultStats
@@ -168,11 +181,30 @@ export function StoreProvider({ children }: { children: ReactNode }) {
   }
 
   const recordFlashcardAttempt = (correct: boolean) => {
-    setStats((prev) => ({
-      ...prev,
-      flashcardAttempts: (prev.flashcardAttempts || 0) + 1,
-      flashcardCorrect: (prev.flashcardCorrect || 0) + (correct ? 1 : 0),
-    }))
+    const today = format(new Date(), 'yyyy-MM-dd')
+    setStats((prev) => {
+      let newStreak = prev.streak || 0
+      if (prev.lastPracticeDate !== today) {
+        const yesterday = format(new Date(Date.now() - 86400000), 'yyyy-MM-dd')
+        if (prev.lastPracticeDate === yesterday) {
+          newStreak += 1
+        } else if (prev.lastPracticeDate !== today) {
+          newStreak = 1
+        }
+      }
+
+      return {
+        ...prev,
+        flashcardAttempts: (prev.flashcardAttempts || 0) + 1,
+        flashcardCorrect: (prev.flashcardCorrect || 0) + (correct ? 1 : 0),
+        streak: newStreak,
+        lastPracticeDate: today,
+        practiceHistory: {
+          ...(prev.practiceHistory || {}),
+          [today]: ((prev.practiceHistory || {})[today] || 0) + 1,
+        },
+      }
+    })
   }
 
   return React.createElement(

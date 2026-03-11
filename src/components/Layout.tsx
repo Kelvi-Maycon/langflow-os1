@@ -1,126 +1,118 @@
 import { Outlet, Link, useLocation } from 'react-router-dom'
-import { LayoutDashboard, BookOpen, Zap, BrainCircuit, Menu } from 'lucide-react'
+import { LayoutDashboard, BrainCircuit, BookOpen, BarChart3, Settings } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import { useState } from 'react'
-import { Sheet, SheetContent, SheetTrigger, SheetTitle } from '@/components/ui/sheet'
-import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar'
+import {
+  SidebarProvider,
+  Sidebar,
+  SidebarContent,
+  SidebarGroup,
+  SidebarGroupContent,
+  SidebarMenu,
+  SidebarMenuItem,
+  SidebarMenuButton,
+  SidebarHeader,
+  SidebarTrigger,
+  SidebarInset,
+} from '@/components/ui/sidebar'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 
-const mainNav = [
+const navItems = [
   { path: '/', label: 'Dashboard', icon: LayoutDashboard },
-  { path: '/reader', label: 'Biblioteca', icon: BookOpen },
-  { path: '/practice', label: 'Prática Rápida', icon: Zap, badge: 'HOT' },
-  { path: '/flashcards', label: 'Revisão', icon: BrainCircuit },
+  { path: '/flashcards', label: 'Flashcards', icon: BrainCircuit },
+  { path: '/vocabulary', label: 'Vocabulary', icon: BookOpen },
+  { path: '/statistics', label: 'Statistics', icon: BarChart3 },
 ]
 
-function SidebarContent() {
+function AppSidebar() {
   const location = useLocation()
 
   return (
-    <div className="flex flex-col h-full bg-sidebar border-r border-border text-sidebar-foreground w-full">
-      <div className="p-6 flex items-center gap-3 font-bold text-xl tracking-tight mb-4">
-        <div className="w-8 h-8 rounded-lg bg-primary shadow-sm flex items-center justify-center">
-          <Zap className="w-5 h-5 text-primary-foreground fill-current" />
+    <Sidebar variant="inset" className="border-r border-slate-200">
+      <SidebarHeader className="p-4 pt-6">
+        <div className="flex items-center gap-3 px-2 font-bold text-xl tracking-tight text-slate-900">
+          <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center shadow-sm">
+            <BrainCircuit className="w-5 h-5 text-white" />
+          </div>
+          LangFlow
         </div>
-        LangFlow
-      </div>
+      </SidebarHeader>
 
-      <div className="flex-1 overflow-y-auto px-4 space-y-8">
-        <div>
-          <h4 className="text-[10px] font-bold text-sidebar-foreground/50 tracking-widest uppercase mb-3 px-4">
-            Menu Principal
-          </h4>
-          <nav className="space-y-1">
-            {mainNav.map((item) => {
-              const Icon = item.icon
-              const isActive = location.pathname === item.path
-              return (
-                <Link
-                  key={item.path}
-                  to={item.path}
-                  className={cn(
-                    'flex items-center gap-3 px-4 py-3 rounded-2xl transition-all duration-300 group',
-                    isActive
-                      ? 'bg-sidebar-accent text-sidebar-accent-foreground font-semibold shadow-sm'
-                      : 'hover:bg-sidebar-accent/50 text-sidebar-foreground/70 hover:text-sidebar-foreground hover:scale-[1.02]',
-                  )}
-                >
-                  <Icon
-                    className={cn(
-                      'w-5 h-5 transition-transform group-hover:scale-110',
-                      isActive && 'text-primary',
-                    )}
-                  />
-                  <span className="text-sm">{item.label}</span>
-                  {item.badge && (
-                    <span className="ml-auto bg-pink-500 text-white text-[9px] px-2 py-0.5 rounded-sm font-bold shadow-[0_0_10px_rgba(236,72,153,0.3)]">
-                      {item.badge}
-                    </span>
-                  )}
-                </Link>
-              )
-            })}
-          </nav>
-        </div>
-      </div>
+      <SidebarContent className="px-2 mt-6">
+        <SidebarGroup>
+          <SidebarGroupContent>
+            <SidebarMenu className="gap-2">
+              {navItems.map((item) => {
+                const isActive = location.pathname === item.path
+                return (
+                  <SidebarMenuItem key={item.path}>
+                    <SidebarMenuButton
+                      asChild
+                      isActive={isActive}
+                      size="lg"
+                      className={cn(
+                        'rounded-xl transition-all duration-200',
+                        isActive
+                          ? 'bg-primary/10 text-primary font-semibold'
+                          : 'text-slate-500 hover:bg-slate-100 hover:text-slate-900',
+                      )}
+                    >
+                      <Link to={item.path}>
+                        <item.icon className={cn('w-5 h-5 mr-3', isActive ? 'text-primary' : '')} />
+                        <span>{item.label}</span>
+                      </Link>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                )
+              })}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+      </SidebarContent>
 
-      <div className="p-4 mt-auto">
+      <div className="mt-auto p-4 border-t border-slate-100">
         <Link
           to="/settings"
-          className="flex items-center gap-3 px-4 py-3 rounded-2xl bg-secondary/50 border border-border hover:bg-secondary transition-colors"
+          className="flex items-center gap-3 p-2 rounded-xl hover:bg-slate-100 transition-colors"
         >
-          <Avatar className="w-10 h-10 border-2 border-background shadow-sm">
+          <Avatar className="w-10 h-10 border border-slate-200">
             <AvatarImage src="https://img.usecurling.com/ppl/thumbnail?gender=male&seed=1" />
             <AvatarFallback>BS</AvatarFallback>
           </Avatar>
-          <div className="flex flex-col">
-            <span className="text-sm font-bold text-foreground leading-tight">Bruno Silva</span>
-            <span className="text-[10px] font-bold text-muted-foreground tracking-wider">
-              PLANO PRO
+          <div className="flex flex-col flex-1 overflow-hidden">
+            <span className="text-sm font-bold text-slate-900 truncate">Bruno Silva</span>
+            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+              Pro Plan
             </span>
           </div>
+          <Settings className="w-4 h-4 text-slate-400 shrink-0" />
         </Link>
       </div>
-    </div>
+    </Sidebar>
   )
 }
 
 export default function Layout() {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-
   return (
-    <div className="flex h-screen w-full bg-background overflow-hidden flex-col md:flex-row font-sans">
-      {/* Mobile Header */}
-      <header className="md:hidden flex items-center justify-between p-4 bg-sidebar border-b border-border z-10 shrink-0">
-        <div className="flex items-center gap-2 font-bold text-lg tracking-tight text-sidebar-foreground">
-          <div className="w-6 h-6 rounded bg-primary flex items-center justify-center shadow-sm">
-            <Zap className="w-4 h-4 text-primary-foreground fill-current" />
-          </div>
-          LangFlow
-        </div>
-        <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
-          <SheetTrigger asChild>
-            <button className="p-2 text-muted-foreground hover:text-foreground">
-              <Menu className="w-6 h-6" />
-            </button>
-          </SheetTrigger>
-          <SheetContent side="left" className="p-0 bg-sidebar border-r-border w-[280px]">
-            <SheetTitle className="sr-only">Menu Principal</SheetTitle>
-            <SidebarContent />
-          </SheetContent>
-        </Sheet>
-      </header>
-
-      {/* Desktop Sidebar */}
-      <aside className="hidden md:flex flex-col w-[260px] shrink-0 z-10">
-        <SidebarContent />
-      </aside>
-
-      {/* Main Content */}
-      <main className="flex-1 overflow-y-auto relative bg-background">
-        <div className="max-w-[1400px] mx-auto w-full p-4 md:p-8 lg:px-12">
-          <Outlet />
-        </div>
-      </main>
-    </div>
+    <SidebarProvider>
+      <div className="flex h-screen w-full bg-slate-50/50">
+        <AppSidebar />
+        <SidebarInset className="bg-transparent flex-1 overflow-hidden flex flex-col min-w-0">
+          <header className="h-16 shrink-0 flex items-center px-4 md:px-8 border-b border-slate-100 bg-white md:hidden z-10 shadow-sm">
+            <SidebarTrigger className="mr-4" />
+            <div className="font-bold text-lg text-slate-900 flex items-center gap-2">
+              <div className="w-6 h-6 rounded flex items-center justify-center bg-primary">
+                <BrainCircuit className="w-4 h-4 text-white" />
+              </div>
+              LangFlow
+            </div>
+          </header>
+          <main className="flex-1 overflow-y-auto p-4 md:p-8 lg:p-10 relative">
+            <div className="max-w-6xl mx-auto w-full">
+              <Outlet />
+            </div>
+          </main>
+        </SidebarInset>
+      </div>
+    </SidebarProvider>
   )
 }
